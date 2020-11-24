@@ -41,25 +41,7 @@ public class Node extends HashMap<Integer,edge_data> implements node_data{
 
     @Override
     public void setTag(int t) {this.tag=t;}
-    /////////// PRIVATE CLASS //////////
-    private class Location implements geo_location{
-        private double x;
-        private double y;
-        private double z;
 
-        public Location(double x,double y,double z){this.x=x;this.y=y;this.z=z;}
-        public Location (geo_location l){this(l.x(),l.y(),l.z());}
-        @Override
-        public double x() {return x;}
-        @Override
-        public double y() {return y;}
-        @Override
-        public double z() {return z;}
-        @Override
-        public double distance(geo_location g) {
-            double dx=x()-g.x(),dy=y()-g.y(),dz=z()-g.z();
-            double p=(dx*dx+dy*dy+dz*dz);
-            return Math.sqrt(p);
-        }
-    }
+
+
 }
