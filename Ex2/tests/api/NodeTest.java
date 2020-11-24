@@ -61,8 +61,15 @@ class NodeTest {
         assertEquals(1,n2.getTag());
     }
     @Test
-     void TesttoString(){
+     void TestToString(){
         String s="{1,[2.0,3.0,4.0],7.0,,0}";
         assertEquals(s,n1.toString());
+    }
+    @Test
+    void TestEquals(){
+        assertAll(
+                ()->assertEquals(new Node(1,new Location(2,3,4),7,"",0),n1),
+                ()->assertNotEquals(n2,n1)
+        );
     }
 }

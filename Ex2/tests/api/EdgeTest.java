@@ -66,4 +66,12 @@ class EdgeTest {
         String s="(1,2|1.1)";
         assertEquals(s,e1.toString());
     }
+    @Test
+    void TestEquals(){
+       assertAll(
+               ()->assertEquals(new Edge(1,2,3),new Edge(1,2,3)),
+               ()->assertEquals(new Edge(1,2,1.1),e1),
+               ()->assertNotEquals(e2,e1)
+       );
+    }
 }
