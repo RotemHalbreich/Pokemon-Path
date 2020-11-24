@@ -1,5 +1,8 @@
 package api;
-public class Node  implements node_data{
+
+import java.util.HashMap;
+
+public class Node extends HashMap<Integer,edge_data> implements node_data{
     private int key;
     private geo_location location;
     private double weight;

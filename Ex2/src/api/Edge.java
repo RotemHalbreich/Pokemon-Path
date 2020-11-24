@@ -1,6 +1,7 @@
 package api;
 
-public class Edge implements edge_data {
+public  class Edge implements edge_data {
+
     private int src;
     private int dest;
     private double weight;
@@ -36,7 +37,7 @@ public class Edge implements edge_data {
     public int getTag() {return tag;}
 
     @Override
-    public void setTag(int t) {this.tag=tag;}
+    public void setTag(int t) {this.tag=t;}
     public String toString(){
         return "("+getSrc()+","+getDest()+"|"+getWeight()+")";
     }

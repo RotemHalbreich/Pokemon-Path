@@ -4,13 +4,20 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class DWGraph_DS implements directed_weighted_graph {
+    private HashMap<Integer,node_data> V;
+    private HashMap<Integer,edge_data> E;
+    private int MC;
+
     @Override
     public node_data getNode(int key) {
+        if(V.containsKey(key))
+            return V.get(key);
         return null;
     }
 
     @Override
     public edge_data getEdge(int src, int dest) {
+
         return null;
     }
 
