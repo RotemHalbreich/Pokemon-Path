@@ -1,8 +1,5 @@
 package api;
-
-import java.util.HashMap;
-
-public class Node extends HashMap<Integer,edge_data> implements node_data{
+public class Node  implements node_data{
     private int key;
     private geo_location location;
     private double weight;
@@ -19,7 +16,6 @@ public class Node extends HashMap<Integer,edge_data> implements node_data{
     public Node(node_data n){this(n.getKey(),n.getLocation(),n.getWeight(),n.getInfo(),n.getTag());}
     @Override
     public int getKey() {return key;}
-
     @Override
     public geo_location getLocation() {return location;}
 
@@ -41,7 +37,14 @@ public class Node extends HashMap<Integer,edge_data> implements node_data{
 
     @Override
     public void setTag(int t) {this.tag=t;}
-
+    public String toString(){
+        return "{"+getKey()+","
+                +"["+getLocation().toString()+"],"
+                +getWeight()+","
+                +getInfo()+","
+                +getTag()
+                +"}";
+    }
 
 
 }
