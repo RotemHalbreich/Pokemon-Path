@@ -17,6 +17,8 @@ class DWGraph_DSTest {
         geo_location location;
         g1 = new DWGraph_DS();
         g2 = new DWGraph_DS();
+
+        //g1 graph:
         for (int i = 0; i < 5; i++) {
             location = new Location(i, i + 5, i * 10);
             n = new Node(i, location, (i + 5) * 10, "", 0);
@@ -26,6 +28,19 @@ class DWGraph_DSTest {
             g1.connect(i - 1, i, i * 10);
             g1.connect(i,i-1,i*10);
         }
+
+        //g2 graph:
+        for (int i = 0; i < 7; i++) {
+            location = new Location(i, i + 5, i * 10);
+            n = new Node(i, location, (i + 5) * 10, "", 0);
+            g2.addNode(n);
+        }
+        for (int i = 1; i < 7; i++) {
+            g2.connect(i - 1, i, i * 10);
+        }
+        g2.connect(1,0,1);
+        g2.connect(3,1,1);
+        g2.connect(5,3,1);
     }
 
     @Test
@@ -49,10 +64,14 @@ class DWGraph_DSTest {
 
     @Test
     void addNode() {
-        DWGraph_DS TT = (DWGraph_DS) g1;
+        DWGraph_DS TT1 = (DWGraph_DS) g1;
         System.out.println("g1:\n" + g1.toString());
-        System.out.println("reverse: \n" + TT.toStringReverse());
+        System.out.println("g1_reversed: \n" + TT1.toStringReverse());
 
+
+        DWGraph_DS TT2 = (DWGraph_DS) g2;
+        System.out.println("g2:\n" + g2.toString());
+        System.out.println("g2_reversed: \n" + TT2.toStringReverse());
     }
 
     @Test
