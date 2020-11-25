@@ -41,6 +41,7 @@ public  class Edge implements edge_data {
     public String toString(){
         return "("+getSrc()+","+getDest()+"|"+getWeight()+")";
     }
+
     public boolean equals(Object obj){
         if(!(obj instanceof edge_data))return false;
         edge_data e=(edge_data)obj;
