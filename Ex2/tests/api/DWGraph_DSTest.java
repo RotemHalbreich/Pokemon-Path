@@ -9,13 +9,14 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DWGraph_DSTest {
-    private directed_weighted_graph g1;
+    private directed_weighted_graph g1,g2;
 
     @BeforeEach
     void setUp() {
         node_data n;
         geo_location location;
         g1 = new DWGraph_DS();
+        g2 = new DWGraph_DS();
         for (int i = 0; i < 5; i++) {
             location = new Location(i, i + 5, i * 10);
             n = new Node(i, location, (i + 5) * 10, "", 0);
@@ -34,6 +35,7 @@ class DWGraph_DSTest {
             geo_location l = new Location(1, 5, 10);
             g1.addNode(new Node(1, l, 10, "", 0));
         });
+
         node_data n = new Node(0, new Location(0, 5, 0), 50, "", 0);
         assertEquals(n, g1.getNode(0));
     }
@@ -66,6 +68,7 @@ class DWGraph_DSTest {
     @Test
     void getE() {
         Collection<edge_data> g = g1.getE(4);
+        g1.removeEdge(4,3);
         assertTrue(g.isEmpty());
         g = g1.getE(0);
         assertEquals(1, g.size());
@@ -86,16 +89,20 @@ class DWGraph_DSTest {
 
     @Test
     void removeEdge() {
+        DWGraph_DS TT = (DWGraph_DS) g1;
+        System.out.println("g1:\n" + g1.toString());
+        System.out.println("reverse: \n" + TT.toStringReverse());
         assertNotNull(g1.getEdge(0, 1));
         assertEquals(new Edge(0, 1, 10), g1.removeEdge(0, 1));
         assertNull(g1.getEdge(0, 1));
-        DWGraph_DS TT = (DWGraph_DS) g1;
+
         System.out.println("g1:\n" + g1.toString());
         System.out.println("reverse: \n" + TT.toStringReverse());
     }
 
     @Test
     void nodeSize() {
+
     }
 
     @Test

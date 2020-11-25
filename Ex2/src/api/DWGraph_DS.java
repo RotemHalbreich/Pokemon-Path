@@ -42,6 +42,8 @@ public class DWGraph_DS implements directed_weighted_graph {
         if (w < 0) throw new RuntimeException("Err:Invalid value w=" + w + "can't be negative number");
         if (!graph.containsKey(src) || !graph.containsKey(dest))
             throw new RuntimeException("Err:Invalid insert src or dest doesn't exists in base graph");
+        if(src==dest)
+            throw new RuntimeException("Err: Invalid insert, src and dest are equals!");
         Node v = (Node) getNode(src);
         if (!v.containsKey(dest)) EDGES++;
         edge_data e = new Edge(src, dest, w);
@@ -68,8 +70,14 @@ public class DWGraph_DS implements directed_weighted_graph {
     public node_data removeNode(int key) {
         if (graph.containsKey(key)) {
             Collection<edge_data> ni=getE(key);
+            Node r=(Node)R.get(key);
+
+            for(edge_data e:r.values())
+                removeEdges(e.getDest(),key);
+
             for(edge_data e:ni){
-                removeEdge(key,e.getDest());
+                Node v=(Node)R.get(e.getDest());
+                v.remove(e.getSrc());
             }
         }
         R.remove(key);
@@ -133,6 +141,15 @@ public class DWGraph_DS implements directed_weighted_graph {
         Node r=(Node)R.get(dest);
         edge_data er=new Edge(dest,src,w);
         r.put(src,er);
+    }
+
+    private edge_data removeEdges(int src, int dest) {
+            Node v = (Node)getNode(src);
+            if (v.containsKey(dest)) {
+                MC++;
+                EDGES--;
+            }
+            return v.remove(dest);
     }
 
 }
