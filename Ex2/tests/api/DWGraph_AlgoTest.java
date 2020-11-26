@@ -78,7 +78,8 @@ class DWGraph_AlgoTest {
     void shortestPath() {
         System.out.println(test1.shortestPath(0,4).toString());
         System.out.println(test1.shortestPath(2,3).toString());
-        System.out.println(test1.shortestPath(2,4).toString());
+       assertNull(test1.shortestPath(2,5));
+        assertThrows(RuntimeException.class,()->test1.shortestPath(0,9));
     }
 
     @Test
