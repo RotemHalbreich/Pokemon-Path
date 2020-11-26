@@ -37,8 +37,18 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     @Override
     public boolean isConnected() {
-        return false;
+        if(graph==null)return false;
+        if(graph.getV().isEmpty()||graph.nodeSize()==1)return true;
+
+        DWGraph_DS forward= (DWGraph_DS) copy();
+        if (!direction(forward)) return false;
+
+        DWGraph_DS backwards= (DWGraph_DS) forward.reverse();
+        if (!direction(backwards)) return false;
+
+        return true;
     }
+
 
     @Override
     public double shortestPathDist(int src, int dest) {
@@ -60,4 +70,25 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return false;
     }
     public boolean equals(Object o){return graph.equals(o);}
+    /////////// PRIVATE METHODS /////////
+    private void isConnected(directed_weighted_graph g,Node n){
+        n.setInfo(VISITED);
+        for(Integer i:n.keySet()){
+            Node ni=(Node)g.getNode(i);
+            if(ni.getInfo().equals(NOT_VISITED))
+                isConnected(g,ni);
+        }
+        n.setInfo(FINISH);
+    }
+
+    private boolean direction(DWGraph_DS g) {
+        for(node_data n:g.getV())n.setInfo(NOT_VISITED);
+        Node first=(Node)g.getV().iterator().next();
+        isConnected(g,first);
+        for(node_data n:g.getV()){
+            if(!n.getInfo().equals(FINISH))
+                return false;
+        }
+        return true;
+    }
 }

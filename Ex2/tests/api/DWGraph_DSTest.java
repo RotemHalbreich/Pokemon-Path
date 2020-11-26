@@ -218,4 +218,12 @@ class DWGraph_DSTest {
         assertNotEquals(g2,g1);
         assertNotEquals(gg1,g1);
     }
+    @Test
+    void TestReverse(){
+        DWGraph_DS TT2 = (DWGraph_DS) g2;
+        assertEquals(((DWGraph_DS) g2).toStringReverse(),((DWGraph_DS) g2).reverse().toString());
+        directed_weighted_graph r=((DWGraph_DS) g2).reverse();
+        r.removeNode(1);
+        assertNotEquals(r.toString(),((DWGraph_DS) g2).toStringReverse());
+    }
 }

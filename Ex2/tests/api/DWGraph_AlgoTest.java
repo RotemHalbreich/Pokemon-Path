@@ -12,12 +12,12 @@ class DWGraph_AlgoTest {
         directed_weighted_graph g=new DWGraph_DS();
         node_data n;
         geo_location location;
-        for(int i=0;i<6;i++){
+        for(int i=0;i<100001;i++){
             location = new Location(i, i + 5, i * 10);
             n = new Node(i, location, (i + 5) * 10, "", 0);
             g.addNode(n);
         }
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= 100000; i++) {
             g.connect(i - 1, i, i * 10);
             g.connect(i, i - 1, i * 10);
         }
@@ -38,11 +38,17 @@ class DWGraph_AlgoTest {
     void copy() {
         directed_weighted_graph c=test.copy();
         assertEquals(c,test);
+        c.removeNode(0);
+        assertNotEquals(c,test);
         assertNotEquals(new DWGraph_Algo(),test);
+
     }
 
     @Test
     void isConnected() {
+        assertTrue(test.isConnected());
+        test.getGraph().removeEdge(0,1);
+        assertFalse(test.isConnected());
     }
 
     @Test

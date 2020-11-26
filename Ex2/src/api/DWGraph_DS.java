@@ -200,8 +200,20 @@ public class DWGraph_DS implements directed_weighted_graph {
         return MC;
     }
 
-    public HashMap<Integer, node_data> reverse() {
-        return R;
+    public directed_weighted_graph reverse() {
+        directed_weighted_graph r=new DWGraph_DS();
+        for(Integer i:R.keySet()){
+            r.addNode(new Node(R.get(i)));
+        }
+        for(Integer i:R.keySet()){
+            Node v=(Node)R.get(i);
+            for(edge_data e:v.values()){
+                edge_data er=new Edge(e);
+                r.connect(er.getSrc(),er.getDest(),er.getWeight());
+            }
+        }
+
+        return r;
     }
 
     public boolean equals(Object obj) {
@@ -223,6 +235,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     public int hashCode() {
         return Objects.hash(graph, R, EDGES, MC);
     }
+
 
     /**
      * Returns the graph as a String
