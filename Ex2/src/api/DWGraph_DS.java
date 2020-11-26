@@ -3,6 +3,7 @@ package api;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * This class represents a directional weighted graph.
@@ -10,7 +11,6 @@ import java.util.Iterator;
  * and should support a large number of nodes (over 100,000).
  * The implementation should be based on an efficient compact representation
  * (should NOT be based on a n*n matrix).
- *
  */
 
 public class DWGraph_DS implements directed_weighted_graph {
@@ -70,9 +70,9 @@ public class DWGraph_DS implements directed_weighted_graph {
      * Connects an edge with weight w between node src to node dest.
      * Note: this method should run in O(1) time.
      *
-     * @param src - the source of the edge.
+     * @param src  - the source of the edge.
      * @param dest - the destination of the edge.
-     * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
+     * @param w    - positive weight representing the cost (aka time, price, etc) between src-->dest.
      */
     @Override
     public void connect(int src, int dest, double w) {
@@ -121,9 +121,9 @@ public class DWGraph_DS implements directed_weighted_graph {
      * Deletes the node (with the given ID) from the graph -
      * and removes all edges which starts or ends at this node.
      * This method should run in O(k), V.degree=k, as all the edges should be removed.
-     * @return the data of the removed node (null if none).
      *
      * @param key
+     * @return the data of the removed node (null if none).
      */
     @Override
     public node_data removeNode(int key) {
@@ -131,8 +131,7 @@ public class DWGraph_DS implements directed_weighted_graph {
             Collection<edge_data> ni = getE(key);
             Node r = (Node) R.get(key);
             EDGES -= ni.size();
-            MC += ni.size();
-            MC++;
+            MC += ni.size() + 1;
 
             for (edge_data e : r.values())
                 removeEdges(e.getDest(), key);
@@ -149,6 +148,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     /**
      * Deletes the edge from the graph,
      * Note: this method should run in O(1) time.
+     *
      * @param src
      * @param dest
      * @return the data of the removed edge (null if none).
@@ -168,7 +168,8 @@ public class DWGraph_DS implements directed_weighted_graph {
         return null;
     }
 
-    /** Returns the number of vertices (nodes) in the graph.
+    /**
+     * Returns the number of vertices (nodes) in the graph.
      * Note: this method should run in O(1) time.
      *
      * @return int
@@ -201,6 +202,26 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     public HashMap<Integer, node_data> reverse() {
         return R;
+    }
+
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        directed_weighted_graph g = new DWGraph_DS();
+        if (obj instanceof directed_weighted_graph)
+            g = (directed_weighted_graph) obj;
+        if (obj instanceof dw_graph_algorithms) {
+            g = ((dw_graph_algorithms) obj).getGraph();
+        }
+        if(g.getV().isEmpty()&&getV().isEmpty())return true;
+        if(edgeSize()!=g.edgeSize()||nodeSize()!=g.nodeSize())
+            return false;
+
+        return similar(this,g)&&similar(g,this);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(graph, R, EDGES, MC);
     }
 
     /**
@@ -249,5 +270,24 @@ public class DWGraph_DS implements directed_weighted_graph {
             EDGES--;
         }
         return v.remove(dest);
+    }
+
+    private boolean similar(directed_weighted_graph g1, directed_weighted_graph g2) {
+        for(node_data n:g1.getV()){
+            if(!n.equals(g2.getNode(n.getKey())))
+                return false;
+        }
+        for(node_data n:g1.getV()){
+            for(edge_data e:g1.getE(n.getKey())){
+                try{
+                    if(!e.equals(g2.getEdge(e.getSrc(),e.getDest())))
+                        return false;
+                }catch (RuntimeException r){
+                    return false;
+                }
+            }
+        }
+        return true;
+
     }
 }

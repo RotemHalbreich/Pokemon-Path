@@ -18,6 +18,9 @@ public  class Edge implements edge_data {
     public Edge(int src ,int dest,double weight){
         this(src,dest,weight,"",0);
     }
+    public Edge(edge_data e){
+        this(e.getSrc(),e.getDest(),e.getWeight());
+    }
     @Override
     public int getSrc() {return src;}
 

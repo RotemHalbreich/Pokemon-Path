@@ -197,4 +197,25 @@ class DWGraph_DSTest {
         System.out.println(g1.toString());
         System.out.println(g2.toString());
     }
+    @Test
+    void TestEquals(){
+        assertEquals(new DWGraph_DS(),new DWGraph_DS());
+        node_data n;
+        geo_location location;
+        directed_weighted_graph gg=new DWGraph_DS();
+        directed_weighted_graph gg1=new DWGraph_DS();
+        for (int i = 0; i < 5; i++) {
+            location = new Location(i, i + 5, i * 10);
+            n = new Node(i, location, (i + 5) * 10, "", 0);
+            gg.addNode(n);
+            gg1.addNode(new Node(n));
+        }
+        for (int i = 1; i < 5; i++) {
+            gg.connect(i - 1, i, i * 10);
+            gg.connect(i, i - 1, i * 10);
+        }
+        assertEquals(gg,g1);
+        assertNotEquals(g2,g1);
+        assertNotEquals(gg1,g1);
+    }
 }
