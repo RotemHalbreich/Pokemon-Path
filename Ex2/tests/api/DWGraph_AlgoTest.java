@@ -71,10 +71,14 @@ class DWGraph_AlgoTest {
         assertEquals(12,test1.shortestPathDist(0,4));
         assertEquals(-1,test1.shortestPathDist(0,5));
         assertEquals(11,test1.shortestPathDist(2,3));
+        assertThrows(RuntimeException.class,()->test1.shortestPathDist(0,9));
     }
 
     @Test
     void shortestPath() {
+        System.out.println(test1.shortestPath(0,4).toString());
+        System.out.println(test1.shortestPath(2,3).toString());
+        System.out.println(test1.shortestPath(2,4).toString());
     }
 
     @Test

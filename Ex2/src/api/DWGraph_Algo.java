@@ -1,5 +1,6 @@
 package api;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -55,8 +56,9 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     @Override
     public double shortestPathDist(int src, int dest) {
-        try{graph.getNode(src);graph.getNode(dest);}
-        catch (RuntimeException e){e.printStackTrace();}
+      if(graph.getNode(src)==null|| graph.getNode(dest)==null)
+          throw new RuntimeException("Err:Invalid search src or dest not exists in base graph");
+
         if(src==dest)return 0;
         for(node_data n:graph.getV()){
             n.setWeight(MAX_VALUE);
@@ -71,7 +73,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     @Override
     public List<node_data> shortestPath(int src, int dest) {
-        return null;
+        if(shortestPathDist(src,dest)==-1)return null;
+        return shortestPath(src,dest,new LinkedList<node_data>());
     }
 
     @Override
@@ -124,5 +127,15 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             }
         }
         return -1;
+    }
+    private  List<node_data> shortestPath(int src, int dest,LinkedList<node_data> path){
+        path.addFirst(graph.getNode(dest));
+        if(src==dest)return path;
+        Node prev=(Node)graph.getNode(dest);
+        while(prev.getPrev()!=null){
+            prev=(Node)prev.getPrev();
+            path.addFirst(prev);
+        }
+        return path;
     }
 }
