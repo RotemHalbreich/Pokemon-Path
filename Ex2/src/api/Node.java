@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * This class represents the set of operations applicable on a
@@ -19,6 +20,7 @@ public class Node extends HashMap<Integer,edge_data> implements node_data, Compa
     private String info;
     private int tag;
     private node_data prev;
+
 
 
     public Node(int key, geo_location location, double weight, String info, int tag) {
@@ -125,6 +127,7 @@ public class Node extends HashMap<Integer,edge_data> implements node_data, Compa
      *
      * @return String
      */
+
     public String toString() {
         return "{" + getKey() + ","
                 + "[" + getLocation().toString() + "],"
@@ -144,6 +147,11 @@ public class Node extends HashMap<Integer,edge_data> implements node_data, Compa
         if(!(obj instanceof node_data))return false;
         node_data n=(node_data)obj;
         return getKey()==n.getKey()&&getLocation().equals(n.getLocation());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), key, location, weight, info, tag, prev);
     }
 
     @Override

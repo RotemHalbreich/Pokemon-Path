@@ -1,6 +1,8 @@
 package api;
 
-public  class Edge implements edge_data {
+import java.util.Objects;
+
+public  class Edge implements edge_data{
 
     private int src;
     private int dest;
@@ -43,6 +45,11 @@ public  class Edge implements edge_data {
     public void setTag(int t) {this.tag=t;}
     public String toString(){
         return "("+getSrc()+","+getDest()+"|"+getWeight()+")";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(src, dest, weight, info, tag);
     }
 
     public boolean equals(Object obj){

@@ -1,5 +1,7 @@
 package api;
 
+import com.google.gson.Gson;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,6 +23,13 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     public DWGraph_DS() {
         graph = new HashMap<Integer, node_data>();
+    }
+    public DWGraph_DS(HashMap<String,node_data> g){
+       graph=new HashMap<>();
+
+       for(String i:g.keySet()){
+           graph.put(Integer.parseInt(i),new Node(g.get(i)));
+       }
     }
 
     /**
@@ -301,6 +310,5 @@ public class DWGraph_DS implements directed_weighted_graph {
             }
         }
         return true;
-
     }
 }

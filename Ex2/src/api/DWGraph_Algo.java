@@ -1,13 +1,21 @@
 package api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import static java.lang.Double.MAX_VALUE;
 
-public class DWGraph_Algo implements dw_graph_algorithms {
+public class DWGraph_Algo implements dw_graph_algorithms{
     private static final String NOT_VISITED = "white", VISITED = "green", FINISH = "black";
     private directed_weighted_graph graph;
 
@@ -80,14 +88,34 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     @Override
     public boolean save(String file) {
-        return false;
+        try {
+            Gson gson=new GsonBuilder().setPrettyPrinting().create();
+            String json=gson.toJson(graph);
+            PrintWriter pw = new PrintWriter(file);
+            pw.print(json);
+            pw.close();
+        }catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+
     }
 
     @Override
     public boolean load(String file) {
-        return false;
+
+        return true;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(graph);
+    }
+
     public boolean equals(Object o){return graph.equals(o);}
+    public String toString(){return graph.toString();}
     /////////// PRIVATE METHODS /////////
     private void isConnected(directed_weighted_graph g,Node n){
         n.setInfo(VISITED);

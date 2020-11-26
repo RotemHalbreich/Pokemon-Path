@@ -84,6 +84,10 @@ class DWGraph_AlgoTest {
 
     @Test
     void save() {
+        test1.save("text.json");
+        dw_graph_algorithms test2=new DWGraph_Algo();
+        //test2.load("text.json");
+        //System.out.println(test2.toString());
     }
 
     @Test
