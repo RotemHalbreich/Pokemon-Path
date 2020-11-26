@@ -1,5 +1,8 @@
 package api;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -9,12 +12,13 @@ import java.util.HashMap;
  * @author Shaked Aviad & Rotem Halbreich
  */
 
-public class Node extends HashMap<Integer,edge_data> implements node_data {
+public class Node extends HashMap<Integer,edge_data> implements node_data, Comparable<node_data> {
     private int key;
     private geo_location location;
     private double weight;
     private String info;
     private int tag;
+    private node_data prev;
 
 
     public Node(int key, geo_location location, double weight, String info, int tag) {
@@ -141,4 +145,14 @@ public class Node extends HashMap<Integer,edge_data> implements node_data {
         node_data n=(node_data)obj;
         return getKey()==n.getKey()&&getLocation().equals(n.getLocation());
     }
+
+    @Override
+    public int compareTo(node_data o) {
+        Double c=getWeight();
+        return c.compareTo(o.getWeight());
+    }
+
+    public node_data getPrev() {return prev;}
+
+    public void setPrev(node_data prev) {this.prev = prev;}
 }
