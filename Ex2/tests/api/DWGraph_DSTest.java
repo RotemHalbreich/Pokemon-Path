@@ -77,6 +77,7 @@ class DWGraph_DSTest {
     @Test
     void getE() {
         assertEquals(1,g1.getE(0).size());
+        assertTrue(g1.getE(1000).isEmpty());
     }
 
     @Test
@@ -84,8 +85,6 @@ class DWGraph_DSTest {
         g1.removeNode(0);
         assertNull(g1.getNode(0));
         assertNull(g1.getEdge(0,1));
-
-
     }
 
     @Test
@@ -145,6 +144,14 @@ class DWGraph_DSTest {
         }
         assertEquals(gg1,g1);
         assertNotEquals(g2,g1);
+        gg1.removeNode(0);
+        assertNotEquals(gg1,g1);
+    }
+    @Test
+    void TestReverseString(){
+        System.out.println("g2 :"+g2.toString());
+        DWGraph_DS gg=(DWGraph_DS)g2;
+        System.out.println("R :"+gg.reverseString());
     }
     @Test
     void TestReverse(){

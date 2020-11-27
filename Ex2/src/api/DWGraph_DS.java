@@ -26,9 +26,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     @Override
-    public node_data getNode(int key) {
-        return V.get(key);
-    }
+    public node_data getNode(int key) {return V.get(key);}
 
 
     @Override
@@ -67,9 +65,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     @Override
-    public Collection<node_data> getV() {
-        return V.values();
-    }
+    public Collection<node_data> getV() {return V.values();}
 
     @Override
     public Collection<edge_data> getE(int node_id) {
@@ -126,7 +122,15 @@ public class DWGraph_DS implements directed_weighted_graph {
             if(!getE(i).isEmpty())
                 sb.append(E.get(i).values().toString());
         }
-        return "V:" + V.keySet() + "\n" + "E:" + sb;
+        return "V:" + V.keySet() + "\n" + "E:" + sb+"\n";
+    }
+    public String reverseString(){
+        StringBuilder sb = new StringBuilder();
+        for (Integer i : R.keySet()) {
+            if(!R.get(i).isEmpty())
+                sb.append(R.get(i).values().toString());
+        }
+        return "V_R:" + R.keySet() + "\n" + "E_R:" + sb+"\n";
     }
 
     @Override
@@ -140,9 +144,12 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         if (obj instanceof directed_weighted_graph)
             g = (directed_weighted_graph) obj;
+
         if (obj instanceof dw_graph_algorithms)
-            g = (directed_weighted_graph) ((dw_graph_algorithms) obj).getGraph();
+            g = ((dw_graph_algorithms) obj).getGraph();
+
         if (nodeSize() != g.nodeSize() || edgeSize() != g.edgeSize()) return false;
+
         return similar(this, g) && similar(g, this);
     }
 
@@ -157,7 +164,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         }
     }
 
-    public boolean similar(directed_weighted_graph g1, directed_weighted_graph g2) {
+    private boolean similar(directed_weighted_graph g1, directed_weighted_graph g2) {
         for (node_data n : g1.getV()) {
             if (g2.getNode(n.getKey()) == null)
                 return false;
@@ -169,9 +176,8 @@ public class DWGraph_DS implements directed_weighted_graph {
         return true;
     }
 
-    private void reverseRemove(int src, int dest) {
-        R.get(src).remove(dest);
-    }
+    private void reverseRemove(int src, int dest) {R.get(src).remove(dest);}
+
     private void removeEdges(int src, int dest) {
         if (E.containsKey(src)) {
             EDGES--;

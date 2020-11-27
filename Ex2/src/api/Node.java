@@ -14,15 +14,12 @@ import java.util.Objects;
  */
 
 public class Node implements node_data, Comparable<node_data> {
-
     private int key;
     private geo_location location;
     private double weight;
     private String info;
     private int tag;
     private node_data prev;
-
-
 
     public Node(int key, geo_location location, double weight, String info, int tag) {
         this.key = key;
