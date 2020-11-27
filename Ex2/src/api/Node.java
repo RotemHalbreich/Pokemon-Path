@@ -14,8 +14,9 @@ import java.util.Objects;
  */
 
 public class Node extends HashMap<Integer,edge_data> implements node_data, Comparable<node_data> {
-    private int key;
     private geo_location location;
+    private int key;
+
     private double weight;
     private String info;
     private int tag;

@@ -18,6 +18,7 @@ import java.util.Objects;
 public class DWGraph_DS implements directed_weighted_graph {
     private HashMap<Integer, node_data> graph;
     private HashMap<Integer, node_data> R = new HashMap<>();
+
     private int EDGES = 0;
     private int MC = 0;
 
@@ -70,8 +71,9 @@ public class DWGraph_DS implements directed_weighted_graph {
     public void addNode(node_data n) {
         if (graph.containsKey(n.getKey()))
             throw new RuntimeException("Err: This vertex already exists");
-        graph.put(n.getKey(), n);
+        graph.put(n.getKey(),n);
         R.put(n.getKey(), new Node(n));
+
         MC++;
     }
 
@@ -259,7 +261,7 @@ public class DWGraph_DS implements directed_weighted_graph {
                 sb.append(e.toString());
             }
         }
-        return "V:" + graph.keySet() + "\nE:" + sb + "\n";
+        return "\nE:" + sb + "\n";
     }
 
     /**
