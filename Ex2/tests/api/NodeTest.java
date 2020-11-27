@@ -62,7 +62,7 @@ class NodeTest {
     }
     @Test
      void TestToString(){
-        String s="{1,[2.0,3.0,4.0],7.0,,0}";
+        String s="Node{location=2.0,3.0,4.0, key=1, weight=7.0, info='', tag=0}";
         assertEquals(s,n1.toString());
     }
     @Test
@@ -71,5 +71,11 @@ class NodeTest {
                 ()->assertEquals(new Node(1,new Location(2,3,4),7,"",0),n1),
                 ()->assertNotEquals(n2,n1)
         );
+    }
+    @Test
+    void TestSetGetPrev(){
+        Node v=(Node)n1;
+        v.setPrev(n2);
+        assertEquals(v.getPrev(),n2);
     }
 }

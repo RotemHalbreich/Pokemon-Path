@@ -13,10 +13,10 @@ import java.util.Objects;
  * @author Shaked Aviad & Rotem Halbreich
  */
 
-public class Node extends HashMap<Integer,edge_data> implements node_data, Comparable<node_data> {
-    private geo_location location;
-    private int key;
+public class Node implements node_data, Comparable<node_data> {
 
+    private int key;
+    private geo_location location;
     private double weight;
     private String info;
     private int tag;
@@ -129,13 +129,15 @@ public class Node extends HashMap<Integer,edge_data> implements node_data, Compa
      * @return String
      */
 
+    @Override
     public String toString() {
-        return "{" + getKey() + ","
-                + "[" + getLocation().toString() + "],"
-                + getWeight() + ","
-                + getInfo() + ","
-                + getTag()
-                + "}";
+        return "Node{" +
+                "location=" + location +
+                ", key=" + key +
+                ", weight=" + weight +
+                ", info='" + info + '\'' +
+                ", tag=" + tag +
+                '}';
     }
 
     /**
