@@ -1,6 +1,5 @@
 package api;
 
-import com.google.gson.Gson;
 
 import java.util.*;
 
@@ -26,7 +25,9 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     @Override
-    public node_data getNode(int key) {return V.get(key);}
+    public node_data getNode(int key) {
+        return V.get(key);
+    }
 
 
     @Override
@@ -41,7 +42,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         if (V.containsKey(n.getKey()))
             throw new RuntimeException("Err:Invalid insert n already exists");
         V.put(n.getKey(), n);
-
+        MC++;
     }
 
     @Override
@@ -65,7 +66,9 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     @Override
-    public Collection<node_data> getV() {return V.values();}
+    public Collection<node_data> getV() {
+        return V.values();
+    }
 
     @Override
     public Collection<edge_data> getE(int node_id) {
@@ -95,7 +98,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         if (E.containsKey(src)) {
             EDGES--;
             MC++;
-            reverseRemove(dest,src);
+            reverseRemove(dest, src);
             return E.get(src).remove(dest);
         }
         return null;
@@ -119,18 +122,19 @@ public class DWGraph_DS implements directed_weighted_graph {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Integer i : E.keySet()) {
-            if(!getE(i).isEmpty())
+            if (!getE(i).isEmpty())
                 sb.append(E.get(i).values().toString());
         }
-        return "V:" + V.keySet() + "\n" + "E:" + sb+"\n";
+        return "V:" + V.keySet() + "\n" + "E:" + sb + "\n";
     }
-    public String reverseString(){
+
+    public String reverseString() {
         StringBuilder sb = new StringBuilder();
         for (Integer i : R.keySet()) {
-            if(!R.get(i).isEmpty())
+            if (!R.get(i).isEmpty())
                 sb.append(R.get(i).values().toString());
         }
-        return "V_R:" + R.keySet() + "\n" + "E_R:" + sb+"\n";
+        return "V_R:" + R.keySet() + "\n" + "E_R:" + sb + "\n";
     }
 
     @Override
@@ -176,7 +180,9 @@ public class DWGraph_DS implements directed_weighted_graph {
         return true;
     }
 
-    private void reverseRemove(int src, int dest) {R.get(src).remove(dest);}
+    private void reverseRemove(int src, int dest) {
+        R.get(src).remove(dest);
+    }
 
     private void removeEdges(int src, int dest) {
         if (E.containsKey(src)) {

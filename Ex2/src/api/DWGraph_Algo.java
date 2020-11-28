@@ -1,4 +1,6 @@
 package api;
+
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -15,14 +17,16 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import static java.lang.Double.MAX_VALUE;
 
-public class DWGraph_Algo implements dw_graph_algorithms{
+public class DWGraph_Algo implements dw_graph_algorithms {
     private directed_weighted_graph graph;
-    public DWGraph_Algo(){
-        graph=new DWGraph_DS();
+
+    public DWGraph_Algo() {
+        graph = new DWGraph_DS();
     }
+
     @Override
     public void init(directed_weighted_graph g) {
-            graph=g;
+        graph = g;
     }
 
     @Override
@@ -53,12 +57,12 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     @Override
     public boolean save(String file) {
         try {
-            Gson gson=new GsonBuilder().setPrettyPrinting().create();
-            String json=gson.toJson(graph);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(graph);
             PrintWriter pw = new PrintWriter(file);
             pw.print(json);
             pw.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
