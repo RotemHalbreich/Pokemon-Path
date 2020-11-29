@@ -72,11 +72,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
         if (src == dest) return 0;
         for (node_data n : graph.getV()) {
-            n.setWeight(MAX_VALUE);
+            Node v=(Node)n;
+            v.setPrice(MAX_VALUE);
             n.setInfo(NOT_VISITED);
         }
         Node s = (Node) graph.getNode(src);
-        s.setWeight(0);
+        s.setPrice(0);
         s.setPrev(null);
 
         return shortestPathDist(src, dest, new PriorityBlockingQueue<node_data>(graph.getV()));
@@ -162,14 +163,14 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     private double shortestPathDist(int src, int dest, PriorityBlockingQueue<node_data> queue) {
         while (!queue.isEmpty()) {
             Node currNode = (Node) queue.remove();
-            if (currNode.getKey() == dest || currNode.getWeight() == MAX_VALUE) {
-                return currNode.getWeight() == MAX_VALUE ? -1 : currNode.getWeight();
+            if (currNode.getKey() == dest || currNode.getPrice() == MAX_VALUE) {
+                return currNode.getPrice() == MAX_VALUE ? -1 : currNode.getPrice();
             }
             for (edge_data e : graph.getE(currNode.getKey())) {
                 Node ni = (Node) graph.getNode(e.getDest());
-                double weight = currNode.getWeight() + e.getWeight();
-                if (ni.getInfo().equals(NOT_VISITED) && ni.getWeight() > weight) {
-                    ni.setWeight(weight);
+                double weight = currNode.getPrice() + e.getWeight();
+                if (ni.getInfo().equals(NOT_VISITED) && ni.getPrice() > weight) {
+                    ni.setPrice(weight);
                     queue.remove(ni);
                     queue.add(ni);
                     ni.setPrev(currNode);

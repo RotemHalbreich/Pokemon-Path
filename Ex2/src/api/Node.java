@@ -20,6 +20,7 @@ public class Node implements node_data, Comparable<node_data> {
     private String info;
     private int tag;
     private node_data prev;
+    private double price;
 
     public Node(int key, geo_location location, double weight, String info, int tag) {
         this.key = key;
@@ -35,6 +36,7 @@ public class Node implements node_data, Comparable<node_data> {
 
     /**
      * Returns the key (id) associated with this node.
+     *
      * @return
      */
     @Override
@@ -42,7 +44,8 @@ public class Node implements node_data, Comparable<node_data> {
         return key;
     }
 
-    /** Returns the location of this node, if
+    /**
+     * Returns the location of this node, if
      * none return null.
      *
      * @return
@@ -52,7 +55,8 @@ public class Node implements node_data, Comparable<node_data> {
         return location;
     }
 
-    /** Allows changing this node's location.
+    /**
+     * Allows changing this node's location.
      *
      * @param p - new new location  (position) of this node.
      */
@@ -83,6 +87,7 @@ public class Node implements node_data, Comparable<node_data> {
 
     /**
      * Returns the remark (meta data) associated with this node.
+     *
      * @return String
      */
     @Override
@@ -92,6 +97,7 @@ public class Node implements node_data, Comparable<node_data> {
 
     /**
      * Allows changing the remark (meta data) associated with this node.
+     *
      * @param s
      */
     @Override
@@ -113,11 +119,21 @@ public class Node implements node_data, Comparable<node_data> {
     /**
      * Allows setting the "tag" value for temporal marking an node - common
      * practice for marking by algorithms.
+     *
      * @param t - the new value of the tag
      */
     @Override
     public void setTag(int t) {
         this.tag = t;
+    }
+
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     /**
@@ -143,10 +159,10 @@ public class Node implements node_data, Comparable<node_data> {
      * @param obj
      * @return boolean
      */
-    public boolean equals(Object obj){
-        if(!(obj instanceof node_data))return false;
-        node_data n=(node_data)obj;
-        return getKey()==n.getKey()&&getLocation().equals(n.getLocation());
+    public boolean equals(Object obj) {
+        if (!(obj instanceof node_data)) return false;
+        node_data n = (node_data) obj;
+        return getKey() == n.getKey() && getLocation().equals(n.getLocation());
     }
 
     @Override
@@ -156,11 +172,16 @@ public class Node implements node_data, Comparable<node_data> {
 
     @Override
     public int compareTo(node_data o) {
-        Double c=getWeight();
-        return c.compareTo(o.getWeight());
+        Double c = getPrice();
+        Node n = (Node) o;
+        return c.compareTo(n.getPrice());
     }
 
-    public node_data getPrev() {return prev;}
+    public node_data getPrev() {
+        return prev;
+    }
 
-    public void setPrev(node_data prev) {this.prev = prev;}
+    public void setPrev(node_data prev) {
+        this.prev = prev;
+    }
 }
