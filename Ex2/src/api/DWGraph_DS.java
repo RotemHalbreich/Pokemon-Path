@@ -105,19 +105,13 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     @Override
-    public int nodeSize() {
-        return V.size();
-    }
+    public int nodeSize() {return V.size();}
 
     @Override
-    public int edgeSize() {
-        return EDGES;
-    }
+    public int edgeSize(){return EDGES;}
 
     @Override
-    public int getMC() {
-        return MC;
-    }
+    public int getMC() {return MC;}
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -138,9 +132,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(V, E, R, MC, EDGES);
-    }
+    public int hashCode() {return Objects.hash(V, E, R, MC, EDGES);}
 
     public boolean equals(Object obj) {
         if (obj == null) return false;
@@ -155,6 +147,17 @@ public class DWGraph_DS implements directed_weighted_graph {
         if (nodeSize() != g.nodeSize() || edgeSize() != g.edgeSize()) return false;
 
         return similar(this, g) && similar(g, this);
+    }
+    public directed_weighted_graph reverse(){
+        directed_weighted_graph r=new DWGraph_DS();
+        for(node_data n:getV())r.addNode(new Node(n));
+        for(Integer i :R.keySet()){
+            for(edge_data e:R.get(i).values()){
+                edge_data edge=new Edge(e);
+                r.connect(edge.getSrc(),edge.getDest(),edge.getWeight());
+            }
+        }
+        return r;
     }
 
     ////////// Private Methods //////////

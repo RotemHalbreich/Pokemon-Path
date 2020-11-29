@@ -3,6 +3,8 @@ package api;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DWGraph_AlgoTest {
@@ -85,12 +87,16 @@ class DWGraph_AlgoTest {
     }
 
     @Test
-    void save() {
+    void save() throws FileNotFoundException {
 
         test1.save("text.json");
         dw_graph_algorithms test2 = new DWGraph_Algo();
-        //test2.load("text.json");
-        //System.out.println(test2.toString());
+        test2.load("text.json");
+        System.out.println(test2.toString());
+        assertTrue(test1.equals(test2));
+        assertTrue(test2.equals(test1));
+        test2.getGraph().removeNode(1);
+        assertNotEquals(test2,test1);
     }
 
     @Test
