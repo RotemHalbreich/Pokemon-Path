@@ -150,7 +150,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
     public directed_weighted_graph reverse(){
         directed_weighted_graph r=new DWGraph_DS();
-        for(node_data n:getV())r.addNode(new Node(n));
+        for(Integer n:R.keySet())r.addNode(new Node(getNode(n)));
         for(Integer i :R.keySet()){
             for(edge_data e:R.get(i).values()){
                 edge_data edge=new Edge(e);

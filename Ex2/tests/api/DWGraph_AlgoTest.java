@@ -14,12 +14,18 @@ class DWGraph_AlgoTest {
     void setUp() {
         directed_weighted_graph g = new DWGraph_DS();
         directed_weighted_graph g1 = new DWGraph_DS();
+        directed_weighted_graph g2 = new DWGraph_DS();
         node_data n;
         geo_location location;
         for (int i = 0; i < 7; i++) {
             location = new Location(i, i + 5, i * 10);
             n = new Node(i, location, (i + 5) * 10, "", 0);
             g1.addNode(n);
+            g2.addNode(n);
+        }
+        for(int i=1;i<=6;i++){
+            g2.connect(i,i-1,i);
+            g2.connect(i-1,i,i);
         }
         for (int i = 0; i < 100001; i++) {
             location = new Location(i, i + 5, i * 10);
