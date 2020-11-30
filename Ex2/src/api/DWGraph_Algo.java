@@ -61,19 +61,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return true;
     }
 
-
     @Override
     public double shortestPathDist(int src, int dest) {
         if (graph.getNode(src) == null || graph.getNode(dest) == null)
             throw new RuntimeException("Err:Invalid search src or dest not exists in base graph");
         if (src == dest) return 0;
         DWGraph_DS algo=graphAlgorithm();
-
-//        for (node_data n : graph.getV()) {
-//            Node_Algo v= new Node_Algo(n);
-//            v.setPrice(MAX_VALUE);
-//            v.setInfo(NOT_VISITED);
-//        }
         Node_Algo s = (Node_Algo) algo.getNode(src);
         s.setPrice(0);
         s.setPrev(null);
@@ -84,7 +77,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     @Override
     public List<node_data> shortestPath(int src, int dest) {
-
         if(shortestPathDist(src,dest)==-1)return null;
         return shortestPath(src,dest,new LinkedList<node_data>(),graphAlgorithm());
     }
@@ -232,12 +224,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                 int src=object.getAsJsonObject().get("src").getAsJsonPrimitive().getAsInt(),
                    dest=object.getAsJsonObject().get("dest").getAsJsonPrimitive().getAsInt();
                   double weight=object.getAsJsonObject().get("w").getAsJsonPrimitive().getAsDouble();
-               graph.connect(src,dest,weight);
+                  graph.connect(new Edge(src,dest,weight));
             }
             return graph;
         }
         private DWGraph_DS readMyGraph(JsonElement jsonElement){
-            directed_weighted_graph graph = new DWGraph_DS();
+            DWGraph_DS graph = new DWGraph_DS();
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             JsonObject V = jsonObject.getAsJsonObject("V").getAsJsonObject();
             for (Map.Entry<String, JsonElement> set : V.entrySet()) {
@@ -251,8 +243,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                         tag = jsonValue.getAsJsonObject().get("tag").getAsInt();
                 double weight = jsonValue.getAsJsonObject().get("weight").getAsDouble();
                 String info = jsonValue.getAsJsonObject().get("info").getAsString();
-                node_data n = new Node(key, location, weight, info, tag);
-                graph.addNode(n);
+                graph.addNode(new Node(key, location, weight, info, tag));
             }
             jsonObject = jsonElement.getAsJsonObject();
             JsonObject E = jsonObject.getAsJsonObject("E").getAsJsonObject();
@@ -263,10 +254,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                     int src = edge.getAsJsonObject().get("src").getAsInt(),
                             dest = edge.getAsJsonObject().get("dest").getAsInt();
                     double weight = edge.getAsJsonObject().get("weight").getAsDouble();
-                    graph.connect(src, dest, weight);
+                    graph.connect(new Edge(src, dest, weight));
                 }
             }
-            return (DWGraph_DS) graph;
+            return graph;
         }
         private String[] simplifyLocation(String s){
             return s.split(",");

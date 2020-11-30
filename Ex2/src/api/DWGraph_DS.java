@@ -15,7 +15,6 @@ public class DWGraph_DS implements directed_weighted_graph {
     private HashMap<Integer, node_data> V;
     private HashMap<Integer, HashMap<Integer, edge_data>> E;
     private HashMap<Integer, HashMap<Integer, edge_data>> R = new HashMap<>();
-
     private int MC = 0;
     private int EDGES = 0;
 
@@ -123,14 +122,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         return "V:" + V.keySet() + "\n" + "E:" + sb + "\n";
     }
 
-    public String reverseString() {
-        StringBuilder sb = new StringBuilder();
-        for (Integer i : R.keySet()) {
-            if (!R.get(i).isEmpty())
-                sb.append(R.get(i).values().toString());
-        }
-        return "V_R:" + R.keySet() + "\n" + "E_R:" + sb + "\n";
-    }
+    public String reverseString() {return reverse().toString();}
 
     @Override
     public int hashCode() {return Objects.hash(V, E, R, MC, EDGES);}
@@ -177,7 +169,7 @@ public class DWGraph_DS implements directed_weighted_graph {
             if (g2.getNode(n.getKey()) == null)
                 return false;
             for (edge_data e : g1.getE(n.getKey())) {
-                if (g2.getEdge(e.getSrc(), e.getDest()) == null)
+                if (g2.getEdge(e.getSrc(), e.getDest()) == null||!e.equals(g2.getEdge(e.getSrc(),e.getDest())))
                     return false;
             }
         }
