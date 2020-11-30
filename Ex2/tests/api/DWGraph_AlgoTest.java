@@ -72,13 +72,21 @@ class DWGraph_AlgoTest {
 
     @Test
     void isConnected() {
-        assertTrue(test.isConnected());
-        test.getGraph().removeEdge(0, 1);
-        assertFalse(test.isConnected());
+        for(int i=1;i<10;i++){
+            assertTrue(test.isConnected());
+            directed_weighted_graph copy=test.copy();
+            copy.removeEdge(i-1,i);
+            dw_graph_algorithms test3=new DWGraph_Algo();
+            test3.init(copy);
+            assertFalse(test3.isConnected());
+        }
     }
 
     @Test
     void shortestPathDist() {
+        int ans=0;
+        for(int i=0;i<=1000;i++) ans+=i*10;
+        assertEquals(ans,test.shortestPathDist(0,1000));
         assertEquals(12, test1.shortestPathDist(0, 4));
         assertEquals(-1, test1.shortestPathDist(0, 5));
         assertEquals(11, test1.shortestPathDist(2, 3));
@@ -87,6 +95,7 @@ class DWGraph_AlgoTest {
 
     @Test
     void shortestPath() {
+        assertEquals(10001,test.shortestPath(0,10000).size());
         System.out.println(test1.shortestPath(0, 4).toString());
         System.out.println(test1.shortestPath(2, 3).toString());
         assertNull(test1.shortestPath(2, 5));

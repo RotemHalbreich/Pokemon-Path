@@ -17,6 +17,7 @@ import static java.lang.Double.parseDouble;
 public class DWGraph_Algo implements dw_graph_algorithms {
     private static final String NOT_VISITED = "white", VISITED = "green", FINISH = "black";
     private directed_weighted_graph graph;
+    private DWGraph_DS algorithm;
 
     public DWGraph_Algo() {
         graph = new DWGraph_DS();
@@ -66,19 +67,18 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         if (graph.getNode(src) == null || graph.getNode(dest) == null)
             throw new RuntimeException("Err:Invalid search src or dest not exists in base graph");
         if (src == dest) return 0;
-        DWGraph_DS algo=graphAlgorithm();
-        Node_Algo s = (Node_Algo) algo.getNode(src);
+        createGraphAlgorithm();
+        Node_Algo s = (Node_Algo) algorithm.getNode(src);
         s.setPrice(0);
         s.setPrev(null);
-
-        return shortestPathDist(src, dest, new PriorityBlockingQueue<node_data>(algo.getV()),algo);
+        return shortestPathDist(src, dest, new PriorityBlockingQueue<node_data>(algorithm.getV()));
 
     }
 
     @Override
     public List<node_data> shortestPath(int src, int dest) {
-        if(shortestPathDist(src,dest)==-1)return null;
-        return shortestPath(src,dest,new LinkedList<node_data>(),graphAlgorithm());
+        if (shortestPathDist(src, dest) == -1) return null;
+        return shortestPath(src, dest, new LinkedList<node_data>());
     }
 
     @Override
@@ -149,14 +149,15 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return true;
     }
 
-    private double shortestPathDist(int src, int dest, PriorityBlockingQueue<node_data> queue,DWGraph_DS graph) {
+    private double shortestPathDist(int src, int dest, PriorityBlockingQueue<node_data> queue) {
         while (!queue.isEmpty()) {
             Node_Algo currNode = (Node_Algo) queue.remove();
             if (currNode.getKey() == dest || currNode.getPrice() == MAX_VALUE) {
-                return currNode.getPrice() == MAX_VALUE ? -1 : currNode.getPrice();
+                if (currNode.getPrice() == MAX_VALUE) return -1;
+                return currNode.getPrice();
             }
-            for (edge_data e : graph.getE(currNode.getKey())) {
-                Node_Algo ni = (Node_Algo) graph.getNode(e.getDest());
+            for (edge_data e : algorithm.getE(currNode.getKey())) {
+                Node_Algo ni = (Node_Algo) algorithm.getNode(e.getDest());
                 double weight = currNode.getPrice() + e.getWeight();
                 if (ni.getInfo().equals(NOT_VISITED) && ni.getPrice() > weight) {
                     ni.setPrice(weight);
@@ -169,32 +170,33 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return -1;
     }
-    private  List<node_data> shortestPath(int src, int dest,LinkedList<node_data> path,DWGraph_DS graph){
-        path.addFirst(graph.getNode(dest));
-        if(src==dest)return path;
-        Node_Algo prev=(Node_Algo)graph.getNode(dest);
-        while(prev.getPrev()!=null){
-            prev=(Node_Algo)prev.getPrev();
+
+    private List<node_data> shortestPath(int src, int dest, LinkedList<node_data> path) {
+        path.addFirst(algorithm.getNode(dest));
+        if (src == dest) return path;
+        Node_Algo prev = (Node_Algo) algorithm.getNode(dest);
+        while (prev.getPrev() != null) {
+            prev = (Node_Algo) prev.getPrev();
             path.addFirst(prev);
         }
         return path;
     }
-    private DWGraph_DS graphAlgorithm(){
-        DWGraph_DS algo=new DWGraph_DS();
-         for(node_data n: graph.getV()) {
-             Node_Algo v=new Node_Algo(n);
-             v.setPrice(MAX_VALUE);
-             v.setInfo(NOT_VISITED);
-             algo.addNode(v);
-         }
-         for (node_data n: graph.getV()) {
-             for (edge_data e : graph.getE(n.getKey())) {
-                 algo.connect(new Edge(e));
-             }
-         }
 
-        return algo;
+    private void createGraphAlgorithm() {
+        algorithm = new DWGraph_DS();
+        for (node_data n : graph.getV()) {
+            Node_Algo v = new Node_Algo(n);
+            v.setPrice(MAX_VALUE);
+            v.setInfo(NOT_VISITED);
+            algorithm.addNode(v);
+        }
+        for (node_data n : graph.getV()) {
+            for (edge_data e : graph.getE(n.getKey())) {
+                algorithm.connect(new Edge(e));
+            }
+        }
     }
+
 
     //////////Private Class  //////////
     private class DWGraph_DSJsonDeserializer implements JsonDeserializer<DWGraph_DS> {
@@ -202,33 +204,34 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         @Override
         public DWGraph_DS deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
-            if(jsonObject.getAsJsonObject("V")!=null){
+            if (jsonObject.getAsJsonObject("V") != null) {
                 return readMyGraph(jsonElement.getAsJsonObject());
             }
             DWGraph_DS graph = new DWGraph_DS();
             JsonArray Nodes = jsonObject.getAsJsonArray("Nodes");
-            Iterator<JsonElement> itr=Nodes.iterator();
-            while(itr.hasNext()){
+            Iterator<JsonElement> itr = Nodes.iterator();
+            while (itr.hasNext()) {
                 JsonObject object = itr.next().getAsJsonObject();
                 String pos = object.getAsJsonObject().get("pos").getAsJsonPrimitive().getAsString();
-                String[] loc=simplifyLocation(pos);
-                double x=parseDouble(loc[0]),y=parseDouble(loc[1]),z=parseDouble(loc[2]);
-                geo_location location =new Location(x,y,z);
-                int key=object.getAsJsonObject().get("id").getAsJsonPrimitive().getAsInt();
-                graph.addNode(new Node(key,location));
+                double[] loc = simplifyLocation(pos);
+                double x = loc[0], y = loc[1], z = loc[2];
+                geo_location location = new Location(x, y, z);
+                int key = object.getAsJsonObject().get("id").getAsJsonPrimitive().getAsInt();
+                graph.addNode(new Node(key, location));
             }
             JsonArray Edges = jsonObject.getAsJsonArray("Edges");
-            itr=Edges.iterator();
-            while(itr.hasNext()){
+            itr = Edges.iterator();
+            while (itr.hasNext()) {
                 JsonObject object = itr.next().getAsJsonObject();
-                int src=object.getAsJsonObject().get("src").getAsJsonPrimitive().getAsInt(),
-                   dest=object.getAsJsonObject().get("dest").getAsJsonPrimitive().getAsInt();
-                  double weight=object.getAsJsonObject().get("w").getAsJsonPrimitive().getAsDouble();
-                  graph.connect(new Edge(src,dest,weight));
+                int src = object.getAsJsonObject().get("src").getAsJsonPrimitive().getAsInt(),
+                        dest = object.getAsJsonObject().get("dest").getAsJsonPrimitive().getAsInt();
+                double weight = object.getAsJsonObject().get("w").getAsJsonPrimitive().getAsDouble();
+                graph.connect(new Edge(src, dest, weight));
             }
             return graph;
         }
-        private DWGraph_DS readMyGraph(JsonElement jsonElement){
+
+        private DWGraph_DS readMyGraph(JsonElement jsonElement) {
             DWGraph_DS graph = new DWGraph_DS();
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             JsonObject V = jsonObject.getAsJsonObject("V").getAsJsonObject();
@@ -259,16 +262,24 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             }
             return graph;
         }
-        private String[] simplifyLocation(String s){
-            return s.split(",");
-        }
-        }
 
-    private class Node_Algo extends Node implements Comparable<node_data>{
-            private double price;
-            private node_data prev;
+        private double[] simplifyLocation(String s) {
+           String[] a= s.split(",");
+           double [] d=new double[3];
+           d[0]=parseDouble(a[0]);
+           d[1]=parseDouble(a[1]);
+           d[2]=parseDouble(a[2]);
+           return d;
+        }
+    }
 
-        public Node_Algo(node_data n) {super(n); }
+    private class Node_Algo extends Node implements Comparable<node_data> {
+        private double price;
+        private node_data prev;
+
+        public Node_Algo(node_data n) {
+            super(n);
+        }
 
         @Override
         public int compareTo(node_data o) {
@@ -276,6 +287,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             Node_Algo n = (Node_Algo) o;
             return c.compareTo(n.getPrice());
         }
+
         public double getPrice() {
             return price;
         }
@@ -283,9 +295,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         public void setPrice(double price) {
             this.price = price;
         }
+
         public node_data getPrev() {
             return prev;
         }
+
         public void setPrev(node_data prev) {
             this.prev = prev;
         }
