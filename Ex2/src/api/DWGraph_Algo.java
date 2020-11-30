@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import static java.lang.Double.MAX_VALUE;
+import static java.lang.Double.parseDouble;
 
 public class DWGraph_Algo implements dw_graph_algorithms {
     private static final String NOT_VISITED = "white", VISITED = "green", FINISH = "black";
@@ -112,7 +113,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(DWGraph_DS.class, new DWGraph_DSJsonDeserializer());
             Gson gson = builder.create();
-            FileReader reader = new FileReader("text.json");
+            FileReader reader = new FileReader(file);
             graph = gson.fromJson(reader, DWGraph_DS.class);
             return true;
         } catch (FileNotFoundException e) {
@@ -197,8 +198,35 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         @Override
         public DWGraph_DS deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
+            if(jsonObject.getAsJsonObject("V")!=null){
+                return readMyGraph(jsonElement.getAsJsonObject());
+            }
+            DWGraph_DS graph = new DWGraph_DS();
+            JsonArray Nodes = jsonObject.getAsJsonArray("Nodes");
+            Iterator<JsonElement> itr=Nodes.iterator();
+            while(itr.hasNext()){
+                JsonObject object = itr.next().getAsJsonObject();
+                String pos = object.getAsJsonObject().get("pos").getAsJsonPrimitive().getAsString();
+                String[] loc=simplipyLocation(pos);
+                double x=parseDouble(loc[0]),y=parseDouble(loc[1]),z=parseDouble(loc[2]);
+                geo_location location =new Location(x,y,z);
+                int key=object.getAsJsonObject().get("id").getAsJsonPrimitive().getAsInt();
+                graph.addNode(new Node(key,location));
+            }
+            JsonArray Edges = jsonObject.getAsJsonArray("Edges");
+            itr=Edges.iterator();
+            while(itr.hasNext()){
+                JsonObject object = itr.next().getAsJsonObject();
+                int src=object.getAsJsonObject().get("src").getAsJsonPrimitive().getAsInt(),
+                   dest=object.getAsJsonObject().get("dest").getAsJsonPrimitive().getAsInt();
+                  double weight=object.getAsJsonObject().get("w").getAsJsonPrimitive().getAsDouble();
+               graph.connect(src,dest,weight);
+            }
+            return graph;
+        }
+        private DWGraph_DS readMyGraph(JsonElement jsonElement){
             directed_weighted_graph graph = new DWGraph_DS();
-
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
             JsonObject V = jsonObject.getAsJsonObject("V").getAsJsonObject();
             for (Map.Entry<String, JsonElement> set : V.entrySet()) {
                 JsonElement jsonValue = set.getValue();
@@ -228,5 +256,9 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             }
             return (DWGraph_DS) graph;
         }
+        private String[] simplipyLocation(String s){
+            return s.split(",");
+        }
+        }
     }
-}
+

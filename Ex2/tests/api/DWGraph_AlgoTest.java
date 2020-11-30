@@ -106,6 +106,19 @@ class DWGraph_AlgoTest {
     }
 
     @Test
-    void load() {
+    void load() throws FileNotFoundException {
+        dw_graph_algorithms test2 = new DWGraph_Algo();
+        test2.load("Ex2/data/A0");
+        System.out.println("A0: "+test2.toString());
+        test2.load("Ex2/data/A1");
+        System.out.println("A1: "+test2.toString());
+        test2.load("Ex2/data/A2");
+        System.out.println("A2: "+test2.toString());
+        test2.load("Ex2/data/A3");
+        System.out.println("A3: "+test2.toString());
+        test2.load("Ex2/data/A4");
+        System.out.println("A4: "+test2.toString());
+        test2.load("Ex2/data/A5");
+        System.out.println("A5: "+test2.toString());
     }
 }

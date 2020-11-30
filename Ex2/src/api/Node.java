@@ -29,7 +29,9 @@ public class Node implements node_data, Comparable<node_data> {
         this.info = info;
         this.tag = tag;
     }
-
+    public Node(int key,geo_location location){
+        this(key,location,0.0,"",0);
+    }
     public Node(node_data n) {
         this(n.getKey(), n.getLocation(), n.getWeight(), n.getInfo(), n.getTag());
     }
