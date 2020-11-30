@@ -74,7 +74,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return shortestPathDist(src, dest, new PriorityBlockingQueue<node_data>(algorithm.getV()));
 
     }
-
     @Override
     public List<node_data> shortestPath(int src, int dest) {
         if (shortestPathDist(src, dest) == -1) return null;
