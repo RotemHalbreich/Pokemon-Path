@@ -64,6 +64,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         reverseConnect(dest, src, w);
         MC++;
     }
+    public void connect(edge_data e){connect(e.getSrc(),e.getDest(),e.getWeight()); }
 
     @Override
     public Collection<node_data> getV() {

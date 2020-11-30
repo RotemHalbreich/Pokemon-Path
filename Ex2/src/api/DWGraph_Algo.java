@@ -8,9 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.KeyStore;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -37,14 +34,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     @Override
     public directed_weighted_graph copy() {
-        directed_weighted_graph copy = new DWGraph_DS();
+        DWGraph_DS copy = new DWGraph_DS();
         for (node_data n : graph.getV())
             copy.addNode(new Node(n));
 
         for (node_data n : graph.getV()) {
             for (edge_data e : graph.getE(n.getKey())) {
-                edge_data edge = new Edge(e);
-                copy.connect(edge.getSrc(), e.getDest(), e.getWeight());
+                copy.connect(new Edge(e));
             }
         }
         return copy;
@@ -70,18 +66,19 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     public double shortestPathDist(int src, int dest) {
         if (graph.getNode(src) == null || graph.getNode(dest) == null)
             throw new RuntimeException("Err:Invalid search src or dest not exists in base graph");
-
         if (src == dest) return 0;
-        for (node_data n : graph.getV()) {
-            Node v=(Node)n;
-            v.setPrice(MAX_VALUE);
-            n.setInfo(NOT_VISITED);
-        }
-        Node s = (Node) graph.getNode(src);
+        DWGraph_DS algo=graphAlgorithm();
+
+//        for (node_data n : graph.getV()) {
+//            Node_Algo v= new Node_Algo(n);
+//            v.setPrice(MAX_VALUE);
+//            v.setInfo(NOT_VISITED);
+//        }
+        Node_Algo s = (Node_Algo) algo.getNode(src);
         s.setPrice(0);
         s.setPrev(null);
 
-        return shortestPathDist(src, dest, new PriorityBlockingQueue<node_data>(graph.getV()));
+        return shortestPathDist(src, dest, new PriorityBlockingQueue<node_data>(algo.getV()),algo);
 
     }
 
@@ -89,7 +86,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     public List<node_data> shortestPath(int src, int dest) {
 
         if(shortestPathDist(src,dest)==-1)return null;
-        return shortestPath(src,dest,new LinkedList<node_data>());
+        return shortestPath(src,dest,new LinkedList<node_data>(),graphAlgorithm());
     }
 
     @Override
@@ -119,7 +116,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
         return false;
     }
 
@@ -161,14 +157,14 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return true;
     }
 
-    private double shortestPathDist(int src, int dest, PriorityBlockingQueue<node_data> queue) {
+    private double shortestPathDist(int src, int dest, PriorityBlockingQueue<node_data> queue,DWGraph_DS graph) {
         while (!queue.isEmpty()) {
-            Node currNode = (Node) queue.remove();
+            Node_Algo currNode = (Node_Algo) queue.remove();
             if (currNode.getKey() == dest || currNode.getPrice() == MAX_VALUE) {
                 return currNode.getPrice() == MAX_VALUE ? -1 : currNode.getPrice();
             }
             for (edge_data e : graph.getE(currNode.getKey())) {
-                Node ni = (Node) graph.getNode(e.getDest());
+                Node_Algo ni = (Node_Algo) graph.getNode(e.getDest());
                 double weight = currNode.getPrice() + e.getWeight();
                 if (ni.getInfo().equals(NOT_VISITED) && ni.getPrice() > weight) {
                     ni.setPrice(weight);
@@ -181,18 +177,34 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return -1;
     }
-    private  List<node_data> shortestPath(int src, int dest,LinkedList<node_data> path){
+    private  List<node_data> shortestPath(int src, int dest,LinkedList<node_data> path,DWGraph_DS graph){
         path.addFirst(graph.getNode(dest));
         if(src==dest)return path;
-        Node prev=(Node)graph.getNode(dest);
+        Node_Algo prev=(Node_Algo)graph.getNode(dest);
         while(prev.getPrev()!=null){
-            prev=(Node)prev.getPrev();
+            prev=(Node_Algo)prev.getPrev();
             path.addFirst(prev);
         }
         return path;
     }
+    private DWGraph_DS graphAlgorithm(){
+        DWGraph_DS algo=new DWGraph_DS();
+         for(node_data n: graph.getV()) {
+             Node_Algo v=new Node_Algo(n);
+             v.setPrice(MAX_VALUE);
+             v.setInfo(NOT_VISITED);
+             algo.addNode(v);
+         }
+         for (node_data n: graph.getV()) {
+             for (edge_data e : graph.getE(n.getKey())) {
+                 algo.connect(new Edge(e));
+             }
+         }
 
-    /////Ptivate Class ////////
+        return algo;
+    }
+
+    //////////Private Class  //////////
     private class DWGraph_DSJsonDeserializer implements JsonDeserializer<DWGraph_DS> {
 
         @Override
@@ -207,7 +219,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             while(itr.hasNext()){
                 JsonObject object = itr.next().getAsJsonObject();
                 String pos = object.getAsJsonObject().get("pos").getAsJsonPrimitive().getAsString();
-                String[] loc=simplipyLocation(pos);
+                String[] loc=simplifyLocation(pos);
                 double x=parseDouble(loc[0]),y=parseDouble(loc[1]),z=parseDouble(loc[2]);
                 geo_location location =new Location(x,y,z);
                 int key=object.getAsJsonObject().get("id").getAsJsonPrimitive().getAsInt();
@@ -256,9 +268,36 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             }
             return (DWGraph_DS) graph;
         }
-        private String[] simplipyLocation(String s){
+        private String[] simplifyLocation(String s){
             return s.split(",");
         }
         }
+
+    private class Node_Algo extends Node implements Comparable<node_data>{
+            private double price;
+            private node_data prev;
+
+        public Node_Algo(node_data n) {super(n); }
+
+        @Override
+        public int compareTo(node_data o) {
+            Double c = getPrice();
+            Node_Algo n = (Node_Algo) o;
+            return c.compareTo(n.getPrice());
+        }
+        public double getPrice() {
+            return price;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
+        }
+        public node_data getPrev() {
+            return prev;
+        }
+        public void setPrev(node_data prev) {
+            this.prev = prev;
+        }
     }
+}
 

@@ -79,10 +79,5 @@ class NodeTest {
         );
     }
 
-    @Test
-    void TestSetGetPrev() {
-        Node v = (Node) n1;
-        v.setPrev(n2);
-        assertEquals(v.getPrev(), n2);
-    }
+
 }

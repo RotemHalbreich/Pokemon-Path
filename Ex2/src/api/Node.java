@@ -1,9 +1,5 @@
 package api;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -13,14 +9,12 @@ import java.util.Objects;
  * @author Shaked Aviad & Rotem Halbreich
  */
 
-public class Node implements node_data, Comparable<node_data> {
+public class Node  implements node_data {
     private int key;
     private geo_location location;
     private double weight;
     private String info;
     private int tag;
-    private node_data prev;
-    private double price;
 
     public Node(int key, geo_location location, double weight, String info, int tag) {
         this.key = key;
@@ -29,7 +23,7 @@ public class Node implements node_data, Comparable<node_data> {
         this.info = info;
         this.tag = tag;
     }
-    public Node(int key,geo_location location){
+    public Node(int key, geo_location location){
         this(key,location,0.0,"",0);
     }
     public Node(node_data n) {
@@ -130,13 +124,7 @@ public class Node implements node_data, Comparable<node_data> {
     }
 
 
-    public double getPrice() {
-        return price;
-    }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     /**
      * Returns the vertex as a String
@@ -169,21 +157,10 @@ public class Node implements node_data, Comparable<node_data> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), key, location, weight, info, tag, prev);
+        return Objects.hash(super.hashCode(), key, location, weight, info, tag);
     }
 
-    @Override
-    public int compareTo(node_data o) {
-        Double c = getPrice();
-        Node n = (Node) o;
-        return c.compareTo(n.getPrice());
-    }
 
-    public node_data getPrev() {
-        return prev;
-    }
 
-    public void setPrev(node_data prev) {
-        this.prev = prev;
-    }
+
 }
