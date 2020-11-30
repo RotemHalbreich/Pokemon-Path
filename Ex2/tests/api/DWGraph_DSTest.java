@@ -222,6 +222,7 @@ class DWGraph_DSTest {
         assertAll("edgeSize() test on graph line: \n",
                 () -> assertEquals(8, line.edgeSize()),
                 () -> line.removeNode(3),
+                ()->assertEquals(((DWGraph_DS)line).reverse().edgeSize(),line.edgeSize()),
                 () -> assertEquals(4, line.edgeSize()),
                 () -> line.removeNode(1),
                 () -> assertEquals(0, line.edgeSize()));
