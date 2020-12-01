@@ -24,9 +24,9 @@ class DWGraph_AlgoTest {
             g1.addNode(n);
             g2.addNode(n);
         }
-        for(int i=1;i<=6;i++){
-            g2.connect(i,i-1,i);
-            g2.connect(i-1,i,i);
+        for (int i = 1; i <= 6; i++) {
+            g2.connect(i, i - 1, i);
+            g2.connect(i - 1, i, i);
         }
         for (int i = 0; i < 100001; i++) {
             location = new Location(i, i + 5, i * 10);
@@ -72,11 +72,11 @@ class DWGraph_AlgoTest {
 
     @Test
     void isConnected() {
-        for(int i=1;i<10;i++){
+        for (int i = 1; i < 10; i++) {
             assertTrue(test.isConnected());
-            directed_weighted_graph copy=test.copy();
-            copy.removeEdge(i-1,i);
-            dw_graph_algorithms test3=new DWGraph_Algo();
+            directed_weighted_graph copy = test.copy();
+            copy.removeEdge(i - 1, i);
+            dw_graph_algorithms test3 = new DWGraph_Algo();
             test3.init(copy);
             assertFalse(test3.isConnected());
         }
@@ -84,9 +84,9 @@ class DWGraph_AlgoTest {
 
     @Test
     void shortestPathDist() {
-        int ans=0;
-        for(int i=0;i<=1000;i++) ans+=i*10;
-        assertEquals(ans,test.shortestPathDist(0,1000));
+        int ans = 0;
+        for (int i = 0; i <= 1000; i++) ans += i * 10;
+        assertEquals(ans, test.shortestPathDist(0, 1000));
         assertEquals(12, test1.shortestPathDist(0, 4));
         assertEquals(-1, test1.shortestPathDist(0, 5));
         assertEquals(11, test1.shortestPathDist(2, 3));
@@ -95,7 +95,7 @@ class DWGraph_AlgoTest {
 
     @Test
     void shortestPath() {
-        assertEquals(10001,test.shortestPath(0,10000).size());
+        assertEquals(10001, test.shortestPath(0, 10000).size());
         System.out.println(test1.shortestPath(0, 4).toString());
         System.out.println(test1.shortestPath(2, 3).toString());
         assertNull(test1.shortestPath(2, 5));
@@ -112,23 +112,23 @@ class DWGraph_AlgoTest {
         assertTrue(test1.equals(test2));
         assertTrue(test2.equals(test1));
         test2.getGraph().removeNode(1);
-        assertNotEquals(test2,test1);
+        assertNotEquals(test2, test1);
     }
 
     @Test
     void load() throws FileNotFoundException {
         dw_graph_algorithms test2 = new DWGraph_Algo();
         test2.load("Ex2/data/A0");
-        System.out.println("A0: "+test2.toString());
+        System.out.println("A0: " + test2.toString());
         test2.load("Ex2/data/A1");
-        System.out.println("A1: "+test2.toString());
+        System.out.println("A1: " + test2.toString());
         test2.load("Ex2/data/A2");
-        System.out.println("A2: "+test2.toString());
+        System.out.println("A2: " + test2.toString());
         test2.load("Ex2/data/A3");
-        System.out.println("A3: "+test2.toString());
+        System.out.println("A3: " + test2.toString());
         test2.load("Ex2/data/A4");
-        System.out.println("A4: "+test2.toString());
+        System.out.println("A4: " + test2.toString());
         test2.load("Ex2/data/A5");
-        System.out.println("A5: "+test2.toString());
+        System.out.println("A5: " + test2.toString());
     }
 }

@@ -9,7 +9,7 @@ import java.util.Objects;
  * @author Shaked Aviad & Rotem Halbreich
  */
 
-public class Node  implements node_data {
+public class Node implements node_data {
     private int key;
     private geo_location location;
     private double weight;
@@ -23,9 +23,11 @@ public class Node  implements node_data {
         this.info = info;
         this.tag = tag;
     }
-    public Node(int key, geo_location location){
-        this(key,location,0.0,"",0);
+
+    public Node(int key, geo_location location) {
+        this(key, location, 0.0, "", 0);
     }
+
     public Node(node_data n) {
         this(n.getKey(), n.getLocation(), n.getWeight(), n.getInfo(), n.getTag());
     }
@@ -124,8 +126,6 @@ public class Node  implements node_data {
     }
 
 
-
-
     /**
      * Returns the vertex as a String
      *
@@ -159,8 +159,6 @@ public class Node  implements node_data {
     public int hashCode() {
         return Objects.hash(super.hashCode(), key, location, weight, info, tag);
     }
-
-
 
 
 }

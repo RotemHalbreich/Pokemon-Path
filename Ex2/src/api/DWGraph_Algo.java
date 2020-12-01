@@ -74,6 +74,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return shortestPathDist(src, dest, new PriorityBlockingQueue<node_data>(algorithm.getV()));
 
     }
+
     @Override
     public List<node_data> shortestPath(int src, int dest) {
         if (shortestPathDist(src, dest) == -1) return null;
@@ -263,12 +264,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
 
         private double[] simplifyLocation(String s) {
-           String[] a= s.split(",");
-           double [] d=new double[3];
-           d[0]=parseDouble(a[0]);
-           d[1]=parseDouble(a[1]);
-           d[2]=parseDouble(a[2]);
-           return d;
+            String[] a = s.split(",");
+            double[] d = new double[3];
+            d[0] = parseDouble(a[0]);
+            d[1] = parseDouble(a[1]);
+            d[2] = parseDouble(a[2]);
+            return d;
         }
     }
 

@@ -2,7 +2,7 @@ package api;
 
 import java.util.Objects;
 
-public  class Edge implements edge_data{
+public class Edge implements edge_data {
 
     private int src;
     private int dest;
@@ -10,41 +10,59 @@ public  class Edge implements edge_data{
     private String info;
     private int tag;
 
-    public Edge (int src,int dest,double weight,String info,int tag){
-        this.src=src;
-        this.dest=dest;
-        this.weight=weight;
-        this.info=info;
-        this.tag=tag;
+    public Edge(int src, int dest, double weight, String info, int tag) {
+        this.src = src;
+        this.dest = dest;
+        this.weight = weight;
+        this.info = info;
+        this.tag = tag;
     }
-    public Edge(int src ,int dest,double weight){
-        this(src,dest,weight,"",0);
+
+    public Edge(int src, int dest, double weight) {
+        this(src, dest, weight, "", 0);
     }
-    public Edge(edge_data e){
-        this(e.getSrc(),e.getDest(),e.getWeight());
+
+    public Edge(edge_data e) {
+        this(e.getSrc(), e.getDest(), e.getWeight());
     }
-    @Override
-    public int getSrc() {return src;}
 
     @Override
-    public int getDest() {return dest;}
+    public int getSrc() {
+        return src;
+    }
 
     @Override
-    public double getWeight() {return weight;}
+    public int getDest() {
+        return dest;
+    }
 
     @Override
-    public String getInfo() {return info;}
+    public double getWeight() {
+        return weight;
+    }
 
     @Override
-    public void setInfo(String s) {this.info=s;}
+    public String getInfo() {
+        return info;
+    }
 
     @Override
-    public int getTag() {return tag;}
+    public void setInfo(String s) {
+        this.info = s;
+    }
 
     @Override
-    public void setTag(int t) {this.tag=t;}
-    public String toString(){
-        return "("+getSrc()+","+getDest()+"|"+getWeight()+")";
+    public int getTag() {
+        return tag;
+    }
+
+    @Override
+    public void setTag(int t) {
+        this.tag = t;
+    }
+
+    public String toString() {
+        return "(" + getSrc() + "," + getDest() + "|" + getWeight() + ")";
     }
 
     @Override
@@ -52,11 +70,11 @@ public  class Edge implements edge_data{
         return Objects.hash(src, dest, weight, info, tag);
     }
 
-    public boolean equals(Object obj){
-        if(!(obj instanceof edge_data))return false;
-        edge_data e=(edge_data)obj;
-        return getSrc()==e.getSrc()&&
-                getDest()==e.getDest()&&
-                getWeight()==e.getWeight();
+    public boolean equals(Object obj) {
+        if (!(obj instanceof edge_data)) return false;
+        edge_data e = (edge_data) obj;
+        return getSrc() == e.getSrc() &&
+                getDest() == e.getDest() &&
+                getWeight() == e.getWeight();
     }
 }

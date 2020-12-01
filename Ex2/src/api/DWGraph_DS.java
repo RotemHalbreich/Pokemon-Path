@@ -39,7 +39,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     @Override
     public void addNode(node_data n) {
         if (V.containsKey(n.getKey()))
-            throw new RuntimeException("Err:Invalid insert n already exists");
+            throw new RuntimeException("Err: Invalid insert n already exists");
         V.put(n.getKey(), n);
         MC++;
     }
@@ -63,7 +63,10 @@ public class DWGraph_DS implements directed_weighted_graph {
         reverseConnect(dest, src, w);
         MC++;
     }
-    public void connect(edge_data e){connect(e.getSrc(),e.getDest(),e.getWeight()); }
+
+    public void connect(edge_data e) {
+        connect(e.getSrc(), e.getDest(), e.getWeight());
+    }
 
     @Override
     public Collection<node_data> getV() {
@@ -105,13 +108,19 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     @Override
-    public int nodeSize() {return V.size();}
+    public int nodeSize() {
+        return V.size();
+    }
 
     @Override
-    public int edgeSize(){return EDGES;}
+    public int edgeSize() {
+        return EDGES;
+    }
 
     @Override
-    public int getMC() {return MC;}
+    public int getMC() {
+        return MC;
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -122,10 +131,14 @@ public class DWGraph_DS implements directed_weighted_graph {
         return "V:" + V.keySet() + "\n" + "E:" + sb + "\n";
     }
 
-    public String reverseString() {return reverse().toString();}
+    public String reverseString() {
+        return reverse().toString();
+    }
 
     @Override
-    public int hashCode() {return Objects.hash(V, E, R, MC, EDGES);}
+    public int hashCode() {
+        return Objects.hash(V, E, R, MC, EDGES);
+    }
 
     public boolean equals(Object obj) {
         if (obj == null) return false;
@@ -141,13 +154,14 @@ public class DWGraph_DS implements directed_weighted_graph {
 
         return similar(this, g) && similar(g, this);
     }
-    public directed_weighted_graph reverse(){
-        directed_weighted_graph r=new DWGraph_DS();
-        for(Integer n:R.keySet())r.addNode(new Node(getNode(n)));
-        for(Integer i :R.keySet()){
-            for(edge_data e:R.get(i).values()){
-                edge_data edge=new Edge(e);
-                r.connect(edge.getSrc(),edge.getDest(),edge.getWeight());
+
+    public directed_weighted_graph reverse() {
+        directed_weighted_graph r = new DWGraph_DS();
+        for (Integer n : R.keySet()) r.addNode(new Node(getNode(n)));
+        for (Integer i : R.keySet()) {
+            for (edge_data e : R.get(i).values()) {
+                edge_data edge = new Edge(e);
+                r.connect(edge.getSrc(), edge.getDest(), edge.getWeight());
             }
         }
         return r;
@@ -169,7 +183,7 @@ public class DWGraph_DS implements directed_weighted_graph {
             if (g2.getNode(n.getKey()) == null)
                 return false;
             for (edge_data e : g1.getE(n.getKey())) {
-                if (g2.getEdge(e.getSrc(), e.getDest()) == null||!e.equals(g2.getEdge(e.getSrc(),e.getDest())))
+                if (g2.getEdge(e.getSrc(), e.getDest()) == null || !e.equals(g2.getEdge(e.getSrc(), e.getDest())))
                     return false;
             }
         }
