@@ -1,6 +1,5 @@
 package api;
 
-
 import com.google.gson.*;
 
 import java.io.FileNotFoundException;
@@ -14,25 +13,56 @@ import java.util.concurrent.PriorityBlockingQueue;
 import static java.lang.Double.MAX_VALUE;
 import static java.lang.Double.parseDouble;
 
+/**
+ * This class represents a Directed (positive) Weighted Graph Theory Algorithms including:
+ * 0. clone(); (copy)
+ * 1. init(graph);
+ * 2. isConnected(); // strongly (all ordered pais connected)
+ * 3. double shortestPathDist(int src, int dest);
+ * 4. List<node_data> shortestPath(int src, int dest);
+ * 5. Save(file); // JSON file
+ * 6. Load(file); // JSON file
+ *
+ * @author Shaked Aviad & Rotem Halbreich
+ *
+ */
 public class DWGraph_Algo implements dw_graph_algorithms {
     private static final String NOT_VISITED = "white", VISITED = "green", FINISH = "black";
     private directed_weighted_graph graph;
     private DWGraph_DS algorithm;
 
+    /**
+     * Constructor:
+     */
     public DWGraph_Algo() {
         graph = new DWGraph_DS();
     }
 
+    /**
+     * Initializes the graph on which this set of algorithms operates on.
+     *
+     * @param g
+     */
     @Override
     public void init(directed_weighted_graph g) {
         graph = g;
     }
 
+    /**
+     * Return the underlying graph of which this class works.
+     *
+     * @return directed_weighted_graph
+     */
     @Override
     public directed_weighted_graph getGraph() {
         return graph;
     }
 
+    /**
+     * Compute a deep copy of this weighted graph.
+     *
+     * @return directed_weighted_graph - a clone of the graph
+     */
     @Override
     public directed_weighted_graph copy() {
         DWGraph_DS copy = new DWGraph_DS();
@@ -47,6 +77,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return copy;
     }
 
+    /**
+     * Returns true if and only if (iff) there is a valid path from each node to each
+     * other node.
+     *
+     * @return boolean
+     */
     @Override
     public boolean isConnected() {
 
@@ -62,6 +98,14 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return true;
     }
 
+    /**
+     * returns the length of the shortest path between src to dest
+     * Note: if no such path --> returns -1
+     *
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return double
+     */
     @Override
     public double shortestPathDist(int src, int dest) {
         if (graph.getNode(src) == null || graph.getNode(dest) == null)
@@ -75,12 +119,29 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     }
 
+    /**
+     * Returns the the shortest path between src to dest vertices as an ordered List of nodes:
+     * (src)--> (n1)-->(n2)-->...(dest)
+     * see: https://en.wikipedia.org/wiki/Shortest_path_problem
+     * If no such path --> returns null;
+     *
+     * @param src - start node
+     * @param dest - end node
+     * @return List<node_data>
+     */
     @Override
     public List<node_data> shortestPath(int src, int dest) {
         if (shortestPathDist(src, dest) == -1) return null;
         return shortestPath(src, dest, new LinkedList<node_data>());
     }
 
+    /**
+     * Saves this weighted (directed) graph to the given
+     * file name - in JSON format
+     *
+     * @param file - the file name (may include a relative path).
+     * @return boolean (true - iff the file was successfully saved)
+     */
     @Override
     public boolean save(String file) {
         try {
@@ -96,6 +157,15 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return true;
     }
 
+    /**
+     * This method load a graph to this graph algorithm.
+     * if the file was successfully loaded - the underlying graph
+     * of this class will be changed (to the loaded one), in case the
+     * graph was not loaded the original graph should remain "as is".
+     *
+     * @param file - file name of JSON file
+     * @return true - iff the graph was successfully loaded.
+     */
     @Override
     public boolean load(String file) {
         try {
@@ -111,15 +181,47 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return false;
     }
 
+    /**
+     *
+     * @param s
+     * @return DWGraph_DS
+     */
+    public DWGraph_DS readFromJson(String s) {
+        DWGraph_DS algo = new DWGraph_DS();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(DWGraph_DS.class, new DWGraph_DSJsonDeserializer());
+        Gson gson = builder.create();
+        algo = gson.fromJson(s, DWGraph_DS.class);
+        return algo;
+    }
+
+    /**
+     * Returns this graph algorithm as a String.
+     *
+     * @return String
+     */
     public String toString() {
         return graph.toString();
     }
 
+    /**
+     * Equals method
+     *
+     * @param obj
+     * @return boolean
+     */
     public boolean equals(Object obj) {
         return graph.equals(obj);
     }
 
     ///////// Private Methods /////////
+
+    /**
+     *
+     *
+     * @param g
+     * @param n
+     */
     private void isConnected(directed_weighted_graph g, node_data n) {
         LinkedList<node_data> list = new LinkedList<node_data>();
         n.setInfo(VISITED);
@@ -138,6 +240,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
     }
 
+    /**
+     *
+     *
+     * @param g
+     * @return boolean
+     */
     private boolean direction(DWGraph_DS g) {
         for (node_data n : g.getV()) n.setInfo(NOT_VISITED);
         Node first = (Node) g.getV().iterator().next();
@@ -149,6 +257,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return true;
     }
 
+    /**
+     *
+     * @param src
+     * @param dest
+     * @param queue
+     * @return double
+     */
     private double shortestPathDist(int src, int dest, PriorityBlockingQueue<node_data> queue) {
         while (!queue.isEmpty()) {
             Node_Algo currNode = (Node_Algo) queue.remove();
@@ -171,6 +286,14 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return -1;
     }
 
+    /**
+     *
+     *
+     * @param src
+     * @param dest
+     * @param path
+     * @return List<node_data>
+     */
     private List<node_data> shortestPath(int src, int dest, LinkedList<node_data> path) {
         path.addFirst(algorithm.getNode(dest));
         if (src == dest) return path;
@@ -182,6 +305,9 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return path;
     }
 
+    /**
+     *
+     */
     private void createGraphAlgorithm() {
         algorithm = new DWGraph_DS();
         for (node_data n : graph.getV()) {
@@ -201,6 +327,15 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     //////////Private Class  //////////
     private class DWGraph_DSJsonDeserializer implements JsonDeserializer<DWGraph_DS> {
 
+        /**
+         *
+         *
+         * @param jsonElement
+         * @param type
+         * @param jsonDeserializationContext
+         * @return
+         * @throws JsonParseException
+         */
         @Override
         public DWGraph_DS deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
@@ -231,6 +366,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             return graph;
         }
 
+        /**
+         *
+         *
+         * @param jsonElement
+         * @return DWGraph_DS
+         */
         private DWGraph_DS readMyGraph(JsonElement jsonElement) {
             DWGraph_DS graph = new DWGraph_DS();
             JsonObject jsonObject = jsonElement.getAsJsonObject();
@@ -263,6 +404,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             return graph;
         }
 
+        /**
+         *
+         * @param s
+         * @return double[]
+         */
         private double[] simplifyLocation(String s) {
             String[] a = s.split(",");
             double[] d = new double[3];
@@ -273,14 +419,28 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
     }
 
+    /**
+     * Node_Algo - A private inner class extending Node class with additional methods
+     * of a vertex which are used in the set of algorithms.
+     */
     private class Node_Algo extends Node implements Comparable<node_data> {
         private double price;
         private node_data prev;
 
+        /**
+         * Constructor:
+         *
+         * @param n
+         */
         public Node_Algo(node_data n) {
             super(n);
         }
 
+        /**
+         *
+         * @param o
+         * @return int
+         */
         @Override
         public int compareTo(node_data o) {
             Double c = getPrice();
@@ -288,18 +448,38 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             return c.compareTo(n.getPrice());
         }
 
+        /**
+         * Returns the price.
+         *
+         * @return double
+         */
         public double getPrice() {
             return price;
         }
 
+        /**
+         * Sets the price.
+         *
+         * @param price
+         */
         public void setPrice(double price) {
             this.price = price;
         }
 
+        /**
+         * Returns the previous vertex.
+         *
+         * @return node_data
+         */
         public node_data getPrev() {
             return prev;
         }
 
+        /**
+         * Sets the previous vertex.
+         *
+         * @param prev
+         */
         public void setPrev(node_data prev) {
             this.prev = prev;
         }

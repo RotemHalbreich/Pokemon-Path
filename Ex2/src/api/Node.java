@@ -16,6 +16,15 @@ public class Node implements node_data {
     private String info;
     private int tag;
 
+    /**
+     * Constructor:
+     *
+      * @param key
+     * @param location
+     * @param weight
+     * @param info
+     * @param tag
+     */
     public Node(int key, geo_location location, double weight, String info, int tag) {
         this.key = key;
         this.location = new Location(location);
@@ -24,18 +33,29 @@ public class Node implements node_data {
         this.tag = tag;
     }
 
+    /**
+     * Constructor that gets a unique key and location.
+     *
+     * @param key
+     * @param location
+     */
     public Node(int key, geo_location location) {
         this(key, location, 0.0, "", 0);
     }
 
+    /**
+     * Copy Constructor:
+     *
+     * @param n
+     */
     public Node(node_data n) {
         this(n.getKey(), n.getLocation(), n.getWeight(), n.getInfo(), n.getTag());
     }
 
     /**
-     * Returns the key (id) associated with this node.
+     * Returns the unique key (ID) of this vertex.
      *
-     * @return
+     * @return int
      */
     @Override
     public int getKey() {
@@ -43,10 +63,10 @@ public class Node implements node_data {
     }
 
     /**
-     * Returns the location of this node, if
-     * none return null.
+     * Returns the location of this vertex,
+     * if none, return null.
      *
-     * @return
+     * @return geo_location
      */
     @Override
     public geo_location getLocation() {
@@ -54,9 +74,9 @@ public class Node implements node_data {
     }
 
     /**
-     * Allows changing this node's location.
+     * Allows changing this vertex's location.
      *
-     * @param p - new new location  (position) of this node.
+     * @param p - the new location of this vertex.
      */
     @Override
     public void setLocation(geo_location p) {
@@ -64,7 +84,7 @@ public class Node implements node_data {
     }
 
     /**
-     * Returns the weight associated with this node.
+     * Returns the weight associated with this vertex.
      *
      * @return double
      */
@@ -74,7 +94,7 @@ public class Node implements node_data {
     }
 
     /**
-     * Allows changing this node's weight.
+     * Allows changing this vertex's weight.
      *
      * @param w - the new weight
      */
@@ -84,7 +104,7 @@ public class Node implements node_data {
     }
 
     /**
-     * Returns the remark (meta data) associated with this node.
+     * Returns the information associated with this vertex.
      *
      * @return String
      */
@@ -94,7 +114,7 @@ public class Node implements node_data {
     }
 
     /**
-     * Allows changing the remark (meta data) associated with this node.
+     * Allows changing the information associated with this vertex.
      *
      * @param s
      */
@@ -104,8 +124,8 @@ public class Node implements node_data {
     }
 
     /**
-     * Temporal data (aka color: e,g, white, gray, black)
-     * which can be used be algorithms
+     * Returns the "tag" data of this vertex which can be used in
+     * the algorithms of the graph.
      *
      * @return int
      */
@@ -115,8 +135,7 @@ public class Node implements node_data {
     }
 
     /**
-     * Allows setting the "tag" value for temporal marking an node - common
-     * practice for marking by algorithms.
+     * Allows setting the "tag" value for a vertex.
      *
      * @param t - the new value of the tag
      */
@@ -127,7 +146,7 @@ public class Node implements node_data {
 
 
     /**
-     * Returns the vertex as a String
+     * Returns the vertex as a String.
      *
      * @return String
      */
@@ -155,10 +174,13 @@ public class Node implements node_data {
         return getKey() == n.getKey() && getLocation().equals(n.getLocation());
     }
 
+    /**
+     * hashCode
+     *
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), key, location, weight, info, tag);
     }
-
-
 }

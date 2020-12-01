@@ -18,7 +18,6 @@ class DWGraph_DSTest {
         complex = new DWGraph_DS();
         complexT = new DWGraph_DS();
 
-        //g1 graph:
         for (int i = 0; i < 5; i++) {
             location = new Location(i, i + 5, i * 10);
             n = new Node(i, location, (i + 5) * 10, "", 0);
@@ -29,7 +28,6 @@ class DWGraph_DSTest {
             line.connect(i, i - 1, i * 10);
         }
 
-        //g2 graph:
         for (int i = 0; i < 7; i++) {
             location = new Location(i, i + 5, i * 10);
             n = new Node(i, location, (i + 5) * 10, "", 0);
@@ -42,7 +40,6 @@ class DWGraph_DSTest {
         complex.connect(3, 1, 1);
         complex.connect(5, 3, 1);
 
-        //g3 graph:
         for (int i = 0; i < 7; i++) {
             location = new Location(i, i + 5, i * 10);
             n = new Node(i, location, (i + 5) * 10, "", 0);

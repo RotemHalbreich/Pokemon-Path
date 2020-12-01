@@ -9,6 +9,8 @@ import java.util.*;
  * and should support a large number of nodes (over 100,000).
  * The implementation should be based on an efficient compact representation
  * (should NOT be based on a n*n matrix).
+ *
+ * @author Shaked Aviad & Rotem Halbreich
  */
 
 public class DWGraph_DS implements directed_weighted_graph {
@@ -18,17 +20,32 @@ public class DWGraph_DS implements directed_weighted_graph {
     private int MC = 0;
     private int EDGES = 0;
 
+    /**
+     * Constructor:
+     */
     public DWGraph_DS() {
         V = new HashMap<Integer, node_data>();
         E = new HashMap<Integer, HashMap<Integer, edge_data>>();
     }
 
+    /**
+     * Returns the vertex by a unique key (ID).
+     *
+     * @param key - the vertex's ID
+     * @return the node_data by the node_id, null if none.
+     */
     @Override
     public node_data getNode(int key) {
         return V.get(key);
     }
 
-
+    /**
+     * Returns the data of the edge (src,dest), null if none.
+     *
+     * @param src
+     * @param dest
+     * @return edge_data
+     */
     @Override
     public edge_data getEdge(int src, int dest) {
         if (E.containsKey(src))
@@ -36,6 +53,11 @@ public class DWGraph_DS implements directed_weighted_graph {
         return null;
     }
 
+    /**
+     * Adds a new vertex to the graph with the given node_data.
+     *
+     * @param n
+     */
     @Override
     public void addNode(node_data n) {
         if (V.containsKey(n.getKey()))
@@ -44,6 +66,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         MC++;
     }
 
+    /**
+     * Connects an edge with weight w between vertex src to vertex dest.
+     *
+     * @param src - the source of the edge.
+     * @param dest - the destination of the edge.
+     * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
+     */
     @Override
     public void connect(int src, int dest, double w) {
         if (w < 0)
@@ -68,11 +97,22 @@ public class DWGraph_DS implements directed_weighted_graph {
         connect(e.getSrc(), e.getDest(), e.getWeight());
     }
 
+    /**
+     * Returns a shallow copy of the collection representing all the vertices in the graph.
+     *
+     * @return Collection<node_data>
+     */
     @Override
     public Collection<node_data> getV() {
         return V.values();
     }
 
+    /**
+     * Returns a shallow copy of the collection representing all the edges
+     * connected to the given vertex, while this given vertex is the src of all its edges.
+     *
+     * @return Collection<edge_data>
+     */
     @Override
     public Collection<edge_data> getE(int node_id) {
         if (E.containsKey(node_id))
@@ -80,6 +120,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         return new LinkedList<>();
     }
 
+    /**
+     * Deletes the vertex by its unique key from the graph,
+     * then removes all edges connected to this vertex.
+     *
+     * @return node_data - the data of the removed node (null if none).
+     * @param key
+     */
     @Override
     public node_data removeNode(int key) {
         if (R.containsKey(key)) {
@@ -96,6 +143,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         return V.remove(key);
     }
 
+    /**
+     * Deletes the edge from the graph.
+     *
+     * @param src
+     * @param dest
+     * @return edge_data - the data of the removed edge (null if none).
+     */
     @Override
     public edge_data removeEdge(int src, int dest) {
         if (E.containsKey(src)) {
@@ -107,21 +161,41 @@ public class DWGraph_DS implements directed_weighted_graph {
         return null;
     }
 
+    /**
+     * Returns the number of vertices in the graph.
+     *
+     * @return int
+     */
     @Override
     public int nodeSize() {
         return V.size();
     }
 
+    /**
+     * Returns the number of edges in the graph.
+     *
+     * @return int
+     */
     @Override
     public int edgeSize() {
         return EDGES;
     }
 
+    /**
+     * Returns the Mode Count which represents the amount of changes made to the graph.
+     *
+     * @return int
+     */
     @Override
     public int getMC() {
         return MC;
     }
 
+    /**
+     * Returns the graph as a String.
+     *
+     * @return String
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Integer i : E.keySet()) {
@@ -131,15 +205,31 @@ public class DWGraph_DS implements directed_weighted_graph {
         return "V:" + V.keySet() + "\n" + "E:" + sb + "\n";
     }
 
+    /**
+     * Returns the graph as a reversed String.
+     *
+     * @return String
+     */
     public String reverseString() {
         return reverse().toString();
     }
 
+    /**
+     * hashCode
+     *
+     * @return int
+     */
     @Override
     public int hashCode() {
         return Objects.hash(V, E, R, MC, EDGES);
     }
 
+    /**
+     * Equals method
+     *
+     * @param obj
+     * @return boolean
+     */
     public boolean equals(Object obj) {
         if (obj == null) return false;
         directed_weighted_graph g = new DWGraph_DS();
@@ -155,6 +245,10 @@ public class DWGraph_DS implements directed_weighted_graph {
         return similar(this, g) && similar(g, this);
     }
 
+    /**
+     *
+     * @return directed_weighted_graph
+     */
     public directed_weighted_graph reverse() {
         directed_weighted_graph r = new DWGraph_DS();
         for (Integer n : R.keySet()) r.addNode(new Node(getNode(n)));
@@ -168,6 +262,14 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     ////////// Private Methods //////////
+
+    /**
+     * This private method connects between two vertices with an edge in reverse.
+     *
+     * @param src
+     * @param dest
+     * @param w
+     */
     private void reverseConnect(int src, int dest, double w) {
         if (R.containsKey(src)) {
             R.get(src).put(dest, new Edge(src, dest, w));
@@ -178,6 +280,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         }
     }
 
+    /**
+     * This private method checks if two different graphs are identical.
+     *
+     * @param g1 - first graph
+     * @param g2 - second graph
+     * @return boolean
+     */
     private boolean similar(directed_weighted_graph g1, directed_weighted_graph g2) {
         for (node_data n : g1.getV()) {
             if (g2.getNode(n.getKey()) == null)
@@ -190,10 +299,22 @@ public class DWGraph_DS implements directed_weighted_graph {
         return true;
     }
 
+    /**
+     * This private method deletes an edge from the graph in reverse.
+     *
+     * @param src - the source of the edge.
+     * @param dest - the destination of the edge.
+     */
     private void reverseRemove(int src, int dest) {
         R.get(src).remove(dest);
     }
 
+    /**
+     * This private method deletes the
+     *
+     * @param src
+     * @param dest
+     */
     private void removeEdges(int src, int dest) {
         if (E.containsKey(src)) {
             EDGES--;

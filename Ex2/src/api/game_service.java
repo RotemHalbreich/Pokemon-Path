@@ -14,7 +14,7 @@ import java.io.Serializable;
  * 8. login(long id): (for reporting the results of Ex2)
  *
  *
- * @author Shaked Aviad & Rotem Halbreich
+ * @author boaz.benmoshe
  */
 
 public interface game_service extends Serializable{	

@@ -1,5 +1,5 @@
 package gameClient;
-
+import api.*;
 import Server.Agent_Graph_Algo;
 import Server.Game_Server_Ex2;
 import api.directed_weighted_graph;
@@ -7,6 +7,7 @@ import api.edge_data;
 import api.game_service;
 import api.node_data;
 
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -18,14 +19,16 @@ import java.util.List;
  * use of the "server".
  */
 public class SimpleGameClient {
-	public static void main(String[] a) {
+	public static void main(String[] a) throws FileNotFoundException {
 		test1();
 	}
-	public static void test1() {
+	public static void test1() throws FileNotFoundException {
 		game_service game = Game_Server_Ex2.getServer(2); // you have [0,23] games
 		String g = game.getGraph();
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		//game.login(12345);  // please use your ID only as a key. uncomment this will upload your results to the server
+		DWGraph_DS test=new DWGraph_Algo().readFromJson(g);
+
 		node_data nn = gg.getNode(10);
 		String info = game.toString();
 		System.out.println(info);
