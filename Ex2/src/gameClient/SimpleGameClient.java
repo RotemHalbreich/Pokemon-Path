@@ -22,12 +22,12 @@ public class SimpleGameClient {
 	public static void main(String[] a) throws FileNotFoundException {
 		test1();
 	}
-	public static void test1() throws FileNotFoundException {
+	public static void test1()  {
 		game_service game = Game_Server_Ex2.getServer(2); // you have [0,23] games
 		String g = game.getGraph();
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		//game.login(12345);  // please use your ID only as a key. uncomment this will upload your results to the server
-		DWGraph_DS test=new DWGraph_Algo().readFromJson(g);
+		directed_weighted_graph test=new DWGraph_Algo().readFromJson(g);
 
 		node_data nn = gg.getNode(10);
 		String info = game.toString();

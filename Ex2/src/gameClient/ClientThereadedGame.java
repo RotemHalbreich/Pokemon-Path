@@ -29,6 +29,8 @@ public class ClientThereadedGame implements Runnable{
 		game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
 		String g = game.getGraph();
 		String pokemons = game.getPokemons();
+		System.out.println("pokemons: "+pokemons);
+
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		_ar = new Arena();
 		_ar.setGraph(gg);
@@ -47,7 +49,10 @@ public class ClientThereadedGame implements Runnable{
 			String pks = game.getPokemons();
 			System.out.println(pks);
 			ArrayList<CL_Pokemon> cl_fs = Agent_Graph_Algo.json2Pokemons(pks);
-			for(int a = 0;a<cl_fs.size();a++) { Agent_Graph_Algo.updateEdge(cl_fs.get(a),gg);}
+			for(int a = 0;a<cl_fs.size();a++) {
+				System.out.println(cl_fs);
+				Agent_Graph_Algo.updateEdge(cl_fs.get(a),gg);
+			}
 			for(int a = 0;a<rs;a++) {
 				int ind = (a)%cl_fs.size();
 				CL_Pokemon c = cl_fs.get(ind);
@@ -117,7 +122,7 @@ public class ClientThereadedGame implements Runnable{
 				if(dd<dt) {dt = dd;}
 			}
 			if(DYNAMIC_DT) {_dt = dt;}
-		//	game.move();
+			//game.move();
 	//			System.out.println("Turn to node: "+dest+"  time to end:"+(t/1000));
 		}
 	}

@@ -167,13 +167,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
      * @return true - iff the graph was successfully loaded.
      */
     @Override
-    public boolean load(String file) {
+    public boolean load(String file)  {
         try {
             GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(DWGraph_DS.class, new DWGraph_DSJsonDeserializer());
+            builder.registerTypeAdapter(directed_weighted_graph.class, new DWGraph_DSJsonDeserializer());
             Gson gson = builder.create();
             FileReader reader = new FileReader(file);
-            graph = gson.fromJson(reader, DWGraph_DS.class);
+            graph = gson.fromJson(reader, directed_weighted_graph.class);
             return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -186,12 +186,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
      * @param s
      * @return DWGraph_DS
      */
-    public DWGraph_DS readFromJson(String s) {
-        DWGraph_DS algo = new DWGraph_DS();
+    public directed_weighted_graph readFromJson(String s) {
+
+        directed_weighted_graph algo = new DWGraph_DS();
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(DWGraph_DS.class, new DWGraph_DSJsonDeserializer());
+        builder.registerTypeAdapter(directed_weighted_graph.class, new DWGraph_DSJsonDeserializer());
         Gson gson = builder.create();
-        algo = gson.fromJson(s, DWGraph_DS.class);
+        algo = gson.fromJson(s, directed_weighted_graph.class);
         return algo;
     }
 
@@ -325,7 +326,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
 
     //////////Private Class  //////////
-    private class DWGraph_DSJsonDeserializer implements JsonDeserializer<DWGraph_DS> {
+    private class DWGraph_DSJsonDeserializer implements JsonDeserializer<directed_weighted_graph> {
 
         /**
          *
@@ -337,12 +338,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
          * @throws JsonParseException
          */
         @Override
-        public DWGraph_DS deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+        public directed_weighted_graph deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             if (jsonObject.getAsJsonObject("V") != null) {
                 return readMyGraph(jsonElement.getAsJsonObject());
             }
-            DWGraph_DS graph = new DWGraph_DS();
+            directed_weighted_graph graph = new DWGraph_DS();
             JsonArray Nodes = jsonObject.getAsJsonArray("Nodes");
             Iterator<JsonElement> itr = Nodes.iterator();
             while (itr.hasNext()) {
@@ -361,7 +362,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                 int src = object.getAsJsonObject().get("src").getAsJsonPrimitive().getAsInt(),
                         dest = object.getAsJsonObject().get("dest").getAsJsonPrimitive().getAsInt();
                 double weight = object.getAsJsonObject().get("w").getAsJsonPrimitive().getAsDouble();
-                graph.connect(new Edge(src, dest, weight));
+                ((DWGraph_DS)graph).connect(new Edge(src, dest, weight));
             }
             return graph;
         }
@@ -372,8 +373,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
          * @param jsonElement
          * @return DWGraph_DS
          */
-        private DWGraph_DS readMyGraph(JsonElement jsonElement) {
-            DWGraph_DS graph = new DWGraph_DS();
+        private directed_weighted_graph readMyGraph(JsonElement jsonElement) {
+            directed_weighted_graph graph = new DWGraph_DS();
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             JsonObject V = jsonObject.getAsJsonObject("V").getAsJsonObject();
             for (Map.Entry<String, JsonElement> set : V.entrySet()) {
@@ -398,7 +399,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                     int src = edge.getAsJsonObject().get("src").getAsInt(),
                             dest = edge.getAsJsonObject().get("dest").getAsInt();
                     double weight = edge.getAsJsonObject().get("weight").getAsDouble();
-                    graph.connect(new Edge(src, dest, weight));
+                    ((DWGraph_DS)graph).connect(new Edge(src, dest, weight));
                 }
             }
             return graph;

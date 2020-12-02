@@ -34,6 +34,7 @@ public class MyFrame extends JFrame{
 		gameClient.util.Range2D frame = new gameClient.util.Range2D(rx,ry);
 		_w2f = Agent_Graph_Algo.w2f(_ar.getGraph(), frame);
 		this.repaint();
+
 	}
 	private void updateFrame() {
 		Range rx = new Range(20,this.getWidth()-20);
