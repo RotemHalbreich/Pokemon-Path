@@ -19,7 +19,7 @@ public Agents(game_service game) throws JSONException {
     this.game=game;
     update();
 }
-public void update() throws JSONException {
+public synchronized void update() throws JSONException {
     if(agents==null) agents=new HashMap<>();
 
     if(game.getAgents().equals(isEmpty))return;
