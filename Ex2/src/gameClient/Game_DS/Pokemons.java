@@ -36,6 +36,7 @@ public class Pokemons {
       Arrays.sort(pokemons);
 
   }
+
   public int size() throws JSONException {
    JSONObject g=new JSONObject(game.toString());
    JSONObject p=g.getJSONObject("GameServer");
@@ -53,6 +54,7 @@ public class Pokemons {
         private Point3D pos;
         private edge_data edge;
 
+
        public Pokemon(JSONObject json) throws JSONException {update(json);}
        private void update(JSONObject json) throws JSONException {
         value=json.getDouble("value");
@@ -61,7 +63,7 @@ public class Pokemons {
         pos=new Point3D(c[0],c[1],c[2]);
         //edge-> we need think about that
        }
-       private double[] simplifyPos(String s){
+       public   double[] simplifyPos(String s){
         double[] ans= new double[3];
         String[] as=s.split(",");
         ans[0]=parseDouble(as[0]);
