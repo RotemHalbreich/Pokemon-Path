@@ -81,7 +81,12 @@ public class Pokemons {
      public edge_data getEdge() {return edge;}
 
      public String toString(){
-        return "Pokemon:{ val:"+getValue()+",type:"+getType()+",pos:"+getLocation().toString();
+        return "Pokemon:" +
+                "{ "
+                +"val:"+getValue()
+                +",type:"+getType()
+                +",pos:"+getLocation().toString()
+                +"}";
        }
 
      @Override

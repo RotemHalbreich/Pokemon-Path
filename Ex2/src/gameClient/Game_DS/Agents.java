@@ -27,8 +27,15 @@ public void update() throws JSONException {
     JSONObject jsonAgents=new JSONObject(game.getAgents());
     JSONArray arrayAgents=jsonAgents.getJSONArray("Agents");
     for(int i=0;i<size();i++){
+
         JSONObject jsonAgent=arrayAgents.getJSONObject(i).getJSONObject("Agent");
-        agents.put(jsonAgent.getInt("id"),new Agent(jsonAgent));
+
+        int id=jsonAgent.getInt("id");
+
+        if(agents.containsKey(id))
+            agents.get(id).update(jsonAgent);
+        else
+            agents.put(id,new Agent(jsonAgent));
     }
 }
 public int size() throws JSONException {

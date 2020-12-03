@@ -19,7 +19,7 @@ class PokemonsTest {
         while(g.hasNext()){
             System.out.println(g.next().toString());
         }
-     int y=0;
+
 
     }
 
