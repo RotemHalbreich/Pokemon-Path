@@ -6,6 +6,10 @@ import api.game_service;
 import api.edge_data;
 import api.directed_weighted_graph;
 //import Server.DWGraph;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,8 +33,22 @@ public class Ex2_Client implements Runnable{
 
 		game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
 		//game.login(id);
+		System.out.println(game.toString());
 		String g = game.getGraph();
 		String pks = game.getPokemons();
+		JSONObject j= null;
+		try {
+			j = new JSONObject(game.toString());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		try {
+			JSONObject gg=j.getJSONObject("GameServer");
+			System.out.println(gg.getInt("pokemons"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		init(game);
 		
@@ -64,8 +82,10 @@ public class Ex2_Client implements Runnable{
 	 */
 	private static void moveAgents(game_service game, directed_weighted_graph gg) {
 		String lg = game.move();
+		System.out.println("move!"+lg);
 		List<CL_Agent> log = Agent_Graph_Algo.getAgents(lg, gg);
 		_ar.setAgents(log);
+
 		//ArrayList<OOP_Point3D> rs = new ArrayList<OOP_Point3D>();
 		String fs =  game.getPokemons();
 		List<CL_Pokemon> ffs = Agent_Graph_Algo.json2Pokemons(fs);
@@ -79,6 +99,7 @@ public class Ex2_Client implements Runnable{
 			if(dest==-1) {
 				dest = nextNode(gg, src);
 				game.chooseNextEdge(robot.getID(), dest);
+				System.out.println(game.toString());
 				System.out.println("Agent: "+id+", val: "+v+"   turned to node: "+dest);
 			}
 		}

@@ -28,7 +28,7 @@ public class SimpleGameClient {
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		//game.login(12345);  // please use your ID only as a key. uncomment this will upload your results to the server
 		directed_weighted_graph test=new DWGraph_Algo().readFromJson(g);
-
+        System.out.println(game.toString());
 		node_data nn = gg.getNode(10);
 		String info = game.toString();
 		System.out.println(info);
