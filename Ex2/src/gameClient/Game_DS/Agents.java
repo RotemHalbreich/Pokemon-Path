@@ -39,6 +39,7 @@ public int size() throws JSONException {
 public Iterator<Agent> iterator(){
     return agents.values().iterator();
 }
+public synchronized Agent getAgent(int key){return agents.get(key);}
 public String toString(){
     StringBuilder sb=new StringBuilder();
     for(Integer i: agents.keySet()){
