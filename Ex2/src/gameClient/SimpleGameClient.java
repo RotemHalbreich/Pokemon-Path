@@ -29,13 +29,16 @@ public class SimpleGameClient {
 		//game.login(12345);  // please use your ID only as a key. uncomment this will upload your results to the server
 		directed_weighted_graph test=new DWGraph_Algo().readFromJson(g);
         System.out.println(game.toString());
+		System.out.println(game.getAgents());
 		node_data nn = gg.getNode(10);
 		String info = game.toString();
 		System.out.println(info);
 		System.out.println(g);
+
 		System.out.println(game.getPokemons());
 		int src_node = 0;  // arbitrary node, you should start at one of the fruits
 		game.addAgent(src_node);
+		System.out.println("we are looking for! "+game.getAgents());
 		game.startGame();
 		int i=0;
 		while(game.isRunning()) {
@@ -43,6 +46,7 @@ public class SimpleGameClient {
 		//	System.out.println("round: "+i+"  seconds to end:"+(t/1000));
 			String lg = game.move();
 			List<CL_Agent> log = Agent_Graph_Algo.getAgents(lg, gg);
+			;
 			for(int a=0;a< log.size();a++) {
 				CL_Agent r = log.get(a);
 				int dest = r.getNextNode();

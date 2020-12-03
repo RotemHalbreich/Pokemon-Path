@@ -95,7 +95,8 @@ public class CL_Agent {
 		public int getNextNode() {
 			int ans = -2;
 			if(this._curr_edge==null) {
-				ans = -1;}
+				ans = -1;
+			}
 			else {
 				ans = this._curr_edge.getDest();
 			}

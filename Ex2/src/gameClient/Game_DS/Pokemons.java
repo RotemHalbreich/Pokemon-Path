@@ -1,14 +1,12 @@
 package gameClient.Game_DS;
 
-import api.edge_data;
-import api.game_service;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import gameClient.util.Point3D;
+import api.*;
+import org.json.*;
+import gameClient.util.*;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.Arrays;
+import java.util.Iterator;
+
 
 import static java.lang.Double.parseDouble;
 
@@ -23,11 +21,19 @@ public class Pokemons {
   public synchronized void update() throws JSONException {
 
    if(pokemons==null||pokemons.length!=size())
-    pokemons=new Pokemon[size()];
+       pokemons=new Pokemon[size()];
 
    JSONObject jsonPokemons=new JSONObject(game.getPokemons());
-   int y=0;
+   JSONArray arrayPokemons=jsonPokemons.getJSONArray("Pokemons");
 
+   for(int i=0;i<size();i++){
+       JSONObject jsonPokemon= arrayPokemons.getJSONObject(i).getJSONObject("Pokemon");
+       if(pokemons[i]==null)
+           pokemons[i]=new Pokemon(jsonPokemon);
+       else
+           pokemons[i].update(jsonPokemon);
+   }
+      Arrays.sort(pokemons);
 
   }
   public int size() throws JSONException {
@@ -35,6 +41,12 @@ public class Pokemons {
    JSONObject p=g.getJSONObject("GameServer");
    return p.getInt("pokemons");
   }
+  public Iterator<Pokemon> iterator(){
+      return Arrays.stream(pokemons).iterator();
+  }
+   public String toString(){
+      return Arrays.toString(pokemons);
+   }
     private class Pokemon implements Comparable<Pokemon>{
         private double value;
         private int type;
@@ -62,18 +74,18 @@ public class Pokemons {
 
      public int getType() {return type;}
 
-     public Point3D getPos() {return pos;}
+     public Point3D getLocation() {return pos;}
 
      public edge_data getEdge() {return edge;}
 
      public String toString(){
-        return "Pokemon:{ val:"+getValue()+",type:"+getType()+",pos:"+getPos().toString();
+        return "Pokemon:{ val:"+getValue()+",type:"+getType()+",pos:"+getLocation().toString();
        }
 
      @Override
      public int compareTo(@NotNull Pokemon o) {
-      Double v=getValue()*-1;
-        return v.compareTo(o.value);
+      Double v=getValue();
+        return -v.compareTo(o.value);
      }
     }
 
