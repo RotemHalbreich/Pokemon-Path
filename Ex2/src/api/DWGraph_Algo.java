@@ -186,7 +186,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
      * @param s
      * @return DWGraph_DS
      */
-    public directed_weighted_graph readFromJson(String s) {
+    public  directed_weighted_graph readFromJson(String s) {
 
         directed_weighted_graph algo = new DWGraph_DS();
         GsonBuilder builder = new GsonBuilder();

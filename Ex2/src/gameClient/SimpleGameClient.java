@@ -23,7 +23,7 @@ public class SimpleGameClient {
 		test1();
 	}
 	public static void test1()  {
-		game_service game = Game_Server_Ex2.getServer(11); // you have [0,23] games
+		game_service game = Game_Server_Ex2.getServer(1); // you have [0,23] games
 		String g = game.getGraph();
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		//game.login(12345);  // please use your ID only as a key. uncomment this will upload your results to the server

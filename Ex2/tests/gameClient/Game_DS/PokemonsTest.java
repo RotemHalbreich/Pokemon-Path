@@ -13,7 +13,7 @@ class PokemonsTest {
 
     @Test
     void update() throws JSONException {
-        game_service game = Game_Server_Ex2.getServer(11);
+        game_service game = Game_Server_Ex2.getServer(1);
         Pokemons P= new Pokemons(game);
         Iterator g=P.iterator();
         while(g.hasNext()){
