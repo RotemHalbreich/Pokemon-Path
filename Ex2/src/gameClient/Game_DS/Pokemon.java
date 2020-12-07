@@ -91,7 +91,8 @@ public class Pokemon implements Comparable<Pokemon> {
     ///////// Private Methods /////////
     private boolean isValidEdge(edge_data e){
         return getType()>0&&e.getSrc()>e.getDest()||
-                getType()<0&&e.getSrc()<e.getDest();
+            getType()<0&&e.getSrc()<e.getDest();
+
     }
 
 }

@@ -19,10 +19,13 @@ class AgentsTest {
         game.addAgent(0);
         game.addAgent(0);
         a.update();
+
         Iterator itr =a.iterator();
         while (itr.hasNext()){
             System.out.println(itr.next().toString());
+
         }
+        int i=0;
     }
 
     @Test
