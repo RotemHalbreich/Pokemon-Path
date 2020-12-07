@@ -24,7 +24,6 @@ import static java.lang.Double.parseDouble;
  * 6. Load(file); // JSON file
  *
  * @author Shaked Aviad & Rotem Halbreich
- *
  */
 public class DWGraph_Algo implements dw_graph_algorithms {
     private static final String NOT_VISITED = "white", VISITED = "green", FINISH = "black";
@@ -102,16 +101,17 @@ public class DWGraph_Algo implements dw_graph_algorithms {
      * returns the length of the shortest path between src to dest
      * Note: if no such path --> returns -1
      *
-     * @param src - start node
+     * @param src  - start node
      * @param dest - end (target) node
      * @return double
      */
     @Override
     public double shortestPathDist(int src, int dest) {
+        createGraphAlgorithm();
         if (graph.getNode(src) == null || graph.getNode(dest) == null)
             throw new RuntimeException("Err:Invalid search src or dest not exists in base graph");
         if (src == dest) return 0;
-        createGraphAlgorithm();
+
         Node_Algo s = (Node_Algo) algorithm.getNode(src);
         s.setPrice(0);
         s.setPrev(null);
@@ -125,7 +125,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
      * see: https://en.wikipedia.org/wiki/Shortest_path_problem
      * If no such path --> returns null;
      *
-     * @param src - start node
+     * @param src  - start node
      * @param dest - end node
      * @return List<node_data>
      */
@@ -167,7 +167,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
      * @return true - iff the graph was successfully loaded.
      */
     @Override
-    public boolean load(String file)  {
+    public boolean load(String file) {
         try {
             GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(directed_weighted_graph.class, new DWGraph_DSJsonDeserializer());
@@ -182,11 +182,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     *
      * @param s
      * @return DWGraph_DS
      */
-    public  directed_weighted_graph readFromJson(String s) {
+    public directed_weighted_graph readFromJson(String s) {
 
         directed_weighted_graph algo = new DWGraph_DS();
         GsonBuilder builder = new GsonBuilder();
@@ -218,8 +217,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     ///////// Private Methods /////////
 
     /**
-     *
-     *
      * @param g
      * @param n
      */
@@ -242,8 +239,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     *
-     *
      * @param g
      * @return boolean
      */
@@ -259,7 +254,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     *
      * @param src
      * @param dest
      * @param queue
@@ -288,8 +282,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     *
-     *
      * @param src
      * @param dest
      * @param path
@@ -329,8 +321,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     private class DWGraph_DSJsonDeserializer implements JsonDeserializer<directed_weighted_graph> {
 
         /**
-         *
-         *
          * @param jsonElement
          * @param type
          * @param jsonDeserializationContext
@@ -362,14 +352,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                 int src = object.getAsJsonObject().get("src").getAsJsonPrimitive().getAsInt(),
                         dest = object.getAsJsonObject().get("dest").getAsJsonPrimitive().getAsInt();
                 double weight = object.getAsJsonObject().get("w").getAsJsonPrimitive().getAsDouble();
-                ((DWGraph_DS)graph).connect(new Edge(src, dest, weight));
+                ((DWGraph_DS) graph).connect(new Edge(src, dest, weight));
             }
             return graph;
         }
 
         /**
-         *
-         *
          * @param jsonElement
          * @return DWGraph_DS
          */
@@ -399,14 +387,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                     int src = edge.getAsJsonObject().get("src").getAsInt(),
                             dest = edge.getAsJsonObject().get("dest").getAsInt();
                     double weight = edge.getAsJsonObject().get("weight").getAsDouble();
-                    ((DWGraph_DS)graph).connect(new Edge(src, dest, weight));
+                    ((DWGraph_DS) graph).connect(new Edge(src, dest, weight));
                 }
             }
             return graph;
         }
 
         /**
-         *
          * @param s
          * @return double[]
          */
@@ -438,7 +425,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
 
         /**
-         *
          * @param o
          * @return int
          */

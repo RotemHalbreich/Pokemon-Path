@@ -14,7 +14,7 @@ public class Pokemon implements Comparable<Pokemon> {
     private int type;
     private Point3D pos;
     private edge_data edge;
-    private final double EPS=0.001;
+    private final double EPS=0.0000000000001;
 
 
     public Pokemon(JSONObject json,game_service game) throws JSONException {
@@ -57,8 +57,8 @@ public class Pokemon implements Comparable<Pokemon> {
         for(node_data n:graph.getV()){
             for (edge_data e:graph.getE(n.getKey())){
                 if(isValidEdge(e)){
-                    geo_location src=graph.getNode(e.getSrc()).getLocation();
-                    geo_location dest=graph.getNode(e.getDest()).getLocation();
+                    Point3D src= (Point3D) graph.getNode(e.getSrc()).getLocation();
+                    Point3D dest= (Point3D) graph.getNode(e.getDest()).getLocation();
                     double d=src.distance(dest)- src.distance(getLocation())-getLocation().distance(dest);
                     if(Math.abs(d)<EPS)
                         edge=e;
