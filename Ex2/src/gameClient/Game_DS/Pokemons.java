@@ -13,17 +13,19 @@ import static java.lang.Double.parseDouble;
 
 public class Pokemons {
     private game_service game;
+    private Information info;
     private Pokemon[] pokemons;
 
-    public Pokemons(game_service game) throws JSONException {
+    public Pokemons(game_service game,Information i) throws JSONException {
         this.game = game;
+        this.info=i;
         update();
     }
 
     public synchronized void update() throws JSONException {
-
-        if (pokemons == null || pokemons.length != size())
-            pokemons = new Pokemon[size()];
+        if(game==null||info==null)return;
+        if (pokemons == null || pokemons.length != info.getPokemons())
+            pokemons = new Pokemon[info.getPokemons()];
 
         JSONObject jsonPokemons = new JSONObject(game.getPokemons());
         JSONArray arrayPokemons = jsonPokemons.getJSONArray("Pokemons");
@@ -40,9 +42,7 @@ public class Pokemons {
     }
 
     public int size() throws JSONException {
-        JSONObject g = new JSONObject(game.toString());
-        JSONObject p = g.getJSONObject("GameServer");
-        return p.getInt("pokemons");
+        return info.getPokemons();
     }
 
     public Iterator<Pokemon> iterator() {

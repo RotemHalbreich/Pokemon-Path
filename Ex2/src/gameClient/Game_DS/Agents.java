@@ -15,17 +15,20 @@ import static java.lang.Double.parseDouble;
 public class Agents {
     private final String isEmpty = "{\"Agents\":[";
     private game_service game;
+    private Information info;
     private HashMap<Integer, Agent> agents;
     private double[][] dps;
 
-    public Agents(game_service game) throws JSONException {
+    public Agents(game_service game,Information i) throws JSONException {
         this.game = game;
+        this.info=i;
         update();
         insertDPS();
     }
 
 
     public synchronized void update() throws JSONException {
+        if(game==null||info==null)return;
         if (agents == null) agents = new HashMap<>();
 
         if (game.getAgents().equals(isEmpty)) return;
@@ -46,9 +49,8 @@ public class Agents {
     }
 
     public int size() throws JSONException {
-        JSONObject g = new JSONObject(game.toString());
-        JSONObject p = g.getJSONObject("GameServer");
-        return p.getInt("agents");
+       return info.getAgents();
+
     }
 
     public Iterator<Agent> iterator() {
