@@ -57,11 +57,11 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         repaint();
     }
 
-    private void startAutoGame() throws JSONException {
-        GameAlgo auto = new GameAlgo(game, algo, pokemons, agents);
-        game.startGame();
-        auto.start();
-    }
+//    private void startAutoGame() throws JSONException {
+//        GameAlgo auto = new GameAlgo(game, algo, pokemons, agents);
+//        game.startGame();
+//        auto.start();
+//    }
 
     private void refactorMinMaxXY() {
         if (algo == null || algo.getGraph() == null) return;

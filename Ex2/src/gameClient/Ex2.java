@@ -13,7 +13,7 @@ import org.json.JSONException;
 public class Ex2 {
     public static void main(String[] args) throws JSONException {
 
-        game_service game = Game_Server_Ex2.getServer(23);
+        game_service game = Game_Server_Ex2.getServer(1);
         Information i=new Information(game);
         DWGraph_Algo algo=  new DWGraph_Algo();
         directed_weighted_graph graph=algo.readFromJson(game.getGraph());

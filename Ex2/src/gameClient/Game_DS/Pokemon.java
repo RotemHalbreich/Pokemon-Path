@@ -68,7 +68,7 @@ public class Pokemon implements Comparable<Pokemon> {
 
     }
 
-    public edge_data getEdge() {
+    public synchronized edge_data getEdge() {
         return edge;
     }
 
