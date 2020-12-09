@@ -15,7 +15,7 @@ public class GameAlgo2 {
     private Pokemons pokemons;
     private Information info;
     private Agents agents;
-    private HashMap<Integer, LinkedList<node_data>> targets=new HashMap<>();
+    private HashMap<Integer, LinkedList<node_data>> targets = new HashMap<>();
     private HashMap<Integer, Boolean> firstEnter = new HashMap<>();
     private HashMap<Integer, edge_data> firstEdge = new HashMap<>();
 
@@ -31,7 +31,8 @@ public class GameAlgo2 {
         agents.update();
 
     }
-////////// Private Methods //////////
+
+    ////////// Private Methods //////////
     private void insertFirst() throws JSONException {
         Iterator<Pokemon> pok = pokemons.iterator();
         for (int i = 0; i < info.getAgents(); i++) {
@@ -54,55 +55,58 @@ public class GameAlgo2 {
             }
         }
     }
-    public void moveAgents(){
-        Iterator<Agent> ag=agents.iterator();
-        while (ag.hasNext()){
-            Agent curr=ag.next();
-            if(curr.getDest()==-1)moveAgent(curr);
+
+    public void moveAgents() {
+        Iterator<Agent> ag = agents.iterator();
+        while (ag.hasNext()) {
+            Agent curr = ag.next();
+            if (curr.getDest() == -1) moveAgent(curr);
         }
     }
 
     private void moveAgent(Agent curr) {
-        LinkedList<node_data> tempT=targets.get(curr.getId());
-        if(tempT.size()>1){
-              int src=tempT.get(0).getKey(),dest=tempT.get(1).getKey();
-              edge_data e=algo.getGraph().getEdge(src,dest);
-              if(hasPokemonOnEdge(e)){
-                  eatPokemon(curr,e);
-              }
+        LinkedList<node_data> tempT = targets.get(curr.getId());
+        if (tempT.size() > 1) {
+            int src = tempT.get(0).getKey(), dest = tempT.get(1).getKey();
+            edge_data e = algo.getGraph().getEdge(src, dest);
+            if (hasPokemonOnEdge(e)) {
+                eatPokemon(curr, e);
+            }
 
-        }
-        else if(firstEnter.get(curr.getId())){;}
-        else{;}// need path
+        } else if (firstEnter.get(curr.getId())) {
+            ;
+        } else {
+            ;
+        }// need path
     }
 
     private void eatPokemon(Agent curr, edge_data e) {
-        Pokemon p=pokemonFromEdge(e);
-        boolean con=true;
-        while (con){
-            if(curr.getPos().close2equals(p.getLocation())){
+        Pokemon p = pokemonFromEdge(e);
+        boolean con = true;
+        while (con) {
+            if (curr.getPos().close2equals(p.getLocation())) {
                 game.move();
-                con=false;
+                con = false;
             }
         }
     }
 
     private Pokemon pokemonFromEdge(edge_data e) {
-        Iterator<Pokemon> itr=pokemons.iterator();
-        Pokemon curr=null;
-        while (itr.hasNext()){
-             curr=itr.next();
-             if(curr.getEdge().equals(e))
-                 return curr;
+        Iterator<Pokemon> itr = pokemons.iterator();
+        Pokemon curr = null;
+        while (itr.hasNext()) {
+            curr = itr.next();
+            if (curr.getEdge().equals(e))
+                return curr;
 
         }
         return curr;
     }
 
     private boolean hasPokemonOnEdge(edge_data e) {
-        Iterator<Pokemon> itr=pokemons.iterator();
-        while(itr.hasNext()){
-            if(itr.next().getEdge().equals(e))
+        Iterator<Pokemon> itr = pokemons.iterator();
+        while (itr.hasNext()) {
+            if (itr.next().getEdge().equals(e))
                 return true;
         }
         return false;
