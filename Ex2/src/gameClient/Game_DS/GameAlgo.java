@@ -18,6 +18,7 @@ public class GameAlgo extends Thread{
     private List<Point3D> handlingPokemons=new ArrayList<>();
     private HashMap<Integer,ArrayList<node_data>> targets=new HashMap<>();
     private HashMap<Integer,Long> timer=new HashMap<>();
+    private String A="";
 
 
     public GameAlgo(game_service game,Information i,dw_graph_algorithms algo,Pokemons p,Agents a) throws JSONException {
@@ -28,23 +29,40 @@ public class GameAlgo extends Thread{
         this.agents=a;
         insertFirstTime();
         agents.update();
+        A=game.getAgents();
         insertTargetsAndTime();
 
     }
     public void sendAgentsToPokemons(){
+        //game.move();
+        if(!A.equals(game.getAgents())){
+            System.out.println("lllllllllllllllllllll");
+           // game.move();
+            A=game.getAgents();
+        }else {
+            game.move();
+            System.out.println("gggggggggggggggggg");
+        }
         Iterator<Pokemon> itr =pokemons.iterator();
         while (itr.hasNext()){
             Pokemon currPok= itr.next();
-            if(!handlingPokemons.contains(currPok.getLocation())){
-                if(onWay(currPok))
-                    handlingPokemons.add(0,currPok.getLocation());
-                else
+            if(!handlingPokemons.contains(currPok.getLocation())) {
+
+                if (onWay(currPok)) {
+
+                    handlingPokemons.add(0, currPok.getLocation());
+
+                }else {
+
                     findBestAgent(currPok);
+
+                }
             }
 
         }
     }
     public void moveAgents(){
+
         Iterator<Agent> itr=agents.iterator();
         while(itr.hasNext()){
             Agent a= itr.next();
@@ -142,6 +160,7 @@ public void startGame(){
         return false;
     }
     private void findBestAgent(Pokemon currPok) {
+
         int src=currPok.getEdge().getSrc();
         long optimalTime=game.timeToEnd()+1000;
         ArrayList<node_data>path=null,tempPath=null;
@@ -174,11 +193,20 @@ public void startGame(){
 
     }
     private void moveAgent(Agent a) {
+
         ArrayList<node_data> path=targets.get(a.getId());
         if(path.size()>1){
+            int src=path.get(0).getKey(),dest=path.get(1).getKey();
             game.chooseNextEdge(a.getId(),path.get(1).getKey());
 
-            int src=path.get(0).getKey(),dest=path.get(1).getKey();
+            edge_data e=algo.getGraph().getEdge(src,dest);
+            if(a.getPos().distance(pokemonFromEdge(e).getLocation())<0.001) {
+                System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+                game.move();
+                // A=game.getAgents();
+
+            }
+
             edge_data from=algo.getGraph().getEdge(src,dest);
             long fromTime= (long) (from.getWeight()/a.getSpeed());
             timer.put(a.getId(),timer.get(a.getId())-fromTime);
@@ -186,6 +214,46 @@ public void startGame(){
         }
         else timer.put(a.getId(),0L);
 
+    }
+    private  void eatPokemon(Agent curr,int id, edge_data e) {
+//        Pokemon p=pokemonFromEdge(e);
+//        boolean cur=true;
+//
+//        while (cur){
+//            System.out.println("Agent: "+curr.toString()+"\n");
+//            System.out.println("pokemon: "+p.toString()+"\n");
+//            System.out.println("edge: "+e.toString()+"\n");
+//            game.move();
+//
+//            System.out.println(i +") outside");
+//            if(curr.getPos().close2equals(p.getLocation())) {
+//                System.out.println(j +") inside");
+//                game.move();
+//                cur=false;
+//            }
+//
+//        }
+    }
+
+    private    Pokemon pokemonFromEdge(edge_data e) {
+        Iterator<Pokemon> itr=pokemons.iterator();
+        Pokemon curr=null;
+        while (itr.hasNext()){
+            curr=itr.next();
+            if(curr.getEdge().equals(e))
+                return curr;
+
+        }
+        return curr;
+    }
+
+    private  boolean hasPokemonOnEdge(edge_data e) {
+        Iterator<Pokemon> itr=pokemons.iterator();
+        while(itr.hasNext()){
+            if(itr.next().getEdge().equals(e))
+                return true;
+        }
+        return false;
     }
 
 }
