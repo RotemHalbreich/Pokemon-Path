@@ -27,7 +27,9 @@ public class Pokemon implements Comparable<Pokemon> {
         type = json.getInt("type");
         double[] c = simplifyPos(json.getString("pos"));
         pos = new Point3D(c[0], c[1], c[2]);
-        setEdge();
+        try {
+            setEdge();
+        }catch (Exception e){;}
     }
 
     public double[] simplifyPos(String s) {
@@ -56,7 +58,7 @@ public class Pokemon implements Comparable<Pokemon> {
         directed_weighted_graph graph=new DWGraph_Algo().readFromJson(game.getGraph());
         for(node_data n:graph.getV()){
             for (edge_data e:graph.getE(n.getKey())){
-                if(isValidEdge(e)){
+                if (isNotValidEdge(e)) continue;
                     Point3D src= (Point3D) graph.getNode(e.getSrc()).getLocation();
                     Point3D dest= (Point3D) graph.getNode(e.getDest()).getLocation();
                     double d=src.distance(dest)- src.distance(getLocation())-getLocation().distance(dest);
@@ -66,9 +68,9 @@ public class Pokemon implements Comparable<Pokemon> {
             }
         }
 
-    }
 
-    public synchronized edge_data getEdge() {
+
+    public  edge_data getEdge() {
         return edge;
     }
 
@@ -89,9 +91,8 @@ public class Pokemon implements Comparable<Pokemon> {
         return -v.compareTo(o.value);
     }
     ///////// Private Methods /////////
-    private boolean isValidEdge(edge_data e){
-        return getType()>0&&e.getSrc()>e.getDest()||
-            getType()<0&&e.getSrc()<e.getDest();
+    private boolean isNotValidEdge(edge_data e){
+        return (type > 0) != (e.getSrc() < e.getDest());
 
     }
 

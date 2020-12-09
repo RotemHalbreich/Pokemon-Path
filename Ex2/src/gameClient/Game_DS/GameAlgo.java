@@ -56,9 +56,10 @@ public class GameAlgo extends Thread{
     public void run() {
         game.startGame();
         while (game.isRunning()) {
-            game.move();
+
             try {
                 pokemons.update();
+                game.move();
                 sendAgentsToPokemons();
                 agents.update();
                 moveAgents();
@@ -69,7 +70,7 @@ public class GameAlgo extends Thread{
             }
 
             try {
-                Thread.sleep(0);
+                Thread.sleep(50);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -79,7 +80,21 @@ public class GameAlgo extends Thread{
         }
     }
 
+public void startGame(){
+        game.startGame();
+}
 
+    public game_service getGame() {
+        return game;
+    }
+
+    public Pokemons getPokemons() {
+        return pokemons;
+    }
+
+    public Agents getAgents() {
+        return agents;
+    }
 
     ////////// Private Methods //////////
     private void insertTargetsAndTime() {

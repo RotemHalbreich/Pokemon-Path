@@ -57,12 +57,10 @@ public class Agents {
         return agents.values().iterator();
     }
 
-
-
     public synchronized Agent getAgent(int key) {
         return agents.get(key);
     }
-    public long DPS(int key,int i ,int j){
+    public  long DPS(int key,int i ,int j){
         Agent a=getAgent(key);
         return (long)(dps[i][j]/a.getSpeed());
     }

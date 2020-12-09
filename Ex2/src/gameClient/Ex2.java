@@ -4,16 +4,13 @@ import Server.Game_Server_Ex2;
 import api.*;
 import api.directed_weighted_graph;
 import api.game_service;
-import gameClient.Game_DS.Agents;
-import gameClient.Game_DS.GameAlgo;
-import gameClient.Game_DS.Information;
-import gameClient.Game_DS.Pokemons;
+import gameClient.Game_DS.*;
 import org.json.JSONException;
 
 public class Ex2 {
     public static void main(String[] args) throws JSONException {
 
-        game_service game = Game_Server_Ex2.getServer(1);
+        game_service game = Game_Server_Ex2.getServer(23);
         Information i=new Information(game);
         DWGraph_Algo algo=  new DWGraph_Algo();
         directed_weighted_graph graph=algo.readFromJson(game.getGraph());
@@ -22,8 +19,34 @@ public class Ex2 {
         Pokemons p= new Pokemons(game,i);
         GameAlgo gameAlgo=new GameAlgo(game,i,algo,p,a);
 
+        Thread gameThread=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
 
-        gameAlgo.start();
+                    while (gameAlgo.getGame().isRunning()) {
+                        gameAlgo.getPokemons().update();
+                        gameAlgo.getGame().move();
+                        gameAlgo.sendAgentsToPokemons();
+                        gameAlgo.getAgents().update();
+                        gameAlgo.moveAgents();
+                        gameAlgo.updateHandled();
+
+                        Thread.sleep(50);
+                        System.out.println(gameAlgo.getGame().toString());
+                        System.out.println(gameAlgo.getGame().getAgents());
+                    }
+                    } catch (JSONException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        gameAlgo.startGame();
+        gameThread.start();
+
+
+
 
     }
 }
