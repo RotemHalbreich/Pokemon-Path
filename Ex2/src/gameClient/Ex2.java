@@ -10,15 +10,59 @@ import org.json.JSONException;
 public class Ex2 implements Runnable {
     private static GameGui2 gui = new GameGui2();
     private static GameAlgo gameAlgo;
+    private static int level;
 
     public static void main(String[] args) {
         Thread ex2 = new Thread(new Ex2());
+        try{
+            level=Integer.parseInt(args[0]);
+        }catch (Exception e){level=11;}
         ex2.start();
     }
 
     @Override
     public void run() {
-        game_service game = Game_Server_Ex2.getServer(11);
+
+        init();
+        gui.update(gameAlgo);
+       // gui.show();
+        gameAlgo.startGame();
+        int ind=0;
+
+        while (gameAlgo.isRunning()){
+            algorithm();
+
+            if(ind%3==0) {gui.repaint();}
+            ind++;
+            try {
+                Thread.sleep(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(gameAlgo.getGame().toString());
+
+    }
+
+    private static void algorithm() {
+        try {
+            gameAlgo.getPokemons().update();
+           // gameAlgo.getGame().move();
+            gameAlgo.sendAgentsToPokemons();
+            gameAlgo.getAgents().update();
+            gameAlgo.moveAgents();
+            gameAlgo.getInfo().update();
+            gameAlgo.updateHandled();
+
+            Thread.sleep(100);
+        } catch (JSONException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public static void init(){
+        game_service game = Game_Server_Ex2.getServer(level);
+        //game.login()
         DWGraph_Algo algo = null;
         Information i = null;
         Agents a = null;
@@ -35,37 +79,6 @@ public class Ex2 implements Runnable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        gui.update(gameAlgo);
-       // gui.show();
-        gameAlgo.startGame();
-        int ind=0;
-        while (gameAlgo.isRunning()){
-            algorithm();
-            if(ind%2==0) {gui.repaint();}
-            ind++;
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    private static void algorithm() {
-        try {
-            gameAlgo.getPokemons().update();
-           // gameAlgo.getGame().move();
-            gameAlgo.sendAgentsToPokemons();
-            gameAlgo.getAgents().update();
-            gameAlgo.moveAgents();
-            gameAlgo.getInfo().update();
-            gameAlgo.updateHandled();
-            Thread.sleep(100);
-        } catch (JSONException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
     }
 }
 //    public static void main(String[] args) throws JSONException {

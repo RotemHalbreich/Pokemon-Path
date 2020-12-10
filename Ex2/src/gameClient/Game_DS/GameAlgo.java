@@ -209,7 +209,6 @@ public class GameAlgo extends Thread {
     }
 
     private void moveAgent(Agent a) {
-
         ArrayList<node_data> path = targets.get(a.getId());
         if (path.size() > 1) {
             int src = path.get(0).getKey(), dest = path.get(1).getKey();
