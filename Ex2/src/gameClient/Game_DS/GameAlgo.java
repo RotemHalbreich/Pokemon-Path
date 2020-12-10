@@ -124,6 +124,9 @@ public class GameAlgo extends Thread {
     public Agents getAgents() {
         return agents;
     }
+    public synchronized boolean isRunning(){
+        return game.isRunning();
+    }
 
     ////////// Private Methods //////////
     private void insertTargetsAndTime() {
