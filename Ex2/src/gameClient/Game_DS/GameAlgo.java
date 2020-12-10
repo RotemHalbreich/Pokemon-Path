@@ -81,7 +81,9 @@ public class GameAlgo extends Thread {
                 moveAgent(a);
         }
     }
-
+    public directed_weighted_graph getGraph(){
+        return algo.getGraph();
+    }
     @Override
     public void run() {
         game.startGame();
