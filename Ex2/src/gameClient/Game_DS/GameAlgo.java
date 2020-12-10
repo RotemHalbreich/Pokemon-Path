@@ -43,12 +43,12 @@ public class GameAlgo extends Thread {
 
     public void sendAgentsToPokemons() {
         game.move();
-        System.out.println(A);
-        System.out.println(P);
-        HP = handlingPokemons.toString();
-        System.out.println(HP);
-        T = targets.toString();
-        System.out.println(T);
+//        System.out.println(A);
+//        System.out.println(P);
+//        HP = handlingPokemons.toString();
+//        System.out.println(HP);
+//        T = targets.toString();
+//        System.out.println(T);
 
 //        if(!A.equals(game.getAgents())){
 //            System.out.println("lllllllllllllllllllll");
@@ -126,6 +126,7 @@ public class GameAlgo extends Thread {
     public Agents getAgents() {
         return agents;
     }
+    public Information getInfo(){return info;}
     public synchronized boolean isRunning(){
         return game.isRunning();
     }
@@ -216,13 +217,13 @@ public class GameAlgo extends Thread {
 
             edge_data e = algo.getGraph().getEdge(src, dest);
             if (a.getPos().distance(pokemonFromEdge(e).getLocation()) < 0.001) {
-                System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhh");
-                System.out.println(A);
-                System.out.println(P);
-                HP = handlingPokemons.toString();
-                System.out.println(HP);
-                T = targets.toString();
-                System.out.println(T);
+//                System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhh");
+//                System.out.println(A);
+//                System.out.println(P);
+//                HP = handlingPokemons.toString();
+//                System.out.println(HP);
+//                T = targets.toString();
+//                System.out.println(T);
 
                 game.move();
                 A = game.getAgents();

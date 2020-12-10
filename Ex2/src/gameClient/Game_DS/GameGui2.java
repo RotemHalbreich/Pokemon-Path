@@ -19,6 +19,7 @@ public class GameGui2 extends JFrame  {
         super();
         setSize(1000,700);
         setFrameSize();
+        setVisible(true);
     }
     public void update(GameAlgo g){
         this.gameAlgo=g;
@@ -47,7 +48,7 @@ public class GameGui2 extends JFrame  {
 
 
     private void drawPokemos(Graphics g) {
-        if(gameAlgo.getPokemons()==null)return;
+        if(gameAlgo==null||gameAlgo.getPokemons()==null)return;
         Iterator<Pokemon> itr=gameAlgo.getPokemons().iterator();
         while (itr.hasNext()){
             Pokemon pokemon= itr.next();
@@ -111,6 +112,7 @@ public class GameGui2 extends JFrame  {
         for(node_data n:graph.getV()){
             drawNode(g,n);
             for(edge_data e:graph.getE(n.getKey())){
+                g.setColor(Color.black);
                 drawEdge(g,e);
             }
         }
@@ -126,17 +128,20 @@ public class GameGui2 extends JFrame  {
 
     private void drawEdge(Graphics g, edge_data e) {
         node_data src=graph.getNode(e.getSrc()),
-                dest=graph.getNode(e.getDest());
+                  dest=graph.getNode(e.getDest());
         double w=(int)e.getWeight();
-        int x=ratioX(src.getLocation().x()),x1=x,
-            y=ratioY(dest.getLocation().y()),y1=y;
+        int x=ratioX(src.getLocation().x()),
+                x1=ratioX(src.getLocation().x()),
+            y=ratioY(dest.getLocation().y()),
+                y1=ratioY(dest.getLocation().y());
 
-        g.setColor(Color.BLACK);
+
         g.drawLine(x,y,x1,y1);
+        g.setColor(Color.black);
         g.drawString(""+w,(x + 4 * x1) / 5, (y + 4 * y1) / 5);
     }
     private void drawAgents(Graphics g) {
-        if (gameAlgo.getAgents() == null) return;
+        if (gameAlgo==null||gameAlgo.getAgents() == null) return;
         Iterator<Agent> itr = gameAlgo.getAgents().iterator();
         while (itr.hasNext()) {
             Agent agent = itr.next();
