@@ -22,6 +22,7 @@ public class GameAlgo extends Thread {
     private String P = "";
     private String HP = "";
     private String T = "";
+    private static  int cou=0;
 
 
     public GameAlgo(game_service game, Information i, dw_graph_algorithms algo, Pokemons p, Agents a) throws JSONException {
@@ -32,33 +33,11 @@ public class GameAlgo extends Thread {
         this.agents = a;
         insertFirstTime();
         agents.update();
-
-        //Experiment:
-        A = game.getAgents();
-        P = game.getPokemons();
-        HP = handlingPokemons.toString();
-        T = targets.toString();
         insertTargetsAndTime();
     }
 
-    public void sendAgentsToPokemons() {
-        game.move();
-//        System.out.println(A);
-//        System.out.println(P);
-//        HP = handlingPokemons.toString();
-//        System.out.println(HP);
-//        T = targets.toString();
-//        System.out.println(T);
-
-//        if(!A.equals(game.getAgents())){
-//            System.out.println("lllllllllllllllllllll");
-//           //game.move();
-//            A=game.getAgents();//table1
-//        }else {
-//            game.move(); //table1,
-//            System.out.println("gggggggggggggggggggggg");
-//        }
-
+    public  void sendAgentsToPokemons() {
+       game.move();
         Iterator<Pokemon> itr = pokemons.iterator();
         while (itr.hasNext()) {
             Pokemon currPok = itr.next();
@@ -81,35 +60,30 @@ public class GameAlgo extends Thread {
                 moveAgent(a);
         }
     }
-    public directed_weighted_graph getGraph(){
+
+    public directed_weighted_graph getGraph() {
         return algo.getGraph();
     }
+
     @Override
     public void run() {
-        game.startGame();
-        while (game.isRunning()) {
-
-            try {
-                pokemons.update();
-                game.move();
-                sendAgentsToPokemons();
-                agents.update();
-                moveAgents();
-                updateHandled();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            for (Integer id : targets.keySet()) {
+                Agent a = agents.getAgent(id);
+                for (Point3D pos : handlingPokemons) {
+                    if (pos.distance(a.getPos()) < 0.001) {
+                        System.out.println(cou++);
+                        game.move();
+                        try {
+                           // updateHandled();
+                            Thread.sleep(0);
+                        } catch (InterruptedException  e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
-
-            try {
-                Thread.sleep(50);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            System.out.println(game.toString());
-            System.out.println(game.getAgents());
         }
-    }
+
 
     public void startGame() {
         game.startGame();
@@ -126,9 +100,30 @@ public class GameAlgo extends Thread {
     public Agents getAgents() {
         return agents;
     }
-    public Information getInfo(){return info;}
-    public synchronized boolean isRunning(){
+
+    public Information getInfo() {
+        return info;
+    }
+
+    public synchronized boolean isRunning() {
         return game.isRunning();
+    }
+
+    public  long averageTime() {
+        Iterator<Agent> itr = agents.iterator();
+        double ans = 1;
+
+        while (itr.hasNext()) {
+            Agent a = itr.next();
+            ArrayList<node_data> p = targets.get(a.getId());
+            if (p.size() > 1) {
+             double w=algo.getGraph().getEdge(p.get(0).getKey(),p.get(1).getKey()).getWeight();
+             double speed=a.getSpeed();
+             ans+=(w/speed);
+            }
+        }
+        System.out.println(ans);
+        return (long) (ans*10)+100;
     }
 
     ////////// Private Methods //////////
@@ -185,6 +180,7 @@ public class GameAlgo extends Thread {
             tempPath = targets.get(id);
             last = tempPath.get(tempPath.size() - 1).getKey();
             long minTime = agents.DPS(id, last, src);
+
             if (minTime + tempOptimalTime < optimalTime) {
                 optimalTime = minTime + tempOptimalTime;
                 path = tempPath;
@@ -213,46 +209,12 @@ public class GameAlgo extends Thread {
         if (path.size() > 1) {
             int src = path.get(0).getKey(), dest = path.get(1).getKey();
             game.chooseNextEdge(a.getId(), path.get(1).getKey());
-
             edge_data e = algo.getGraph().getEdge(src, dest);
-            if (a.getPos().distance(pokemonFromEdge(e).getLocation()) < 0.001) {
-//                System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhh");
-//                System.out.println(A);
-//                System.out.println(P);
-//                HP = handlingPokemons.toString();
-//                System.out.println(HP);
-//                T = targets.toString();
-//                System.out.println(T);
-
-                game.move();
-                A = game.getAgents();
-            }
-
             edge_data from = algo.getGraph().getEdge(src, dest);
             long fromTime = (long) (from.getWeight() / a.getSpeed());
             timer.put(a.getId(), timer.get(a.getId()) - fromTime);
             path.remove(0);
         } else timer.put(a.getId(), 0L);
-    }
-
-    private void eatPokemon(Agent curr, int id, edge_data e) {
-//        Pokemon p=pokemonFromEdge(e);
-//        boolean cur=true;
-//
-//        while (cur){
-//            System.out.println("Agent: "+curr.toString()+"\n");
-//            System.out.println("pokemon: "+p.toString()+"\n");
-//            System.out.println("edge: "+e.toString()+"\n");
-//            game.move();
-//
-//            System.out.println(i +") outside");
-//            if(curr.getPos().close2equals(p.getLocation())) {
-//                System.out.println(j +") inside");
-//                game.move();
-//                cur=false;
-//            }
-//
-//        }
     }
 
     private Pokemon pokemonFromEdge(edge_data e) {
@@ -265,14 +227,4 @@ public class GameAlgo extends Thread {
         }
         return curr;
     }
-
-    private boolean hasPokemonOnEdge(edge_data e) {
-        Iterator<Pokemon> itr = pokemons.iterator();
-        while (itr.hasNext()) {
-            if (itr.next().getEdge().equals(e))
-                return true;
-        }
-        return false;
-    }
-
 }

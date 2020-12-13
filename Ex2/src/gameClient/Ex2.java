@@ -14,6 +14,7 @@ public class Ex2 implements Runnable {
 
     public static void main(String[] args) {
         Thread ex2 = new Thread(new Ex2());
+
         try{
             level=Integer.parseInt(args[0]);
         }catch (Exception e){level=11;}
@@ -31,7 +32,7 @@ public class Ex2 implements Runnable {
 
         while (gameAlgo.isRunning()){
             algorithm();
-
+            gameAlgo.run();
             if(ind%3==0) {gui.repaint();}
             ind++;
             try {
@@ -47,14 +48,14 @@ public class Ex2 implements Runnable {
     private static void algorithm() {
         try {
             gameAlgo.getPokemons().update();
-           // gameAlgo.getGame().move();
+            //gameAlgo.getGame().move();
             gameAlgo.sendAgentsToPokemons();
             gameAlgo.getAgents().update();
             gameAlgo.moveAgents();
             gameAlgo.getInfo().update();
             gameAlgo.updateHandled();
 
-            Thread.sleep(100);
+            Thread.sleep(gameAlgo.averageTime());
         } catch (JSONException | InterruptedException e) {
             e.printStackTrace();
         }
