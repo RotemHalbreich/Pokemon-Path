@@ -37,7 +37,9 @@ public class Pokemons {
             else
                 pokemons[i].update(jsonPokemon);
         }
+
         Arrays.sort(pokemons);
+
 
     }
 

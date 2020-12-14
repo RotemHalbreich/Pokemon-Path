@@ -1,222 +1,66 @@
 package gameClient.Game_DS;
 
+import javax.swing.*;
 
 import api.*;
-import org.json.JSONException;
-import org.json.JSONObject;
+import gameClient.Ex2;
+import gameClient.Ex22;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 
-@SuppressWarnings("serial")
-public class GameGUI extends JFrame implements ActionListener, MouseListener {
+import static java.lang.Double.MAX_VALUE;
+import static java.lang.Double.MIN_VALUE;
+import static java.lang.Integer.parseInt;
 
-    private game_service game;
-    private DWGraph_Algo algo = new DWGraph_Algo();
-    private Information info;
-    private Pokemons pokemons;
-    private Agents agents;
+ public class GameGUI extends JFrame implements MouseListener, ActionListener {
+    private GameAlgo2 gameAlgo2;
+    private directed_weighted_graph graph2;
+    private double MinX, MinY, MaxX, MaxY;
 
+    public GameGUI() {
+        super();
 
-    private final int NODE_SIZE = 10; // need to be even
-    private final int ARROW_SIZE = NODE_SIZE - 2;
-
-
-    private double minX = Double.MAX_VALUE;
-    private double maxX = Double.MIN_VALUE;
-    private double minY = Double.MAX_VALUE;
-    private double maxY = Double.MIN_VALUE;
-
-    private double EPS = 0.00001;
-
-    public GameGUI(game_service game) {
-        this.game = game;
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1200, 700);
-        addMouseListener(this);
-        //setPokemons();
+        setLayout(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        initGame();
+        setFrameSize();
+        menuBar();
+        addMouseListener(this);
+//        this.gameAlgo2 =gameAlgo;
+//        this.graph2 = gameAlgo2.getGraph();
+//        resizeFrame();
+
     }
 
-    private void initGame() {
-        initGraph();
+    public void update(GameAlgo2 g) {
+        this.gameAlgo2 = g;
+        this.graph2 = gameAlgo2.getGraph();
+        resizeFrame();
+
 
     }
 
-    private void initGraph() {
-        directed_weighted_graph graph = algo.readFromJson(game.getGraph());
-        algo.init(graph);
-        refactorMinMaxXY();
-        repaint();
-    }
-
-//    private void startAutoGame() throws JSONException {
-//        GameAlgo auto = new GameAlgo(game, algo, pokemons, agents);
-//        game.startGame();
-//        auto.start();
-//    }
-
-    private void refactorMinMaxXY() {
-        if (algo == null || algo.getGraph() == null) return;
-        for (node_data node : algo.getGraph().getV()) {
-            if (node.getLocation().x() < minX)
-                minX = node.getLocation().x();
-
-            if (node.getLocation().x() > maxX)
-                maxX = node.getLocation().x();
-
-            if (node.getLocation().y() < minY)
-                minY = node.getLocation().y();
-
-            if (node.getLocation().y() > maxY)
-                maxY = node.getLocation().y();
-        }
-    }
-
-    /**
-     * @param x the x coordinate to convert
-     * @return the location on the screen that fit that x
-     */
-    private int scaleX(double x) {
-        if (x > maxX || x < minX)
-            refactorMinMaxXY();
-        return (int) ((x - minX) / (maxX - minX) * (getWidth() - 50) + 25);
-    }
-
-    /**
-     * @param y the y coordinate to convert
-     * @return the location on the screen that fit that y
-     */
-    private int scaleY(double y) {
-        if (y > maxY || y < minY)
-            refactorMinMaxXY();
-        return getHeight() - (int) ((y - minY) / (maxY - minY) * (getHeight() - 100) + 30);
-    }
-
-    /**
-     * update the frame according to the current location of the game objects
-     */
-    @Override
     public void paint(Graphics g) {
+        if (graph2 == null) super.paint(g);
+//        BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+//        Graphics2D g = bufferedImage.createGraphics();
+//        super.paintComponents(g);
+        // g.setFont(new Font("Courier", Font.PLAIN, 20));
 
-        if (algo == null || algo.getGraph() == null) {
-            super.paint(g);
-            return;
-        }
+      //  g.setBackground(Color.white);
+        // g.clearRect(0,0,getWidth(),getHeight());
+        drawGraph(g);
+        drawPokemos(g);
+        drawAgents(g);
+        drawInfo(g);
 
-        BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = bufferedImage.createGraphics();
+//        Graphics2D orgGraphic = (Graphics2D) g2;
+//        orgGraphic.drawImage(bufferedImage, null, 0, 0);
 
-        g2d.setFont(new Font("Courier", Font.PLAIN, 20));
-        super.paintComponents(g2d);
-
-        drawGraph(g2d);
-
-//        drawPokemons(g2d);
-//
-//        drawAgents(g2d);
-
-
-        Graphics2D orgGraphic = (Graphics2D) g;
-        orgGraphic.drawImage(bufferedImage, null, 0, 0);
-
-    }
-
-
-//    private void drawAgents(Graphics g) {
-//        if (agents == null) return;
-//
-//
-//        for (Agent agent : agents) {
-//            if (agent != null) {
-//                g.setColor(Color.green);
-//                int x = scaleX(agent.getPos().x()) - IMAGE_SIZE / 2;
-//                int y = scaleY(agent.getPos().y()) - IMAGE_SIZE / 2;
-//                g.drawImage(this.robotIMG, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
-//                g.drawString("" + agent.getSpeed(), x, y);
-//
-//                if (agent.getDest() == -1) {
-//                    g.setColor(Color.DARK_GRAY);
-//                    g.drawOval(x - IMAGE_SIZE, y - IMAGE_SIZE, 3 * IMAGE_SIZE, 3 * IMAGE_SIZE);
-//                }
-//            }
-//        }
-//    }
-//
-//    private void drawPokemons(Graphics g) {
-//        if (pokemons == null) return;
-//
-//        g.setColor(Color.blue);
-//        for (Pokemon pokemon : pokemons) {
-//
-//            int x = scaleX(pokemon.getLocation().x()) - IMAGE_SIZE / 2;
-//            int y = scaleY(pokemon.getLocation().y()) - IMAGE_SIZE / 2;
-//            if (pokemon.getType() < 0)
-//
-//                g.drawImage(bananaIMG, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
-//            else
-//                g.drawImage(appleIMG, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
-//
-//            g.drawString(pokemon.getValue() + "", x, y);
-//        }
-//    }
-
-    /**
-     * Draw the graph vertexes and edges in their current place on the screen
-     */
-    private void drawGraph(Graphics2D g2d) {
-        if (algo == null || algo.getGraph() == null)
-            return;
-
-        for (node_data n : algo.getGraph().getV()) {
-            int x = scaleX(n.getLocation().x());
-            int y = scaleY(n.getLocation().y());
-            g2d.setColor(Color.black);
-            g2d.fillOval(x - NODE_SIZE / 2, y - NODE_SIZE / 2, NODE_SIZE, NODE_SIZE);
-            g2d.drawString("" + n.getKey(), x, y + 15);
-
-            for (edge_data e : algo.getGraph().getE(n.getKey())) {
-                drawEdge(g2d, e);
-            }
-        }
-    }
-
-    /**
-     * Draw a single edge
-     */
-    private void drawEdge(Graphics g, edge_data e) {
-        node_data src = algo.getGraph().getNode(e.getSrc());
-        node_data dest = algo.getGraph().getNode(e.getDest());
-        int x1 = scaleX(src.getLocation().x());
-        int y1 = scaleY(src.getLocation().y());
-        int x2 = scaleX(dest.getLocation().x());
-        int y2 = scaleY(dest.getLocation().y());
-
-        g.setColor(Color.DARK_GRAY);
-        g.drawLine(x1, y1, x2, y2);
-        double w = (int) (e.getWeight() * 10);
-        w /= 10;
-        g.drawString("" + w, (x1 + 4 * x2) / 5, (y1 + 4 * y2) / 5);
-
-        g.setColor(Color.yellow);
-        g.fillRect(((x1 + 7 * x2) / 8 - ARROW_SIZE / 2), ((y1 + 7 * y2) / 8 - ARROW_SIZE / 2), ARROW_SIZE, ARROW_SIZE);
-    }
-
-
-    // we need to complete this
-    private void setPokemons() {
-    }
-
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
 
     }
 
@@ -244,4 +88,176 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String select = e.getActionCommand();
+        System.out.println(select);
+        if (select.equals("New Game")) {
+            gameAlgo2.getGame().stopGame();
+            boolean with = true;
+            while (with) {
+                select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "0");
+                int num = -1;
+                try {
+                    num = parseInt(select);
+                } catch (Exception ex) {
+                    continue;
+                }
+                if (num < 23 || num > 0) {
+                    initNewGame(num);
+                    with = false;
+                }
+            }
+        } else {
+            gameAlgo2.getGame().stopGame();
+        }
+    }
+
+
+//////// TODO4!!!! ///////
+
+    // we need to think about
+    // what we want to do after game
+    public void gameOver() {
+        ;
+    }
+
+    //// we need to build that actually
+// rotem need build that ////
+    private void drawInfo(Graphics g) {
+
+    }
+
+
+    ///////// Private Methods //////////
+    private void setFrameSize() {
+        MinX = MAX_VALUE;
+        MinY = MAX_VALUE;
+        MaxX = MIN_VALUE;
+        MaxY = MIN_VALUE;
+    }
+
+    // we need to fix the duplicate
+    private void resizeFrame() {
+        if (graph2 == null) return;
+        for (node_data n : graph2.getV()) {
+            if (n.getLocation().x() < MinX)
+                MinX = n.getLocation().x();
+
+            if (n.getLocation().x() > MaxX)
+                MaxX = n.getLocation().x();
+
+            if (n.getLocation().y() < MinY)
+                MinY = n.getLocation().y();
+
+            if (n.getLocation().y() > MaxY)
+                MaxY = n.getLocation().y();
+        }
+    }
+
+    private int ratioY(double y) {
+        if (y > MaxY || y < MinY)
+            resizeFrame();
+
+        return getHeight() - (int) ((y - MinY) / (MaxY - MinY) * (getHeight() - 100) + 30);
+    }
+
+    private int ratioX(double x) {
+        if (x > MaxX || x < MinX)
+            resizeFrame();
+        return (int) ((x - MinX) / (MaxX - MinX) * (getWidth() - 50) + 25);
+    }
+
+    private void drawGraph(Graphics g) {
+        if (graph2 == null) return;
+        for (node_data n : graph2.getV()) {
+            drawNode(g, n);
+            for (edge_data e : graph2.getE(n.getKey())) {
+                drawEdge(g, e);
+            }
+        }
+
+
+    }
+
+    private void drawNode(Graphics g, node_data n) {
+        int x = ratioX(n.getLocation().x());
+        int y = ratioY(n.getLocation().y());
+        g.setColor(Color.blue);
+        g.fillOval(x - 5, y - 5, 10, 10);
+        g.drawString("" + n.getKey(), x, y + 10);
+    }
+
+    private void drawEdge(Graphics g, edge_data e) {
+        node_data src = graph2.getNode(e.getSrc()),
+                dest = graph2.getNode(e.getDest());
+        double w = (int) e.getWeight();
+        int x = ratioX(src.getLocation().x()),
+                x1 = ratioX(dest.getLocation().x()),
+                y = ratioY(src.getLocation().y()),
+                y1 = ratioY(dest.getLocation().y());
+
+        g.setColor(Color.black);
+        // g.setFont(new Font("MV Boli",Font.BOLD,10));
+        g.drawLine(x, y, x1, y1);
+        g.drawString("" + w, (x + 4 * x1) / 5, (y + 4 * y1) / 5);
+    }
+
+    private void drawAgents(Graphics g) {
+        if (gameAlgo2 == null || gameAlgo2.getAgents() == null) return;
+        Iterator<GameAlgo2.Agent> itr = gameAlgo2.getAgents().iterator();
+        while (itr.hasNext()) {
+            GameAlgo2.Agent agent = itr.next();
+            if (agent == null) continue;
+            g.setColor(Color.RED);
+            int x = ratioX(agent.getPos().x()),
+                    y = ratioY(agent.getPos().y());
+            g.fillOval(x - 8, y - 8, 16, 16);
+            g.drawString("id:" + agent.getId() + "s:" + agent.getSpeed(), x, y);
+        }
+    }
+
+    private void drawPokemos(Graphics g) {
+        if (gameAlgo2 == null || gameAlgo2.getPokemons() == null) return;
+        Iterator<GameAlgo2.Pokemon> itr = gameAlgo2.getPokemons().iterator();
+        while (itr.hasNext()) {
+            GameAlgo2.Pokemon pokemon = itr.next();
+            if (pokemon.getLocation() == null) continue;
+            int x = ratioX(pokemon.getLocation().x()),
+                    y = ratioY(pokemon.getLocation().y());
+            g.setColor(Color.green);
+            if (pokemon.getType() < 0) g.setColor(Color.ORANGE);
+            g.fillOval(x - 10, y - 10, 20, 20);
+            g.drawString("" + pokemon.getValue(), x, y);
+
+        }
+    }
+
+    private void menuBar() {
+        JMenu menu = new JMenu("Menu");
+        JMenuItem newGame = new JMenuItem("New Game");
+        newGame.addActionListener(this);
+        newGame.setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+        menu.add(newGame);
+        JMenuItem stop = new JMenuItem("Stop Game!");
+        stop.addActionListener(this);
+        menu.add(stop);
+
+        JMenuBar fatherMenu = new JMenuBar();
+        fatherMenu.add(menu);
+        setJMenuBar(fatherMenu);
+
+    }
+
+    //we need to fix that
+    private void initNewGame(int num) {
+        String[] newGame = new String[1];
+        newGame[0] = "" + num;
+        Ex22.main(newGame);
+
+
+    }
+
 }

@@ -22,7 +22,7 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
     public GameGui2() {
         super();
 
-        setSize(1200, 700);
+        setSize(1280, 700);
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -182,8 +182,8 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
         int x = ratioX(n.getLocation().x());
         int y = ratioY(n.getLocation().y());
         g.setColor(Color.blue);
-        g.fillOval(x - 5, y - 5, 10, 10);
-        g.drawString("" + n.getKey(), x, y + 10);
+        g.fillOval(x - 5, y - 5, 12, 12);
+        g.drawString("  " + n.getKey(), x, y + 10);
     }
 
     private void drawEdge(Graphics g, edge_data e) {
@@ -196,9 +196,9 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
                 y1 = ratioY(dest.getLocation().y());
 
         g.setColor(Color.black);
-        // g.setFont(new Font("MV Boli",Font.BOLD,10));
+        g.setFont(new Font("MV Boli",Font.BOLD,12));
         g.drawLine(x, y, x1, y1);
-        g.drawString("" + w, (x + 4 * x1) / 5, (y + 4 * y1) / 5);
+        g.drawString("  ", (x + 5 * x1) / 4, (y + 5 * y1) / 4);
     }
 
     private void drawAgents(Graphics g) {
@@ -210,8 +210,9 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
             g.setColor(Color.RED);
             int x = ratioX(agent.getPos().x()),
                     y = ratioY(agent.getPos().y());
-            g.fillOval(x - 8, y - 8, 16, 16);
-            g.drawString("id:" + agent.getId() + "s:" + agent.getSpeed(), x, y);
+           // g.fillOval(x - 8, y - 8, 24, 24);
+            g.fillArc(x -8, y -8, 28,28,300,300);
+            g.drawString("   ID: " + agent.getId() + " S: " + agent.getSpeed(), x, y);
         }
     }
 
@@ -225,8 +226,9 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
                     y = ratioY(pokemon.getLocation().y());
             g.setColor(Color.green);
             if (pokemon.getType() < 0) g.setColor(Color.ORANGE);
-            g.fillOval(x - 10, y - 10, 20, 20);
-            g.drawString("" + pokemon.getValue(), x, y);
+            g.fill3DRect(x-6, y-6, 16, 16,true);
+            //g.fillOval(x - 6, y - 6, 16, 16);
+            g.drawString("  " + pokemon.getValue(), x, y);
 
         }
     }
