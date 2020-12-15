@@ -48,16 +48,14 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
         if (graph == null) super.paint(g2);
         BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bufferedImage.createGraphics();
-
-        // g.setFont(new Font("Courier", Font.PLAIN, 20));
         super.paintComponents(g);
 
         g.setBackground(Color.white);
-        // g.clearRect(0,0,getWidth(),getHeight());
+
         drawGraph(g);
         drawPokemos(g);
         drawAgents(g);
-       drawInfo(g);
+        drawInfo(g);
 
         Graphics2D orgGraphic = (Graphics2D) g2;
         orgGraphic.drawImage(bufferedImage, null, 0, 0);
@@ -124,8 +122,7 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
         ;
     }
 
-    //// we need to build that actually
-// rotem need build that ////
+ // we need to complete this function
     private void drawInfo(Graphics g) {
         if (gameAlgo == null) return;
         g.setColor(Color.BLUE);
