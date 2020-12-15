@@ -11,12 +11,14 @@ public class Ex2 implements Runnable {
     private static GameGui2 gui = new GameGui2();
     private static GameAlgo gameAlgo;
     private static int level;
+    private  static int id;
 
     public static void main(String[] args) {
         Thread ex2 = new Thread(new Ex2());
         try{
             level=Integer.parseInt(args[0]);
-        }catch (Exception e){level=11;}
+            id=Integer.parseInt(args[1]);
+        }catch (Exception e){level=11;id=305496614;}
         ex2.start();
 
     }
@@ -27,12 +29,13 @@ public class Ex2 implements Runnable {
         gui.update(gameAlgo);
         gameAlgo.startGame();
         int ind=0;
-      gameAlgo.start();
+       //gameAlgo.start();
         while (gameAlgo.isRunning()){
             algorithm();
             if(ind%1==0) {gui.repaint();}
             ind++;
         }
+        gui.repaint();
         System.out.println(gameAlgo.getGame().toString());
 
     }
@@ -42,8 +45,8 @@ public class Ex2 implements Runnable {
             gameAlgo.getGame().move();
             gameAlgo.getPokemons().update();
             //gameAlgo.getGame().move();
-            gameAlgo.sendAgentsToPokemons();
 
+            gameAlgo.sendAgentsToPokemons();
             gameAlgo.getAgents().update();
             gameAlgo.moveAgents();
             gameAlgo.getInfo().update();
@@ -56,7 +59,7 @@ public class Ex2 implements Runnable {
     }
     public static void init(){
         game_service game = Game_Server_Ex2.getServer(level);
-        //game.login()
+       // game.login(id);
         DWGraph_Algo algo = null;
         Information i = null;
         Agents a = null;

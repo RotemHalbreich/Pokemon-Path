@@ -18,7 +18,7 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
     private GameAlgo gameAlgo;
     private directed_weighted_graph graph;
     private double MinX, MinY, MaxX, MaxY;
-
+    private final String id="305496614";
 
 
     public GameGui2() {
@@ -46,7 +46,12 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
 
     public void paint(Graphics g2) {
         if (graph == null) super.paint(g2);
-        BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage =
+                new BufferedImage(
+                 getWidth(),
+                 getHeight(),
+                 BufferedImage.TYPE_INT_ARGB
+        );
         Graphics2D g = bufferedImage.createGraphics();
         super.paintComponents(g);
 
@@ -65,7 +70,7 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+       // System.out.println("x:"+e.getX()+"\t y:"+e.getY());
     }
 
     @Override
@@ -118,18 +123,18 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
 
     // we need to think about
     // what we want to do after game
-    public void gameOver() {
+    public void gameOver(Graphics g) {
         ;
     }
 
  // we need to complete this function
     private void drawInfo(Graphics g) {
         if (gameAlgo == null) return;
-        g.setColor(Color.BLUE);
-        g.setFont(new Font("Courier", Font.PLAIN, getWidth() /70));
+        g.setColor(Color.black);
+        g.setFont(new Font("MV Boli", Font.PLAIN, getWidth() /57));
         if (gameAlgo.getInfo() != null) {
             String info = "";
-            info += "Points: " + gameAlgo.getInfo().getGrade();
+            info += "Grade: " + gameAlgo.getInfo().getGrade();
             if (gameAlgo.isRunning())
                 info += " | Time: " + gameAlgo.getGame().timeToEnd() / 1000;
             info += " | Moves: " + gameAlgo.getInfo().getMoves();
@@ -138,12 +143,14 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
             g.drawString("Level: " + gameAlgo.getInfo().getGameLevel() + " | Pokemons: " + gameAlgo.getInfo().getPokemons() + " | Agents: "
                     + gameAlgo.getInfo().getAgents(), (getWidth() / 3) * 2, 50);
 
-//            if (gameOver) {
-//                g.setFont(new Font("Courier", Font.PLAIN, 50));
-//                g.setColor(Color.RED);
-//                if (gameAlgo.getInfo() != null)
-//                    g.drawString("Game Over!", getWidth() / 2 - 150, 250);
-//            }
+           if(!gameAlgo.getGame().isRunning()){
+               g.setFont(new Font("Courier", Font.PLAIN, 100));
+               g.setColor(Color.red);
+               if (gameAlgo.getInfo() != null)
+                   g.drawString("Game Over!",getWidth()/2-300, getHeight()/2);
+
+
+           }
         }
 
     }
@@ -274,8 +281,9 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
 
     //we need to fix that
     private void initNewGame(int num) {
-        String[] newGame = new String[1];
+        String[] newGame = new String[2];
         newGame[0] = "" + num;
+        newGame[1]=id;
         Ex2.main(newGame);
 
 
