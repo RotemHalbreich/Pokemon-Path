@@ -2,14 +2,9 @@ package gameClient.Game_DS;
 
 import api.*;
 import org.json.*;
-import gameClient.util.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Iterator;
-
-
-import static java.lang.Double.parseDouble;
 
 public class Pokemons {
     private game_service game;

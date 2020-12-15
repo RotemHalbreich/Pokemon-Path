@@ -1,7 +1,6 @@
 package gameClient.Game_DS;
 
 import api.*;
-import gameClient.util.Point3D;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,7 +9,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import static java.lang.Double.MAX_VALUE;
-import static java.lang.Double.parseDouble;
 
 public class Agents {
     private final String isEmpty = "{\"Agents\":[";
