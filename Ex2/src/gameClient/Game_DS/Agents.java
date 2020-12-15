@@ -24,7 +24,10 @@ public class Agents {
         this.info=i;
         update();
         insertDPS();
+
     }
+
+
 
 
     public synchronized void update() throws JSONException {
@@ -60,9 +63,8 @@ public class Agents {
     public synchronized Agent getAgent(int key) {
         return agents.get(key);
     }
-    public  long DPS(int key,int i ,int j){
-        Agent a=getAgent(key);
-        return (long)(dps[i][j]/a.getSpeed());
+    public  double DPS(int key,int i ,int j){
+        return (dps[i][j]);
     }
 
     public String toString() {
@@ -83,6 +85,10 @@ public class Agents {
         insertActualValue(g);
         minDPS();
     }
+
+
+
+
     private int findMaxId( directed_weighted_graph g){
         int m=-1;
        for (node_data n:g.getV()){

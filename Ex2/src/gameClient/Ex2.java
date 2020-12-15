@@ -27,7 +27,7 @@ public class Ex2 implements Runnable {
         gui.update(gameAlgo);
         gameAlgo.startGame();
         int ind=0;
-        gameAlgo.start();
+      gameAlgo.start();
         while (gameAlgo.isRunning()){
             algorithm();
             if(ind%1==0) {gui.repaint();}
@@ -43,6 +43,7 @@ public class Ex2 implements Runnable {
             gameAlgo.getPokemons().update();
             //gameAlgo.getGame().move();
             gameAlgo.sendAgentsToPokemons();
+
             gameAlgo.getAgents().update();
             gameAlgo.moveAgents();
             gameAlgo.getInfo().update();

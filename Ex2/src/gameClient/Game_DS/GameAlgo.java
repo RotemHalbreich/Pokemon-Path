@@ -18,12 +18,6 @@ public class GameAlgo extends Thread {
     private List<Point3D> handlingPokemons = new ArrayList<>();
     private HashMap<Integer, ArrayList<node_data>> targets = new HashMap<>();
     private HashMap<Integer, Double> timer = new HashMap<>();
-    private String A = "";
-    private String P = "";
-    private String HP = "";
-    private String T = "";
-    private static  int cou=0;
-
 
     public GameAlgo(game_service game, Information i, dw_graph_algorithms algo, Pokemons p, Agents a) throws JSONException {
         this.game = game;
@@ -37,7 +31,6 @@ public class GameAlgo extends Thread {
     }
 
     public  void sendAgentsToPokemons() {
-
         Iterator<Pokemon> itr = pokemons.iterator();
         while (itr.hasNext()) {
             Pokemon currPok = itr.next();
@@ -62,25 +55,15 @@ public class GameAlgo extends Thread {
 
     @Override
     public void run() {
-
         Iterator<Agent>itr=agents.iterator();
         while(itr.hasNext()){
             Agent a=itr.next();
             Iterator<Pokemon>pok=pokemons.iterator();
             while(pok.hasNext()){
-                if(pok.next().getLocation().distance(a.getPos())<0.01)
+                if(pok.next().getLocation().distance(a.getPos())<0.001)
                     game.move();
-//                try {
-//                    agents.update();
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
             }
-
         }
-
-
-
     }
     public void startGame() {game.startGame();}
 
@@ -103,12 +86,14 @@ public class GameAlgo extends Thread {
             Agent a = itr.next();
             ArrayList<node_data> p = targets.get(a.getId());
             if (p.size() > 1) {
-              w+=algo.getGraph().getEdge(p.get(0).getKey(),p.get(1).getKey()).getWeight();
-              speed+=a.getSpeed();
+              w=algo.getGraph().getEdge(p.get(0).getKey(),p.get(1).getKey()).getWeight();
+              speed=a.getSpeed();
+              ans+=w/speed;
             }
         }
+        ans/=info.getAgents();
         if(w==0&&speed==0||ans<1)return 100;
-        ans+=w/speed;
+
      return (long) ans*100;
     }
 
@@ -159,26 +144,40 @@ public class GameAlgo extends Thread {
         //long optimalTime = game.timeToEnd() + 1000;
         double optimalTime=Double.MAX_VALUE;
         ArrayList<node_data> path = null, tempPath = null;
-        int last = 0, agent = 0;
-        for (int id : timer.keySet()) {
-            Double tempOptimalTime = timer.get(id);
-            tempPath = targets.get(id);
+        int last = 0, agentId = 0;
+//        for (int id : timer.keySet()) {
+//            double tempOptimalTime = timer.get(id);
+//            tempPath = targets.get(id);
+//            last = tempPath.get(tempPath.size() - 1).getKey();
+//            double minTime = agents.DPS(id, last, src);
+//           // double minTime=  algo.shortestPathDist(last,src)/agents.getAgent(id).getSpeed();
+//            if (minTime+ tempOptimalTime < optimalTime){
+//                optimalTime = minTime+ tempOptimalTime;
+//                path = tempPath;
+//                agentId = id;
+//            }
+//        }
+        Iterator<Agent> itr=agents.iterator();
+        while (itr.hasNext()){
+            Agent agent=itr.next();
+            Double tempOptimalTime = timer.get(agent.getId());
+            tempPath = targets.get(agent.getId());
             last = tempPath.get(tempPath.size() - 1).getKey();
-            //long minTime = agents.DPS(id, last, src);
-            double minTime=  algo.shortestPathDist(last,src);
-            //if (minTime + tempOptimalTime < optimalTime) {
+            double minTime=  algo.shortestPathDist(last,src)/agent.getSpeed();
+          //  double minTime=agents.DPS(agent.getId(),last,src)/agent.getSpeed();
             if (minTime+ tempOptimalTime < optimalTime){
-                optimalTime =(minTime);
+                optimalTime = minTime + tempOptimalTime;
                 path = tempPath;
-                agent = id;
+                agentId = agent.getId();
             }
+
         }
         last = path.get(path.size() - 1).getKey();
         List<node_data> shortesPath = algo.shortestPath(last, src);
         shortesPath.remove(0);
         path.addAll(shortesPath);
         path.add(algo.getGraph().getNode(currPok.getEdge().getDest()));
-        timer.put(agent,  optimalTime);
+        timer.put(agentId,  optimalTime);
         handlingPokemons.add(0, currPok.getLocation());
     }
 
@@ -193,10 +192,11 @@ public class GameAlgo extends Thread {
         if (path.size() > 1) {
             int src = path.get(0).getKey(), dest = path.get(1).getKey();
             game.chooseNextEdge(a.getId(), path.get(1).getKey());
-            edge_data e = algo.getGraph().getEdge(src, dest);
+           // edge_data e = algo.getGraph().getEdge(src, dest);
             edge_data from = algo.getGraph().getEdge(src, dest);
-            Double fromTime =  (from.getWeight() / a.getSpeed());
-            timer.put(a.getId(), timer.get(a.getId()) - fromTime);
+            double fromTime =  (from.getWeight() / a.getSpeed());
+            if(timer.get(a.getId()) - fromTime<0)timer.put(a.getId(), 0.0);
+            else timer.put(a.getId(), timer.get(a.getId()) - fromTime);
             path.remove(0);
         } else timer.put(a.getId(), 0.0);
     }

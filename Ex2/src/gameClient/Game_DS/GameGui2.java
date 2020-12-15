@@ -19,9 +19,12 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
     private directed_weighted_graph graph;
     private double MinX, MinY, MaxX, MaxY;
 
+
+
     public GameGui2() {
         super();
 
+        setTitle("Pokemon");
         setSize(1280, 700);
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -45,15 +48,16 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
         if (graph == null) super.paint(g2);
         BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bufferedImage.createGraphics();
-        super.paintComponents(g);
+
         // g.setFont(new Font("Courier", Font.PLAIN, 20));
+        super.paintComponents(g);
 
         g.setBackground(Color.white);
         // g.clearRect(0,0,getWidth(),getHeight());
         drawGraph(g);
         drawPokemos(g);
         drawAgents(g);
-        drawInfo(g);
+       drawInfo(g);
 
         Graphics2D orgGraphic = (Graphics2D) g2;
         orgGraphic.drawImage(bufferedImage, null, 0, 0);
@@ -123,6 +127,27 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
     //// we need to build that actually
 // rotem need build that ////
     private void drawInfo(Graphics g) {
+        if (gameAlgo == null) return;
+        g.setColor(Color.BLUE);
+        g.setFont(new Font("Courier", Font.PLAIN, getWidth() /70));
+        if (gameAlgo.getInfo() != null) {
+            String info = "";
+            info += "Points: " + gameAlgo.getInfo().getGrade();
+            if (gameAlgo.isRunning())
+                info += " | Time: " + gameAlgo.getGame().timeToEnd() / 1000;
+            info += " | Moves: " + gameAlgo.getInfo().getMoves();
+            g.drawString(info, getWidth() / 4, 50);
+
+            g.drawString("Level: " + gameAlgo.getInfo().getGameLevel() + " | Pokemons: " + gameAlgo.getInfo().getPokemons() + " | Agents: "
+                    + gameAlgo.getInfo().getAgents(), (getWidth() / 3) * 2, 50);
+
+//            if (gameOver) {
+//                g.setFont(new Font("Courier", Font.PLAIN, 50));
+//                g.setColor(Color.RED);
+//                if (gameAlgo.getInfo() != null)
+//                    g.drawString("Game Over!", getWidth() / 2 - 150, 250);
+//            }
+        }
 
     }
 
@@ -196,7 +221,7 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
                 y1 = ratioY(dest.getLocation().y());
 
         g.setColor(Color.black);
-        g.setFont(new Font("MV Boli",Font.BOLD,12));
+        g.setFont(new Font("MV Boli", Font.BOLD, 12));
         g.drawLine(x, y, x1, y1);
         g.drawString("  ", (x + 5 * x1) / 4, (y + 5 * y1) / 4);
     }
@@ -210,8 +235,8 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
             g.setColor(Color.RED);
             int x = ratioX(agent.getPos().x()),
                     y = ratioY(agent.getPos().y());
-           // g.fillOval(x - 8, y - 8, 24, 24);
-            g.fillArc(x -8, y -8, 28,28,300,300);
+            // g.fillOval(x - 8, y - 8, 24, 24);
+            g.fillArc(x - 8, y - 8, 28, 28, 300, 300);
             g.drawString("   ID: " + agent.getId() + " S: " + agent.getSpeed(), x, y);
         }
     }
@@ -226,7 +251,7 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
                     y = ratioY(pokemon.getLocation().y());
             g.setColor(Color.green);
             if (pokemon.getType() < 0) g.setColor(Color.ORANGE);
-            g.fill3DRect(x-6, y-6, 16, 16,true);
+            g.fill3DRect(x - 6, y - 6, 16, 16, true);
             //g.fillOval(x - 6, y - 6, 16, 16);
             g.drawString("  " + pokemon.getValue(), x, y);
 
