@@ -214,7 +214,7 @@ public class GameAlgo extends Thread {
             double fromTime = (from.getWeight() / a.getSpeed());
 
             if (timer.get(a.getId()) - fromTime < 0) {
-                System.out.println("nnn");
+                //System.out.println("nnn");
                 timer.put(a.getId(), 0.0);
             } else timer.put(a.getId(), timer.get(a.getId()) - fromTime);
             path.remove(0);
