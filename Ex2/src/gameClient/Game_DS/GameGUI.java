@@ -253,7 +253,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             int x = ratioX(agent.getPos().x()),
                     y = ratioY(agent.getPos().y());
             g.drawImage(this.ash, x - 18, y - 30, 30, 60, null);
-            g.drawString("    ID:" + agent.getId() + " , Speed: " + agent.getSpeed(), x, y);
+            g.drawString("ID:" + agent.getId() + " , Speed: " + agent.getSpeed(), x - 50, y-40);
         }
     }
 
@@ -288,7 +288,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                     g.drawImage(this.venusaur, x - 28, y - 24, 50, 50, null);
                 }
             }
-            g.drawString("    " + pokemon.getValue(), x, y);
+            g.drawString("" + pokemon.getValue(), x-13, y-30);
         }
     }
 

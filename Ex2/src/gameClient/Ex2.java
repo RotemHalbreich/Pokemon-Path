@@ -33,7 +33,7 @@ public class Ex2 implements Runnable {
       // gameAlgo.start();
         while (gameAlgo.isRunning()){
             algorithm();
-            if(ind%2==0) {gui.repaint();}
+            if(ind%1==0) {gui.repaint();}
             ind++;
         }
         gui.repaint();
