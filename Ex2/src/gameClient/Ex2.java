@@ -10,15 +10,16 @@ import org.json.JSONException;
 public class Ex2 implements Runnable {
     private static GameGUI gui = new GameGUI();
     private static GameAlgo gameAlgo;
-    private static int level;
-    private  static int id;
+    public static int level;
+    public  static int id;
 
     public static void main(String[] args) {
         Thread ex2 = new Thread(new Ex2());
+
         try{
             level=Integer.parseInt(args[0]);
             id=Integer.parseInt(args[1]);
-        }catch (Exception e){level=11;id=305496614;}
+        }catch (Exception e){}
         ex2.start();
 
     }

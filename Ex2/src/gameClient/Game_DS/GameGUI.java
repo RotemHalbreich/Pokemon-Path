@@ -21,7 +21,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private GameAlgo gameAlgo;
     private directed_weighted_graph graph;
     private double MinX, MinY, MaxX, MaxY;
-    private final String id = "305496614";
+    private  String id = "305496614";
     private BufferedImage background;
     private BufferedImage ash;
     private BufferedImage pichu;
@@ -48,7 +48,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         menuBar();
         addMouseListener(this);
         setImages();
-
+        initGame("constructor");
 
     }
 
@@ -89,7 +89,9 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     public void update(GameAlgo g) {
         this.gameAlgo = g;
         this.graph = gameAlgo.getGraph();
+
         resizeFrame();
+
     }
 
     public void paint(Graphics g2) {
@@ -152,20 +154,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         System.out.println(select);
         if (select.equals("New Game")) {
             gameAlgo.getGame().stopGame();
-            boolean with = true;
-            while (with) {
-                select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "0");
-                int num = -1;
-                try {
-                    num = parseInt(select);
-                } catch (Exception ex) {
-                    continue;
-                }
-                if (num < 23 || num > 0) {
-                    initNewGame(num);
-                    with = false;
-                }
-            }
+            initGame("new");
+
         } else {
             gameAlgo.getGame().stopGame();
         }
@@ -180,36 +170,37 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         ;
     }
 
-    // we need to complete this function
-    private void drawInfo(Graphics g) {
-        if (gameAlgo == null) return;
-        g.setColor(Color.black);
-        g.setFont(new Font("MV Boli", Font.PLAIN, getWidth() / 57));
-        if (gameAlgo.getInfo() != null) {
-            String info = "";
-            info += "Grade: " + gameAlgo.getInfo().getGrade();
-            if (gameAlgo.isRunning())
-                info += " | Time: " + gameAlgo.getGame().timeToEnd() / 1000;
-            info += " | Moves: " + gameAlgo.getInfo().getMoves();
-            g.drawString(info, getWidth() / 7, 60);
-
-            g.drawString("Level: " + gameAlgo.getInfo().getGameLevel() + " | Pokemons: " + gameAlgo.getInfo().getPokemons() + " | Agents: "
-                    + gameAlgo.getInfo().getAgents(), (getWidth() / 5) * 3, 60);
-
-            if (!gameAlgo.getGame().isRunning()) {
-                g.setFont(new Font("MV Boli", Font.PLAIN, 170));
-                g.setColor(Color.red);
-                if (gameAlgo.getInfo() != null)
-                    g.drawString("Game Over!", (getWidth() / 2) - 475, (getHeight() / 2) + 45);
 
 
+
+    ///////// Private Methods //////////
+    public void initGame(String from){
+        String select=null,key=null;
+        boolean with = true;
+
+        while (with) {
+            key = JOptionPane.showInputDialog("Please enter your ID:  ", "311549364");
+            select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "0");
+            int num = -1,key_id = -1;
+            try {
+                num = parseInt(select);
+                key_id = parseInt(key);
+            } catch (Exception ex) {
+                continue;
+            }
+            if (num < 23 || num > 0) {
+              if(from.equals("constructor")){
+                  Ex2.level=num;
+                  Ex2.id=key_id;
+              }
+              if(from.equals("new"))
+                  initNewGame(num,key_id);
+
+                with = false;
             }
         }
 
     }
-
-
-    ///////// Private Methods //////////
     private void setFrameSize() {
         MinX = MAX_VALUE;
         MinY = MAX_VALUE;
@@ -336,6 +327,33 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
         }
     }
+    private void drawInfo(Graphics g) {
+        if (gameAlgo == null) return;
+        g.setColor(Color.black);
+        g.setFont(new Font("MV Boli", Font.PLAIN, getWidth() / 57));
+        if (gameAlgo.getInfo() != null) {
+            String info = "";
+            info += "Grade: " + gameAlgo.getInfo().getGrade();
+            if (gameAlgo.isRunning())
+                info += " | Time: " + gameAlgo.getGame().timeToEnd() / 1000;
+            info += " | Moves: " + gameAlgo.getInfo().getMoves();
+            g.drawString(info, getWidth() / 7, 60);
+
+            g.drawString("Level: " + gameAlgo.getInfo().getGameLevel() + " | Pokemons: " + gameAlgo.getInfo().getPokemons() + " | Agents: "
+                    + gameAlgo.getInfo().getAgents(), (getWidth() / 5) * 3, 60);
+
+            if (!gameAlgo.getGame().isRunning()) {
+                g.setFont(new Font("MV Boli", Font.PLAIN, 170));
+                g.setColor(Color.red);
+                if (gameAlgo.getInfo() != null)
+                    g.drawString("Game Over!", (getWidth() / 2) - 475, (getHeight() / 2) + 45);
+
+
+            }
+        }
+
+    }
+
 
     private void menuBar() {
         JMenu menu = new JMenu("Menu");
@@ -355,8 +373,9 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     //we need to fix that
-    private void initNewGame(int num) {
+    private void initNewGame(int num,int key) {
         String[] newGame = new String[2];
+        id=String.valueOf(key);
         newGame[0] = "" + num;
         newGame[1] = id;
         Ex2.main(newGame);

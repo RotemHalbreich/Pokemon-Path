@@ -43,7 +43,6 @@ public class Pokemons {
         return info.getPokemons();
     }
 
-
     public Iterator<Pokemon> iterator() {
         return Arrays.stream(pokemons).iterator();
     }

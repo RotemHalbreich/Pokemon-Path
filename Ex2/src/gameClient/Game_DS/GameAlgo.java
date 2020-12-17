@@ -217,7 +217,7 @@ public class GameAlgo extends Thread {
         while (itr.hasNext()) {
             Pokemon pok = itr.next();
             edge_data edge = pok.getEdge();
-            if (edge.equals(e)) {
+            if (edge!=null&&edge.equals(e)) {
                 double temp = algo.getGraph().getNode(edge.getSrc()).getLocation().distance(pok.getLocation());
                 if (temp < min) min = temp;
             }
