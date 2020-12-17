@@ -17,42 +17,73 @@ import static java.lang.Double.MAX_VALUE;
 import static java.lang.Double.MIN_VALUE;
 import static java.lang.Integer.parseInt;
 
-public class GameGui2 extends JFrame implements MouseListener, ActionListener {
+public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private GameAlgo gameAlgo;
     private directed_weighted_graph graph;
     private double MinX, MinY, MaxX, MaxY;
     private final String id = "305496614";
     private BufferedImage background;
-    private BufferedImage bulbasour;
-    private BufferedImage pikachu;
     private BufferedImage ash;
-//test github//
+    private BufferedImage pichu;
+    private BufferedImage pikachu;
+    private BufferedImage raichu;
+    private BufferedImage bulbasour;
+    private BufferedImage ivysaur;
+    private BufferedImage venusaur;
 
-    public GameGui2() {
+    private Color g;
+
+
+    public GameGUI() {
 
         super();
-//        try {
-//            this.background = ImageIO.read(new File("pokemon-pc-game.jpg"));
-//            this.bulbasour = ImageIO.read(new File("Bulbasaur.gif"));
-//            this.pikachu = ImageIO.read(new File("Pikachu.gif"));
-//            this.ash = ImageIO.read(new File(""));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
         setTitle("Pokemon - The Game");
         setSize(1280, 700);
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         setFrameSize();
+
         menuBar();
         addMouseListener(this);
+        setImages();
 
 
     }
 
-    private void drawBackground(Graphics g) {
+    private void setImages() {
+        try {
+            this.background = ImageIO.read(new File("data/images/pokemon-pc-game.png"));
+            this.ash = ImageIO.read(new File("data/images/ash.png"));
+            this.pichu = ImageIO.read(new File("data/images/pichu.png"));
+            this.pikachu = ImageIO.read(new File("data/images/pikachu.png"));
+            this.raichu = ImageIO.read(new File("data/images/raichu.png"));
+            this.bulbasour = ImageIO.read(new File("data/images/bulbasaur.png"));
+            this.ivysaur = ImageIO.read(new File("data/images/ivysaur.png"));
+            this.venusaur = ImageIO.read(new File("data/images/venusaur.png"));
+
+
+
+//            bulbasour = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
+//            Graphics2D g1 = bulbasour.createGraphics();
+//
+//            pikachu = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
+//            Graphics2D g2 = pikachu.createGraphics();
+//
+//            ash = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
+//            Graphics2D g3 = ash.createGraphics();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    private void drawBackground(Graphics2D g) {
         g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+//        background = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+//        background.createGraphics();
     }
 
     public void update(GameAlgo g) {
@@ -62,23 +93,27 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
     }
 
     public void paint(Graphics g2) {
-        if (graph == null) super.paint(g2);
-        BufferedImage bufferedImage =
-                new BufferedImage(
-                        getWidth(),
-                        getHeight(),
-                        BufferedImage.TYPE_INT_ARGB
-                );
+        if (graph == null) {
+            super.paint(g2);
+            return;
+        }
+
+        BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bufferedImage.createGraphics();
+        this.paintComponents(g);
+       // g.dispose();
+
         super.paintComponents(g);
 
-        g.setBackground(Color.white);
 
+        //g.setBackground(Color.white);
+
+        drawBackground(g);
         drawGraph(g);
-        //drawBackground(g);
         drawPokemos(g);
         drawAgents(g);
         drawInfo(g);
+
 
         Graphics2D orgGraphic = (Graphics2D) g2;
         orgGraphic.drawImage(bufferedImage, null, 0, 0);
@@ -229,6 +264,7 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
         int x = ratioX(n.getLocation().x());
         int y = ratioY(n.getLocation().y());
         g.setColor(Color.blue);
+        g.setFont(new Font("MV Boli", Font.BOLD, 13));
         g.fillOval(x - 7, y - 7, 16, 16);
         g.drawString("  " + n.getKey(), x, y + 10);
     }
@@ -259,8 +295,8 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
             int x = ratioX(agent.getPos().x()),
                     y = ratioY(agent.getPos().y());
             // g.fillOval(x - 8, y - 8, 24, 24);
-            //g.drawImage(this.ash,x,y,20,20,null);
-            g.fillArc(x - 8, y - 8, 28, 28, 300, 300);
+            g.drawImage(this.ash, x - 45, y - 45, 90, 90, null);
+            // g.fillArc(x - 8, y - 8, 28, 28, 300, 300);
             g.drawString("    ID:" + agent.getId() + " , Speed: " + agent.getSpeed(), x, y);
         }
     }
@@ -271,17 +307,34 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
         while (itr.hasNext()) {
             Pokemon pokemon = itr.next();
             if (pokemon.getLocation() == null) continue;
-            int x = ratioX(pokemon.getLocation().x()),
-                    y = ratioY(pokemon.getLocation().y());
-            g.setColor(Color.green);
-           // g.drawImage(this.bulbasour, x, y, 30, 30, null);
+            int x = ratioX(pokemon.getLocation().x()), y = ratioY(pokemon.getLocation().y());
+            // g.setColor(Color.green);
             if (pokemon.getType() < 0) {
                 g.setColor(Color.ORANGE);
-               // g.drawImage(this.pikachu, x, y, 30, 30, null);
+                if (pokemon.getValue() <= 8) {
+                    g.drawImage(this.pichu, x - 15, y - 24, 25, 35, null);
+                }
+                if (pokemon.getValue() <= 12 && pokemon.getValue() > 8) {
+                    g.drawImage(this.pikachu, x - 20, y - 24, 38, 38, null);
+                }
+                if (pokemon.getValue() > 12) {
+                    g.drawImage(this.raichu, x - 20, y - 33, 55, 55, null);
+                }
+            } else {
+                g.setColor(Color.GREEN);
+                if (pokemon.getValue() <= 8) {
+                    g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
+                }
+                if (pokemon.getValue() <= 12 && pokemon.getValue() > 8) {
+                    g.drawImage(this.ivysaur, x - 20, y - 24, 45, 45, null);
+                }
+                if (pokemon.getValue() > 12) {
+                    g.drawImage(this.venusaur, x - 20, y - 24, 50, 50, null);
+                }
             }
-            g.fill3DRect(x - 6, y - 6, 16, 16, true);
+            // g.fill3DRect(x - 6, y - 6, 16, 16, true);
             //g.fillOval(x - 6, y - 6, 16, 16);
-            g.drawString("  " + pokemon.getValue(), x, y);
+            g.drawString("    " + pokemon.getValue(), x, y);
 
         }
     }
@@ -293,7 +346,7 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
         newGame.setAccelerator(
                 KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
         menu.add(newGame);
-        JMenuItem stop = new JMenuItem("Stop Game!");
+        JMenuItem stop = new JMenuItem("Stop Game");
         stop.addActionListener(this);
         menu.add(stop);
 
