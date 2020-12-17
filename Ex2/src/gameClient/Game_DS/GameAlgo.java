@@ -55,14 +55,12 @@ public class GameAlgo extends Thread {
 
     @Override
     public void run() {
-        Iterator<Agent> itr = agents.iterator();
-        while (itr.hasNext()) {
-            Agent a = itr.next();
-            Iterator<Pokemon> pok = pokemons.iterator();
-            while (pok.hasNext()) {
-                if (pok.next().getLocation().distance(a.getPos()) < 0.001)
-                    game.move();
-            }
+        try {
+            pokemons.update();
+            agents.update();
+            info.update();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -92,22 +90,39 @@ public class GameAlgo extends Thread {
 
     public long averageTime() {
         Iterator<Agent> itr = agents.iterator();
-        double ans = 1;
-        double w = 0;
-        double speed = 0;
+        double ans = 1,w = 0,speed = 0,min=Double.MAX_VALUE,max=Double.MIN_VALUE;
         while (itr.hasNext()) {
             Agent a = itr.next();
             ArrayList<node_data> p = targets.get(a.getId());
+
             if (p.size() > 1) {
-                w = algo.getGraph().getEdge(p.get(0).getKey(), p.get(1).getKey()).getWeight();
+                edge_data edge=algo.getGraph().getEdge(p.get(0).getKey(), p.get(1).getKey());
+                double eat=eatPokemon(edge);
                 speed = a.getSpeed();
-                ans += w / speed;
+                if(eat!=-1){
+                    System.out.println("from eat");
+                    min=eat/speed;
+                }
+                w = edge.getWeight();
+                if((w/speed)<min)min=w/speed;
+                if(w/speed>max)max=w/speed;
             }
         }
-        ans /= info.getAgents();
-        if (w == 0 && speed == 0 || ans < 1) return 100;
+        if(min==Double.MAX_VALUE){
+            ans=100;
+            System.out.println("from min dont change"+ans);
+        }else {
+            ans=min*100;
+            System.out.println("from min "+ans);
+        }
+        if(ans<100){
+            ans=(min+100);
+            System.out.println("from max "+ans);
+        }
 
-        return (long) ans * 100;
+        //if (w == 0 && speed == 0 || ans < 1) return 100;
+
+        return (long) ans;
     }
 
     ////////// Private Methods //////////
@@ -147,6 +162,7 @@ public class GameAlgo extends Thread {
         for (int i = 0; i < path.size() - 1; i++) {
             int s = path.get(i).getKey(),
                     d = path.get(i + 1).getKey();
+
             if (s == edge.getSrc() && d == edge.getDest())
                 return true;
         }
@@ -220,6 +236,19 @@ public class GameAlgo extends Thread {
             path.remove(0);
         } else timer.put(a.getId(), 0.0);
     }
-
+    private double eatPokemon(edge_data e){
+        double ans=-1,min=Double.MAX_VALUE;
+        Iterator<Pokemon> itr=pokemons.iterator();
+        while (itr.hasNext()){
+            Pokemon pok= itr.next();
+            edge_data edge=pok.getEdge();
+            if(edge.equals(e)){
+                double temp=algo.getGraph().getNode(edge.getSrc()).getLocation().distance(pok.getLocation());
+                if(temp<min)min=temp;
+            }
+        }
+        if(min!=Double.MAX_VALUE)ans=min;
+        return ans;
+    }
 
 }

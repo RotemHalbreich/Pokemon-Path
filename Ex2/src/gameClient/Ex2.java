@@ -52,7 +52,7 @@ public class Ex2 implements Runnable {
             gameAlgo.getInfo().update();
             gameAlgo.updateHandled();
 
-            Thread.sleep(100);
+            Thread.sleep(gameAlgo.averageTime());
         } catch (JSONException | InterruptedException e) {
             e.printStackTrace();
         }
