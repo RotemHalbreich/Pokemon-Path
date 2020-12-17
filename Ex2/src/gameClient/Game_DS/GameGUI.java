@@ -108,7 +108,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
         //g.setBackground(Color.white);
 
-        drawBackground(g);
+        //drawBackground(g);
         drawGraph(g);
         drawPokemos(g);
         drawAgents(g);
@@ -256,8 +256,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                 drawEdge(g, e);
             }
         }
-
-
     }
 
     private void drawNode(Graphics2D g, node_data n) {
@@ -265,7 +263,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         int y = ratioY(n.getLocation().y());
         g.setColor(Color.blue);
         g.setFont(new Font("MV Boli", Font.BOLD, 13));
-        g.fillOval(x - 7, y - 7, 16, 16);
+        g.fillOval(x - 7, y - 7, 18, 18);
         g.drawString("  " + n.getKey(), x, y + 10);
     }
 
@@ -279,7 +277,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                 y1 = ratioY(dest.getLocation().y());
 
         g.setColor(Color.black);
-        g.setStroke(new BasicStroke(2));
+        g.setStroke(new BasicStroke(3));
         g.setFont(new Font("MV Boli", Font.BOLD, 13));
         g.drawLine(x, y, x1, y1);
         g.drawString("  ", (x + 5 * x1) / 4, (y + 5 * y1) / 4);
@@ -312,7 +310,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             if (pokemon.getType() < 0) {
                 g.setColor(Color.ORANGE);
                 if (pokemon.getValue() <= 8) {
-                    g.drawImage(this.pichu, x - 15, y - 24, 25, 35, null);
+                    g.drawImage(this.pichu, x - 12, y - 24, 25, 35, null);
                 }
                 if (pokemon.getValue() <= 12 && pokemon.getValue() > 8) {
                     g.drawImage(this.pikachu, x - 20, y - 24, 38, 38, null);
@@ -326,10 +324,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                     g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
                 }
                 if (pokemon.getValue() <= 12 && pokemon.getValue() > 8) {
-                    g.drawImage(this.ivysaur, x - 20, y - 24, 45, 45, null);
+                    g.drawImage(this.ivysaur, x - 20, y - 32, 45, 45, null);
                 }
                 if (pokemon.getValue() > 12) {
-                    g.drawImage(this.venusaur, x - 20, y - 24, 50, 50, null);
+                    g.drawImage(this.venusaur, x - 28, y - 24, 50, 50, null);
                 }
             }
             // g.fill3DRect(x - 6, y - 6, 16, 16, true);
