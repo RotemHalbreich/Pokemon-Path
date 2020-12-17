@@ -17,7 +17,7 @@ import static java.lang.Double.MAX_VALUE;
 import static java.lang.Double.MIN_VALUE;
 import static java.lang.Integer.parseInt;
 
-public class GameGui2 extends JFrame implements MouseListener, ActionListener {
+public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private GameAlgo gameAlgo;
     private directed_weighted_graph graph;
     private double MinX, MinY, MaxX, MaxY;
@@ -34,7 +34,7 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
     private Color g;
 
 
-    public GameGui2() {
+    public GameGUI() {
 
         super();
 

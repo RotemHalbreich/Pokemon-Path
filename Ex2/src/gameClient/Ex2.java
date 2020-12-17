@@ -8,7 +8,7 @@ import gameClient.Game_DS.*;
 import org.json.JSONException;
 
 public class Ex2 implements Runnable {
-    private static GameGui2 gui = new GameGui2();
+    private static GameGUI gui = new GameGUI();
     private static GameAlgo gameAlgo;
     private static int level;
     private  static int id;
