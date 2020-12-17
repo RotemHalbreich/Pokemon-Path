@@ -16,16 +16,34 @@ public class Agents {
     private Information info;
     private HashMap<Integer, Agent> agents;
     private double[][] dps;
+    private double[][] dps1;
 
     public Agents(game_service game,Information i) throws JSONException {
         this.game = game;
         this.info=i;
         update();
         insertDPS();
+        insertDPS1();
 
     }
 
+    private void insertDPS1() {
+        directed_weighted_graph g=new DWGraph_Algo().readFromJson(game.getGraph());
+        int s=findMaxId(g);
+        if(s==-1||s==0)return;
+        dps1=new double[s][s];
+        setMinPath(g);
+    }
 
+    private void setMinPath(directed_weighted_graph g) {
+        DWGraph_Algo algo=new DWGraph_Algo();
+        algo.init(g);
+        for(node_data n:g.getV()){
+            for (node_data n1:g.getV()){
+                dps1[n.getKey()][n1.getKey()]=algo.shortestPathDist(n.getKey(),n1.getKey());
+            }
+        }
+    }
 
 
     public synchronized void update() throws JSONException {
@@ -64,7 +82,10 @@ public class Agents {
     public  double DPS(int key,int i ,int j){
         return (dps[i][j]);
     }
-
+    public double DPS1(int i,int j){
+        double ans=dps1[i][j];
+        return ans>=0?ans:MAX_VALUE;
+    }
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Integer i : agents.keySet()) {

@@ -1,6 +1,7 @@
 package gameClient.Game_DS;
 
 import api.*;
+import gameClient.util.Point3D;
 import org.json.*;
 
 import java.util.Arrays;
@@ -41,6 +42,7 @@ public class Pokemons {
     public int size() throws JSONException {
         return info.getPokemons();
     }
+
 
     public Iterator<Pokemon> iterator() {
         return Arrays.stream(pokemons).iterator();

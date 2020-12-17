@@ -33,11 +33,14 @@ public class GameAlgo extends Thread {
         while (itr.hasNext()) {
             Pokemon currPok = itr.next();
             if (!handlingPokemons.contains(currPok.getLocation())) {
-                if (onWay(currPok)) {
-                    handlingPokemons.add(0, currPok.getLocation());
-
-                } else findBestAgent(currPok);
+                handlingPokemons.add(0, currPok.getLocation());
+                if (!onWay(currPok)) findBestAgent(currPok);
             }
+        }
+        try {
+            updateHandled();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -90,38 +93,22 @@ public class GameAlgo extends Thread {
 
     public long averageTime() {
         Iterator<Agent> itr = agents.iterator();
-        double ans = 1,w = 0,speed = 0,min=Double.MAX_VALUE,max=Double.MIN_VALUE;
+        double ans = 1, w = 0, speed = 0, min = Double.MAX_VALUE;
         while (itr.hasNext()) {
             Agent a = itr.next();
             ArrayList<node_data> p = targets.get(a.getId());
-
             if (p.size() > 1) {
-                edge_data edge=algo.getGraph().getEdge(p.get(0).getKey(), p.get(1).getKey());
-                double eat=eatPokemon(edge);
+                edge_data edge = algo.getGraph().getEdge(p.get(0).getKey(), p.get(1).getKey());
+                double eat = eatPokemon(edge);
                 speed = a.getSpeed();
-                if(eat!=-1){
-                    System.out.println("from eat");
-                    min=eat/speed;
-                }
                 w = edge.getWeight();
-                if((w/speed)<min)min=w/speed;
-                if(w/speed>max)max=w/speed;
+                if (eat != -1) min = eat / speed;
+                if ((w / speed) < min) min = w / speed;
             }
         }
-        if(min==Double.MAX_VALUE){
-            ans=100;
-            System.out.println("from min dont change"+ans);
-        }else {
-            ans=min*100;
-            System.out.println("from min "+ans);
-        }
-        if(ans<100){
-            ans=(min+100);
-            System.out.println("from max "+ans);
-        }
-
-        //if (w == 0 && speed == 0 || ans < 1) return 100;
-
+        if (min == Double.MAX_VALUE) ans = 100;
+        else ans = min * 100;
+        if (ans < 100) ans = (100 + min);
         return (long) ans;
     }
 
@@ -160,9 +147,7 @@ public class GameAlgo extends Thread {
 
     private boolean hasAgentGoTO(ArrayList<node_data> path, edge_data edge) {
         for (int i = 0; i < path.size() - 1; i++) {
-            int s = path.get(i).getKey(),
-                    d = path.get(i + 1).getKey();
-
+            int s = path.get(i).getKey(),d = path.get(i + 1).getKey();
             if (s == edge.getSrc() && d == edge.getDest())
                 return true;
         }
@@ -175,18 +160,7 @@ public class GameAlgo extends Thread {
         double optimalTime = Double.MAX_VALUE;
         ArrayList<node_data> path = null, tempPath = null;
         int last = 0, agentId = 0;
-//        for (int id : timer.keySet()) {
-//            double tempOptimalTime = timer.get(id);
-//            tempPath = targets.get(id);
-//            last = tempPath.get(tempPath.size() - 1).getKey();
-//            double minTime = agents.DPS(id, last, src);
-//           // double minTime=  algo.shortestPathDist(last,src)/agents.getAgent(id).getSpeed();
-//            if (minTime+ tempOptimalTime < optimalTime){
-//                optimalTime = minTime+ tempOptimalTime;
-//                path = tempPath;
-//                agentId = id;
-//            }
-//        }
+
         Iterator<Agent> itr = agents.iterator();
         while (itr.hasNext()) {
             Agent agent = itr.next();
@@ -194,8 +168,9 @@ public class GameAlgo extends Thread {
             tempPath = targets.get(agent.getId());
             last = tempPath.get(tempPath.size() - 1).getKey();
 
-            double minTime = algo.shortestPathDist(last, src) / agent.getSpeed();
-            //  double minTime=agents.DPS(agent.getId(),last,src)/agent.getSpeed();
+            //double minTime = algo.shortestPathDist(last, src) / agent.getSpeed();
+            double minTime = agents.DPS1(last, src) / agent.getSpeed();
+            //       double minTime=agents.DPS(agent.getId(),last,src)/agent.getSpeed();
             if (minTime + tempOptimalTime < optimalTime) {
                 optimalTime = minTime + tempOptimalTime;
                 path = tempPath;
@@ -210,11 +185,10 @@ public class GameAlgo extends Thread {
         path.add(algo.getGraph().getNode(currPok.getEdge().getDest()));
 
         timer.put(agentId, optimalTime);
-        // timer.put(agentId,timer.get(agentId)+agents.DPS(agentId,last,src)/agents.getAgent(agentId).getSpeed());
-        handlingPokemons.add(0, currPok.getLocation());
+        //handlingPokemons.add(0, currPok.getLocation());
     }
 
-    public void updateHandled() throws JSONException {
+    private void updateHandled() throws JSONException {
         int handled = info.getPokemons() + 1;
         while (handlingPokemons.size() > handled)
             handlingPokemons.remove(handled);
@@ -230,24 +204,25 @@ public class GameAlgo extends Thread {
             double fromTime = (from.getWeight() / a.getSpeed());
 
             if (timer.get(a.getId()) - fromTime < 0) {
-                //System.out.println("nnn");
+
                 timer.put(a.getId(), 0.0);
             } else timer.put(a.getId(), timer.get(a.getId()) - fromTime);
             path.remove(0);
         } else timer.put(a.getId(), 0.0);
     }
-    private double eatPokemon(edge_data e){
-        double ans=-1,min=Double.MAX_VALUE;
-        Iterator<Pokemon> itr=pokemons.iterator();
-        while (itr.hasNext()){
-            Pokemon pok= itr.next();
-            edge_data edge=pok.getEdge();
-            if(edge.equals(e)){
-                double temp=algo.getGraph().getNode(edge.getSrc()).getLocation().distance(pok.getLocation());
-                if(temp<min)min=temp;
+
+    private double eatPokemon(edge_data e) {
+        double ans = -1, min = Double.MAX_VALUE;
+        Iterator<Pokemon> itr = pokemons.iterator();
+        while (itr.hasNext()) {
+            Pokemon pok = itr.next();
+            edge_data edge = pok.getEdge();
+            if (edge.equals(e)) {
+                double temp = algo.getGraph().getNode(edge.getSrc()).getLocation().distance(pok.getLocation());
+                if (temp < min) min = temp;
             }
         }
-        if(min!=Double.MAX_VALUE)ans=min;
+        if (min != Double.MAX_VALUE) ans = min;
         return ans;
     }
 
