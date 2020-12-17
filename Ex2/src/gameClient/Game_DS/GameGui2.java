@@ -26,7 +26,7 @@ public class GameGui2 extends JFrame implements MouseListener, ActionListener {
     private BufferedImage bulbasour;
     private BufferedImage pikachu;
     private BufferedImage ash;
-
+//test github//
 
     public GameGui2() {
 
