@@ -54,7 +54,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
     private void setImages() {
         try {
-            this.background = ImageIO.read(new File("data/images/pokemon-pc-game.png"));
+            this.background = ImageIO.read(new File("data/images/background.png"));
             this.ash = ImageIO.read(new File("data/images/ash.png"));
             this.pichu = ImageIO.read(new File("data/images/pichu.png"));
             this.pikachu = ImageIO.read(new File("data/images/pikachu.png"));
@@ -102,13 +102,12 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
         BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bufferedImage.createGraphics();
-        this.paintComponents(g);
        // g.dispose();
 
         super.paintComponents(g);
 
 
-        //g.setBackground(Color.white);
+       // g.setBackground(Color.GREEN);
 
         drawBackground(g);
         drawGraph(g);
@@ -177,7 +176,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     public void initGame(String from){
         String select=null,key=null;
         boolean with = true;
-        if(from.equals("constructor")&&Ex2.level!=null)
+       // if(from.equals("constructor")&&Ex2.level!=null)
         while (with) {
             key = JOptionPane.showInputDialog("Please enter your ID:  ", "311549364");
             select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "0");
@@ -236,7 +235,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private int ratioX(double x) {
         if (x > MaxX || x < MinX)
             resizeFrame();
-        return (int) ((x - MinX) / (MaxX - MinX) * (getWidth() - 50) + 25);
+        return (int) ((x - MinX) / (MaxX - MinX) * (getWidth() - 50) + 20);
     }
 
     private void drawGraph(Graphics2D g) {
@@ -254,7 +253,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         int y = ratioY(n.getLocation().y());
         g.setColor(Color.blue);
         g.setFont(new Font("MV Boli", Font.BOLD, 13));
-        g.fillOval(x - 7, y - 7, 18, 18);
+        g.fillOval(x - 8, y - 10, 18, 18);
         g.drawString("  " + n.getKey(), x, y + 10);
     }
 
@@ -284,7 +283,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             int x = ratioX(agent.getPos().x()),
                     y = ratioY(agent.getPos().y());
             // g.fillOval(x - 8, y - 8, 24, 24);
-            g.drawImage(this.ash, x - 45, y - 45, 90, 90, null);
+            g.drawImage(this.ash, x - 18, y - 30, 30, 60, null);
             // g.fillArc(x - 8, y - 8, 28, 28, 300, 300);
             g.drawString("    ID:" + agent.getId() + " , Speed: " + agent.getSpeed(), x, y);
         }
@@ -297,7 +296,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             Pokemon pokemon = itr.next();
             if (pokemon.getLocation() == null) continue;
             int x = ratioX(pokemon.getLocation().x()), y = ratioY(pokemon.getLocation().y());
-            // g.setColor(Color.green);
+
             if (pokemon.getType() < 0) {
                 g.setColor(Color.ORANGE);
                 if (pokemon.getValue() <= 8) {
@@ -307,7 +306,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                     g.drawImage(this.pikachu, x - 20, y - 24, 38, 38, null);
                 }
                 if (pokemon.getValue() > 12) {
-                    g.drawImage(this.raichu, x - 20, y - 33, 55, 55, null);
+                    g.drawImage(this.raichu, x - 30, y - 33, 58, 58, null);
                 }
             } else {
                 g.setColor(Color.GREEN);
@@ -321,12 +320,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                     g.drawImage(this.venusaur, x - 28, y - 24, 50, 50, null);
                 }
             }
-            // g.fill3DRect(x - 6, y - 6, 16, 16, true);
-            //g.fillOval(x - 6, y - 6, 16, 16);
             g.drawString("    " + pokemon.getValue(), x, y);
-
         }
     }
+
     private void drawInfo(Graphics g) {
         if (gameAlgo == null) return;
         g.setColor(Color.black);
