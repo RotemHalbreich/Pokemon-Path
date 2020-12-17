@@ -122,7 +122,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     /**
      * Returns the the shortest path between src to dest vertices as an ordered List of nodes:
      * (src)--> (n1)-->(n2)-->...(dest)
-     * see: https://en.wikipedia.org/wiki/Shortest_path_problem
      * If no such path --> returns null;
      *
      * @param src  - start node
@@ -182,6 +181,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
+     * Reads the graph from Json
+     *
      * @param s
      * @return DWGraph_DS
      */
