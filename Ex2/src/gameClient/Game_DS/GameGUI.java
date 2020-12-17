@@ -81,7 +81,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     private void drawBackground(Graphics2D g) {
-        g.drawImage(background, 0, 100, getWidth(), getHeight(), null);
+        g.drawImage(background, 0, 50, getWidth(), getHeight(), null);
 //        background = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 //        background.createGraphics();
     }
@@ -177,7 +177,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     public void initGame(String from){
         String select=null,key=null;
         boolean with = true;
-
+        if(from.equals("constructor")&&Ex2.level!=null)
         while (with) {
             key = JOptionPane.showInputDialog("Please enter your ID:  ", "311549364");
             select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "0");

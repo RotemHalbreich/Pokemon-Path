@@ -10,8 +10,8 @@ import org.json.JSONException;
 public class Ex2 implements Runnable {
     private static GameGUI gui = new GameGUI();
     private static GameAlgo gameAlgo;
-    public static int level;
-    public  static int id;
+    public static Integer level=null;
+    public  static Integer id=null;
 
     public static void main(String[] args) {
         Thread ex2 = new Thread(new Ex2());
