@@ -100,7 +100,7 @@ public class GameAlgo extends Thread {
                 double eat=eatPokemon(edge);
                 speed = a.getSpeed();
                 if(eat!=-1){
-                    System.out.println("from eat");
+                    //System.out.println("from eat");
                     min=eat/speed;
                 }
                 w = edge.getWeight();
@@ -110,14 +110,14 @@ public class GameAlgo extends Thread {
         }
         if(min==Double.MAX_VALUE){
             ans=100;
-            System.out.println("from min dont change"+ans);
+            //System.out.println("from min dont change"+ans);
         }else {
             ans=min*100;
-            System.out.println("from min "+ans);
+            //System.out.println("from min "+ans);
         }
         if(ans<100){
             ans=(min+100);
-            System.out.println("from max "+ans);
+            //System.out.println("from max "+ans);
         }
 
         //if (w == 0 && speed == 0 || ans < 1) return 100;
