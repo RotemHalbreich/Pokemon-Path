@@ -81,7 +81,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     private void drawBackground(Graphics2D g) {
-        g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
+        g.drawImage(background, 0, 100, getWidth(), getHeight(), null);
 //        background = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 //        background.createGraphics();
     }
@@ -110,7 +110,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
         //g.setBackground(Color.white);
 
-        //drawBackground(g);
+        drawBackground(g);
         drawGraph(g);
         drawPokemos(g);
         drawAgents(g);
