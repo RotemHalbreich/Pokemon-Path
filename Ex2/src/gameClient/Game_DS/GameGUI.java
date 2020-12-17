@@ -18,10 +18,13 @@ import static java.lang.Double.MIN_VALUE;
 import static java.lang.Integer.parseInt;
 
 public class GameGUI extends JFrame implements MouseListener, ActionListener {
+
     private GameAlgo gameAlgo;
     private directed_weighted_graph graph;
     private double MinX, MinY, MaxX, MaxY;
-    private  String id = "305496614";
+
+    private String id = "305496614";
+
     private BufferedImage background;
     private BufferedImage ash;
     private BufferedImage pichu;
@@ -30,9 +33,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private BufferedImage bulbasour;
     private BufferedImage ivysaur;
     private BufferedImage venusaur;
-
-    private Color g;
-
 
     public GameGUI() {
 
@@ -49,7 +49,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         addMouseListener(this);
         setImages();
         initGame("constructor");
-
     }
 
     private void setImages() {
@@ -62,36 +61,19 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             this.bulbasour = ImageIO.read(new File("data/images/bulbasaur.png"));
             this.ivysaur = ImageIO.read(new File("data/images/ivysaur.png"));
             this.venusaur = ImageIO.read(new File("data/images/venusaur.png"));
-
-
-
-//            bulbasour = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
-//            Graphics2D g1 = bulbasour.createGraphics();
-//
-//            pikachu = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
-//            Graphics2D g2 = pikachu.createGraphics();
-//
-//            ash = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
-//            Graphics2D g3 = ash.createGraphics();
-
         } catch (IOException e) {
             e.printStackTrace();
-
         }
     }
 
     private void drawBackground(Graphics2D g) {
         g.drawImage(background, 0, 50, getWidth(), getHeight(), null);
-//        background = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-//        background.createGraphics();
     }
 
     public void update(GameAlgo g) {
         this.gameAlgo = g;
         this.graph = gameAlgo.getGraph();
-
         resizeFrame();
-
     }
 
     public void paint(Graphics g2) {
@@ -99,15 +81,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             super.paint(g2);
             return;
         }
-
         BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bufferedImage.createGraphics();
-       // g.dispose();
 
         super.paintComponents(g);
-
-
-       // g.setBackground(Color.GREEN);
 
         drawBackground(g);
         drawGraph(g);
@@ -115,11 +92,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         drawAgents(g);
         drawInfo(g);
 
-
         Graphics2D orgGraphic = (Graphics2D) g2;
         orgGraphic.drawImage(bufferedImage, null, 0, 0);
-
-
     }
 
     @Override
@@ -160,7 +134,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         }
     }
 
-
 //////// TODO4!!!! ///////
 
     // we need to think about
@@ -169,18 +142,15 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         ;
     }
 
-
-
-
     ///////// Private Methods //////////
-    public void initGame(String from){
-        String select=null,key=null;
+    public void initGame(String from) {
+        String select = null, key = null;
         boolean with = true;
-       // if(from.equals("constructor")&&Ex2.level!=null)
+        // if(from.equals("constructor")&&Ex2.level!=null)
         while (with) {
             key = JOptionPane.showInputDialog("Please enter your ID:  ", "311549364");
             select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "0");
-            int num = -1,key_id = -1;
+            int num = -1, key_id = -1;
             try {
                 num = parseInt(select);
                 key_id = parseInt(key);
@@ -188,18 +158,18 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                 continue;
             }
             if (num < 23 || num > 0) {
-              if(from.equals("constructor")){
-                  Ex2.level=num;
-                  Ex2.id=key_id;
-              }
-              if(from.equals("new"))
-                  initNewGame(num,key_id);
+                if (from.equals("constructor")) {
+                    Ex2.level = num;
+                    Ex2.id = key_id;
+                }
+                if (from.equals("new"))
+                    initNewGame(num, key_id);
 
                 with = false;
             }
         }
-
     }
+
     private void setFrameSize() {
         MinX = MAX_VALUE;
         MinY = MAX_VALUE;
@@ -282,9 +252,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             g.setColor(Color.RED);
             int x = ratioX(agent.getPos().x()),
                     y = ratioY(agent.getPos().y());
-            // g.fillOval(x - 8, y - 8, 24, 24);
             g.drawImage(this.ash, x - 18, y - 30, 30, 60, null);
-            // g.fillArc(x - 8, y - 8, 28, 28, 300, 300);
             g.drawString("    ID:" + agent.getId() + " , Speed: " + agent.getSpeed(), x, y);
         }
     }
@@ -344,13 +312,9 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                 g.setColor(Color.red);
                 if (gameAlgo.getInfo() != null)
                     g.drawString("Game Over!", (getWidth() / 2) - 475, (getHeight() / 2) + 45);
-
-
             }
         }
-
     }
-
 
     private void menuBar() {
         JMenu menu = new JMenu("Menu");
@@ -366,18 +330,14 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         JMenuBar fatherMenu = new JMenuBar();
         fatherMenu.add(menu);
         setJMenuBar(fatherMenu);
-
     }
 
     //we need to fix that
-    private void initNewGame(int num,int key) {
+    private void initNewGame(int num, int key) {
         String[] newGame = new String[2];
-        id=String.valueOf(key);
+        id = String.valueOf(key);
         newGame[0] = "" + num;
         newGame[1] = id;
         Ex2.main(newGame);
-
-
     }
-
 }
