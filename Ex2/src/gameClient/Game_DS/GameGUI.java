@@ -1,6 +1,7 @@
 package gameClient.Game_DS;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.*;
 
 import api.*;
@@ -9,13 +10,13 @@ import gameClient.Ex2;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
 
 import static java.lang.Double.MAX_VALUE;
 import static java.lang.Double.MIN_VALUE;
 import static java.lang.Integer.parseInt;
+
 
 public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
@@ -24,6 +25,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private double MinX, MinY, MaxX, MaxY;
 
     private String id = "305496614";
+
+    private File soundtrack;
 
     private BufferedImage background;
     private BufferedImage ash;
@@ -40,6 +43,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
         setTitle("Pokemon - The Game");
         setSize(1280, 700);
+        playMusic();
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -49,25 +53,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         addMouseListener(this);
         setImages();
         initGame("constructor");
-    }
-
-    private void setImages() {
-        try {
-            this.background = ImageIO.read(new File("data/images/background.png"));
-            this.ash = ImageIO.read(new File("data/images/ash.png"));
-            this.pichu = ImageIO.read(new File("data/images/pichu.png"));
-            this.pikachu = ImageIO.read(new File("data/images/pikachu.png"));
-            this.raichu = ImageIO.read(new File("data/images/raichu.png"));
-            this.bulbasour = ImageIO.read(new File("data/images/bulbasaur.png"));
-            this.ivysaur = ImageIO.read(new File("data/images/ivysaur.png"));
-            this.venusaur = ImageIO.read(new File("data/images/venusaur.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void drawBackground(Graphics2D g) {
-        g.drawImage(background, 0, 50, getWidth(), getHeight(), null);
     }
 
     public void update(GameAlgo g) {
@@ -148,8 +133,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         boolean with = true;
         // if(from.equals("constructor")&&Ex2.level!=null)
         while (with) {
-            key = JOptionPane.showInputDialog("Please enter your ID:  ", "311549364");
-            select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "0");
+            key = JOptionPane.showInputDialog("Please enter your ID:  ", "000000000");
+            select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "17");
             int num = -1, key_id = -1;
             try {
                 num = parseInt(select);
@@ -167,6 +152,43 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
                 with = false;
             }
+        }
+    }
+
+    private void setImages() {
+        try {
+            this.background = ImageIO.read(new File("data/media/background.png"));
+            this.ash = ImageIO.read(new File("data/media/ash.png"));
+            this.pichu = ImageIO.read(new File("data/media/pichu.png"));
+            this.pikachu = ImageIO.read(new File("data/media/pikachu.png"));
+            this.raichu = ImageIO.read(new File("data/media/raichu.png"));
+            this.bulbasour = ImageIO.read(new File("data/media/bulbasaur.png"));
+            this.ivysaur = ImageIO.read(new File("data/media/ivysaur.png"));
+            this.venusaur = ImageIO.read(new File("data/media/venusaur.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void drawBackground(Graphics2D g) {
+        g.drawImage(background, 0, 50, getWidth(), getHeight(), null);
+    }
+
+    private void playMusic() {
+
+        try {
+            this.soundtrack = new File("data/media/soundtrack.wav");
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundtrack);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+            clip.loop(Integer.MAX_VALUE);
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
         }
     }
 
@@ -221,10 +243,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private void drawNode(Graphics2D g, node_data n) {
         int x = ratioX(n.getLocation().x());
         int y = ratioY(n.getLocation().y());
-        g.setColor(Color.blue);
-        g.setFont(new Font("MV Boli", Font.BOLD, 13));
-        g.fillOval(x - 8, y - 10, 18, 18);
-        g.drawString("  " + n.getKey(), x, y + 10);
+        g.setColor(new Color(59, 124, 191, 255));
+        g.setFont(new Font("Elephant", Font.PLAIN, 13));
+        g.fill3DRect(x - 8, y - 10, 18, 18, true);
+        g.drawString("" + n.getKey(), x, y + 20);
     }
 
     private void drawEdge(Graphics2D g, edge_data e) {
@@ -236,9 +258,9 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                 y = ratioY(src.getLocation().y()),
                 y1 = ratioY(dest.getLocation().y());
 
-        g.setColor(Color.black);
+        g.setColor(new Color(40, 42, 45, 54));
         g.setStroke(new BasicStroke(3));
-        g.setFont(new Font("MV Boli", Font.BOLD, 13));
+        g.setFont(new Font("Elephant", Font.PLAIN, 12));
         g.drawLine(x, y, x1, y1);
         g.drawString("  ", (x + 5 * x1) / 4, (y + 5 * y1) / 4);
     }
@@ -249,11 +271,11 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         while (itr.hasNext()) {
             Agent agent = itr.next();
             if (agent == null) continue;
-            g.setColor(Color.RED);
+            g.setColor(new Color(255, 0, 0, 255));
             int x = ratioX(agent.getPos().x()),
                     y = ratioY(agent.getPos().y());
             g.drawImage(this.ash, x - 18, y - 30, 30, 60, null);
-            g.drawString("ID:" + agent.getId() + " , Speed: " + agent.getSpeed(), x - 50, y-40);
+            g.drawString("ID:" + agent.getId() + " , Speed: " + agent.getSpeed(), x - 50, y - 40);
         }
     }
 
@@ -266,7 +288,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             int x = ratioX(pokemon.getLocation().x()), y = ratioY(pokemon.getLocation().y());
 
             if (pokemon.getType() < 0) {
-                g.setColor(Color.ORANGE);
+                g.setColor(new Color(255, 170, 0));
                 if (pokemon.getValue() <= 8) {
                     g.drawImage(this.pichu, x - 12, y - 24, 25, 35, null);
                 }
@@ -277,7 +299,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                     g.drawImage(this.raichu, x - 30, y - 33, 58, 58, null);
                 }
             } else {
-                g.setColor(Color.GREEN);
+                g.setColor(new Color(79, 146, 17));
                 if (pokemon.getValue() <= 8) {
                     g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
                 }
@@ -288,27 +310,27 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                     g.drawImage(this.venusaur, x - 28, y - 24, 50, 50, null);
                 }
             }
-            g.drawString("" + pokemon.getValue(), x-13, y-30);
+            g.drawString("" + pokemon.getValue(), x - 13, y - 30);
         }
     }
 
     private void drawInfo(Graphics g) {
         if (gameAlgo == null) return;
         g.setColor(Color.black);
-        g.setFont(new Font("MV Boli", Font.PLAIN, getWidth() / 57));
+        g.setFont(new Font("Cooper Black", Font.PLAIN, getWidth() / 65));
         if (gameAlgo.getInfo() != null) {
             String info = "";
             info += "Grade: " + gameAlgo.getInfo().getGrade();
             if (gameAlgo.isRunning())
                 info += " | Time: " + gameAlgo.getGame().timeToEnd() / 1000;
             info += " | Moves: " + gameAlgo.getInfo().getMoves();
-            g.drawString(info, getWidth() / 7, 60);
+            g.drawString(info, getWidth() / 7, 50);
 
             g.drawString("Level: " + gameAlgo.getInfo().getGameLevel() + " | Pokemons: " + gameAlgo.getInfo().getPokemons() + " | Agents: "
-                    + gameAlgo.getInfo().getAgents(), (getWidth() / 5) * 3, 60);
+                    + gameAlgo.getInfo().getAgents(), (getWidth() / 5) * 3, 50);
 
             if (!gameAlgo.getGame().isRunning()) {
-                g.setFont(new Font("MV Boli", Font.PLAIN, 170));
+                g.setFont(new Font("Cooper Black", Font.PLAIN, 170));
                 g.setColor(Color.red);
                 if (gameAlgo.getInfo() != null)
                     g.drawString("Game Over!", (getWidth() / 2) - 475, (getHeight() / 2) + 45);
