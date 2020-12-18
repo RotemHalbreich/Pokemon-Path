@@ -48,7 +48,7 @@ public class Ex2 implements Runnable {
         System.out.println(gameAlgo.getGame().toString());
 
     }
-
+//
     /**
      *
      */
@@ -60,7 +60,7 @@ public class Ex2 implements Runnable {
             gameAlgo.sendAgentsToPokemons();
             gameAlgo.getAgents().update();
             gameAlgo.moveAgents();
-           gameAlgo.getInfo().update();
+             gameAlgo.getInfo().update();
           //  gameAlgo.updateHandled();
 
             Thread.sleep(gameAlgo.averageTime());
