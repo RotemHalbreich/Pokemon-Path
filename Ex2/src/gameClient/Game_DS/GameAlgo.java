@@ -46,6 +46,11 @@ public class GameAlgo extends Thread {
      * Sends the agents to the pokemons on the graph.
      */
     public void sendAgentsToPokemons() {
+        try {
+            pokemons.update();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         Iterator<Pokemon> itr = pokemons.iterator();
         while (itr.hasNext()) {
             Pokemon currPok = itr.next();
@@ -64,7 +69,12 @@ public class GameAlgo extends Thread {
     /**
      * Moves the agents on the graph.
      */
-    public void moveAgents() {
+    public void moveAgents()  {
+        try {
+            agents.update();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         Iterator<Agent> itr = agents.iterator();
         while (itr.hasNext()) {
             Agent a = itr.next();

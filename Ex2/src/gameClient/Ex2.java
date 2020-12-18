@@ -55,10 +55,10 @@ public class Ex2 implements Runnable {
     private static void algorithm() {
         try {
             gameAlgo.getGame().move();
-            gameAlgo.getPokemons().update();
+          //  gameAlgo.getPokemons().update();
             //ameAlgo.getGame().move();
             gameAlgo.sendAgentsToPokemons();
-            gameAlgo.getAgents().update();
+          //  gameAlgo.getAgents().update();
             gameAlgo.moveAgents();
              gameAlgo.getInfo().update();
           //  gameAlgo.updateHandled();
