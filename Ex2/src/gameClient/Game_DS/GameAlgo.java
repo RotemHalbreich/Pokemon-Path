@@ -6,17 +6,31 @@ import org.json.JSONException;
 
 import java.util.*;
 
+/**
+ *
+ * @author Shaked Aviad & Rotem Halbreich
+ */
+
 public class GameAlgo extends Thread {
     private game_service game;
     private Information info;
     private dw_graph_algorithms algo;
     private Pokemons pokemons;
     private Agents agents;
-
     private List<Point3D> handlingPokemons = new ArrayList<>();
     private HashMap<Integer, ArrayList<node_data>> targets = new HashMap<>();
     private HashMap<Integer, Double> timer = new HashMap<>();
 
+    /**
+     * Constructor:
+     *
+     * @param game
+     * @param i
+     * @param algo
+     * @param p
+     * @param a
+     * @throws JSONException
+     */
     public GameAlgo(game_service game, Information i, dw_graph_algorithms algo, Pokemons p, Agents a) throws JSONException {
         this.game = game;
         this.info = i;
@@ -28,6 +42,9 @@ public class GameAlgo extends Thread {
         insertTargetsAndTime();
     }
 
+    /**
+     * Sends the agents to the pokemons on the graph.
+     */
     public void sendAgentsToPokemons() {
         Iterator<Pokemon> itr = pokemons.iterator();
         while (itr.hasNext()) {
@@ -44,6 +61,9 @@ public class GameAlgo extends Thread {
         }
     }
 
+    /**
+     * Moves the agents on the graph.
+     */
     public void moveAgents() {
         Iterator<Agent> itr = agents.iterator();
         while (itr.hasNext()) {
@@ -52,10 +72,18 @@ public class GameAlgo extends Thread {
         }
     }
 
+    /**
+     * Gets a directed weighted graph.
+     *
+     * @return directed_weighted_graph
+     */
     public directed_weighted_graph getGraph() {
         return algo.getGraph();
     }
 
+    /**
+     *
+     */
     @Override
     public void run() {
         try {
@@ -91,6 +119,9 @@ public class GameAlgo extends Thread {
         return game.isRunning();
     }
 
+    /**
+     * @return long
+     */
     public long averageTime() {
         Iterator<Agent> itr = agents.iterator();
         double ans = 1, w = 0, speed = 0, min = Double.MAX_VALUE;
@@ -113,6 +144,10 @@ public class GameAlgo extends Thread {
     }
 
     ////////// Private Methods //////////
+
+    /**
+     *
+     */
     private void insertTargetsAndTime() {
         Iterator<Agent> itr = agents.iterator();
         while (itr.hasNext()) {
@@ -124,6 +159,9 @@ public class GameAlgo extends Thread {
         }
     }
 
+    /**
+     * @throws JSONException
+     */
     private void insertFirstTime() throws JSONException {
         Iterator<Pokemon> itr = pokemons.iterator();
         for (int i = 0; i < agents.size(); i++) {
@@ -137,6 +175,12 @@ public class GameAlgo extends Thread {
         }
     }
 
+    /**
+     * Checks if an agent is on the way to catch a pokemon.
+     *
+     * @param currPok
+     * @return boolean
+     */
     private boolean onWay(Pokemon currPok) {
         for (int id : targets.keySet()) {
             if (hasAgentGoTO(targets.get(id), currPok.getEdge()))
@@ -145,15 +189,25 @@ public class GameAlgo extends Thread {
         return false;
     }
 
+    /**
+     *
+     *
+     * @param path
+     * @param edge
+     * @return boolean
+     */
     private boolean hasAgentGoTO(ArrayList<node_data> path, edge_data edge) {
         for (int i = 0; i < path.size() - 1; i++) {
-            int s = path.get(i).getKey(),d = path.get(i + 1).getKey();
+            int s = path.get(i).getKey(), d = path.get(i + 1).getKey();
             if (s == edge.getSrc() && d == edge.getDest())
                 return true;
         }
         return false;
     }
 
+    /**
+     * @param currPok
+     */
     private void findBestAgent(Pokemon currPok) {
         int src = currPok.getEdge().getSrc();
         //long optimalTime = game.timeToEnd() + 1000;
@@ -176,7 +230,6 @@ public class GameAlgo extends Thread {
                 path = tempPath;
                 agentId = agent.getId();
             }
-
         }
         last = path.get(path.size() - 1).getKey();
         List<node_data> shortesPath = algo.shortestPath(last, src);
@@ -188,12 +241,20 @@ public class GameAlgo extends Thread {
         //handlingPokemons.add(0, currPok.getLocation());
     }
 
+    /**
+     *
+     *
+     * @throws JSONException
+     */
     private void updateHandled() throws JSONException {
         int handled = info.getPokemons() + 1;
         while (handlingPokemons.size() > handled)
             handlingPokemons.remove(handled);
     }
 
+    /**
+     * @param a
+     */
     private void moveAgent(Agent a) {
         ArrayList<node_data> path = targets.get(a.getId());
         if (path.size() > 1) {
@@ -211,13 +272,18 @@ public class GameAlgo extends Thread {
         } else timer.put(a.getId(), 0.0);
     }
 
+    /**
+     *
+     * @param e
+     * @return double
+     */
     private double eatPokemon(edge_data e) {
         double ans = -1, min = Double.MAX_VALUE;
         Iterator<Pokemon> itr = pokemons.iterator();
         while (itr.hasNext()) {
             Pokemon pok = itr.next();
             edge_data edge = pok.getEdge();
-            if (edge!=null&&edge.equals(e)) {
+            if (edge != null && edge.equals(e)) {
                 double temp = algo.getGraph().getNode(edge.getSrc()).getLocation().distance(pok.getLocation());
                 if (temp < min) min = temp;
             }
@@ -225,5 +291,4 @@ public class GameAlgo extends Thread {
         if (min != Double.MAX_VALUE) ans = min;
         return ans;
     }
-
 }

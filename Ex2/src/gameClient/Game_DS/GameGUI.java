@@ -13,6 +13,11 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Iterator;
 
+/**
+ *
+ * @author Shaked Aviad & Rotem Halbreich
+ */
+
 import static java.lang.Double.MAX_VALUE;
 import static java.lang.Double.MIN_VALUE;
 import static java.lang.Integer.parseInt;
@@ -55,12 +60,20 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         initGame("constructor");
     }
 
+    /**
+     *
+     * @param g
+     */
     public void update(GameAlgo g) {
         this.gameAlgo = g;
         this.graph = gameAlgo.getGraph();
         resizeFrame();
     }
 
+    /**
+     *
+     * @param g2
+     */
     public void paint(Graphics g2) {
         if (graph == null) {
             super.paint(g2);
@@ -106,6 +119,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
     }
 
+    /**
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String select = e.getActionCommand();
@@ -128,6 +145,11 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     ///////// Private Methods //////////
+
+    /**
+     *
+     * @param from
+     */
     public void initGame(String from) {
         String select = null, key = null;
         boolean with = true;
@@ -155,6 +177,9 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         }
     }
 
+    /**
+     *
+     */
     private void setImages() {
         try {
             this.background = ImageIO.read(new File("data/media/background.png"));
@@ -170,10 +195,17 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         }
     }
 
+    /**
+     *
+     * @param g
+     */
     private void drawBackground(Graphics2D g) {
         g.drawImage(background, 0, 50, getWidth(), getHeight(), null);
     }
 
+    /**
+     *
+     */
     private void playMusic() {
 
         try {
@@ -192,6 +224,9 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         }
     }
 
+    /**
+     *
+     */
     private void setFrameSize() {
         MinX = MAX_VALUE;
         MinY = MAX_VALUE;
@@ -200,6 +235,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     // we need to fix the duplicate
+
+    /**
+     *
+     */
     private void resizeFrame() {
         if (graph == null) return;
         for (node_data n : graph.getV()) {
@@ -217,6 +256,11 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         }
     }
 
+    /**
+     *
+     * @param y
+     * @return
+     */
     private int ratioY(double y) {
         if (y > MaxY || y < MinY)
             resizeFrame();
@@ -224,12 +268,21 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         return getHeight() - (int) ((y - MinY) / (MaxY - MinY) * (getHeight() - 100) + 30);
     }
 
+    /**
+     *
+     * @param x
+     * @return
+     */
     private int ratioX(double x) {
         if (x > MaxX || x < MinX)
             resizeFrame();
         return (int) ((x - MinX) / (MaxX - MinX) * (getWidth() - 50) + 20);
     }
 
+    /**
+     *
+     * @param g
+     */
     private void drawGraph(Graphics2D g) {
         if (graph == null) return;
         for (node_data n : graph.getV()) {
@@ -240,6 +293,11 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         }
     }
 
+    /**
+     *
+     * @param g
+     * @param n
+     */
     private void drawNode(Graphics2D g, node_data n) {
         int x = ratioX(n.getLocation().x());
         int y = ratioY(n.getLocation().y());
@@ -249,6 +307,11 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         g.drawString("" + n.getKey(), x, y + 20);
     }
 
+    /**
+     *
+     * @param g
+     * @param e
+     */
     private void drawEdge(Graphics2D g, edge_data e) {
         node_data src = graph.getNode(e.getSrc()),
                 dest = graph.getNode(e.getDest());
@@ -265,6 +328,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         g.drawString("  ", (x + 5 * x1) / 4, (y + 5 * y1) / 4);
     }
 
+    /**
+     *
+     * @param g
+     */
     private void drawAgents(Graphics g) {
         if (gameAlgo == null || gameAlgo.getAgents() == null) return;
         Iterator<Agent> itr = gameAlgo.getAgents().iterator();
@@ -279,6 +346,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         }
     }
 
+    /**
+     *
+     * @param g
+     */
     private void drawPokemos(Graphics g) {
         if (gameAlgo == null || gameAlgo.getPokemons() == null) return;
         Iterator<Pokemon> itr = gameAlgo.getPokemons().iterator();
@@ -314,6 +385,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         }
     }
 
+    /**
+     *
+     * @param g
+     */
     private void drawInfo(Graphics g) {
         if (gameAlgo == null) return;
         g.setColor(Color.black);
@@ -338,6 +413,9 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         }
     }
 
+    /**
+     *
+     */
     private void menuBar() {
         JMenu menu = new JMenu("Menu");
         JMenuItem newGame = new JMenuItem("New Game");
@@ -355,6 +433,12 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     //we need to fix that
+
+    /**
+     *
+     * @param num
+     * @param key
+     */
     private void initNewGame(int num, int key) {
         String[] newGame = new String[2];
         id = String.valueOf(key);
@@ -363,3 +447,4 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         Ex2.main(newGame);
     }
 }
+//////////////////////////////////////////////////////////////////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

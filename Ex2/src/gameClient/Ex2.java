@@ -7,6 +7,11 @@ import api.game_service;
 import gameClient.Game_DS.*;
 import org.json.JSONException;
 
+/**
+ *
+ * @author Shaked Aviad & Rotem Halbreich
+ */
+
 public class Ex2 implements Runnable {
     private static GameGUI gui = new GameGUI();
     private static GameAlgo gameAlgo;
@@ -21,8 +26,11 @@ public class Ex2 implements Runnable {
             id=Integer.parseInt(args[1]);
         }catch (Exception e){}
         ex2.start();
-
     }
+
+    /**
+     *
+     */
     @Override
     public void run() {
 
@@ -41,6 +49,9 @@ public class Ex2 implements Runnable {
 
     }
 
+    /**
+     *
+     */
     private static void algorithm() {
         try {
             gameAlgo.getGame().move();
@@ -57,6 +68,10 @@ public class Ex2 implements Runnable {
             e.printStackTrace();
         }
     }
+
+    /**
+     *
+     */
     public static void init(){
         game_service game = Game_Server_Ex2.getServer(level);
        // game.login(id);
