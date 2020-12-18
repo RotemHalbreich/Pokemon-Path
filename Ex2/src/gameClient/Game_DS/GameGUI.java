@@ -131,7 +131,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         if (select.equals("New Game")) {
             gameAlgo.getGame().stopGame();
             initGame("new");
-
         } else {
             gameAlgo.getGame().stopGame();
         }

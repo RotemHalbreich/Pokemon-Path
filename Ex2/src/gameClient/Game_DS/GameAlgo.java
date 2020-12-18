@@ -221,7 +221,7 @@ public class GameAlgo extends Thread {
     private void findBestAgent(Pokemon currPok) {
         int src = currPok.getEdge().getSrc();
         //long optimalTime = game.timeToEnd() + 1000;
-        double optimalTime = Double.MAX_VALUE;
+        double optimalTime = game.timeToEnd() + 1000;
         ArrayList<node_data> path = null, tempPath = null;
         int last = 0, agentId = 0;
 
@@ -270,12 +270,9 @@ public class GameAlgo extends Thread {
         if (path.size() > 1) {
             int src = path.get(0).getKey(), dest = path.get(1).getKey();
             game.chooseNextEdge(a.getId(), path.get(1).getKey());
-
             edge_data from = algo.getGraph().getEdge(src, dest);
             double fromTime = (from.getWeight() / a.getSpeed());
-
             if (timer.get(a.getId()) - fromTime < 0) {
-
                 timer.put(a.getId(), 0.0);
             } else timer.put(a.getId(), timer.get(a.getId()) - fromTime);
             path.remove(0);

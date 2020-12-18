@@ -20,7 +20,6 @@ public class Ex2 implements Runnable {
 
     public static void main(String[] args) {
         Thread ex2 = new Thread(new Ex2());
-
         try{
             level=Integer.parseInt(args[1]);
             id=Integer.parseInt(args[0]);
