@@ -5,10 +5,9 @@ import java.util.*;
 
 /**
  * This class represents a directional weighted graph.
- * The interface has a road-system or communication network in mind -
- * and should support a large number of nodes (over 100,000).
- * The implementation should be based on an efficient compact representation
- * (should NOT be based on a n*n matrix).
+ * V - represents the vertices of the graph.
+ * E - represents the edges of the graph.
+ * R - represents the reversed graph.
  *
  * @author Shaked Aviad & Rotem Halbreich
  */
@@ -67,11 +66,13 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     /**
-     * Connects an edge with weight w between vertex src to vertex dest.
+     * Connects an edge with weight between vertex src to vertex dest
+     * while both of the vertices exist.
      *
      * @param src - the source of the edge.
      * @param dest - the destination of the edge.
      * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
+     * @throws RuntimeException - if (w < 0 || one of the vertices doesn't exist in the graph)
      */
     @Override
     public void connect(int src, int dest, double w) {
@@ -93,6 +94,11 @@ public class DWGraph_DS implements directed_weighted_graph {
         MC++;
     }
 
+    /**
+     * Connects an edge to the graph.
+     *
+     * @param e
+     */
     public void connect(edge_data e) {
         connect(e.getSrc(), e.getDest(), e.getWeight());
     }
@@ -110,6 +116,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     /**
      * Returns a shallow copy of the collection representing all the edges
      * connected to the given vertex, while this given vertex is the src of all its edges.
+     * If the vertex's neighbors don't exist, return an empty list.
      *
      * @return Collection<edge_data>
      */
@@ -225,7 +232,8 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     /**
-     * Equals method
+     * Compare between two graphs.
+     * returns true iff the graphs are logically equals --> else false
      *
      * @param obj
      * @return boolean
@@ -246,6 +254,8 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     /**
+     * Returns a deep copy of the reversed graph.
+     * Used in DWGraph_Algo.
      *
      * @return directed_weighted_graph
      */
@@ -281,7 +291,8 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     /**
-     * This private method checks if two different graphs are identical.
+     * This private method checks if two different graphs are identical,
+     * aka if every single vertex and edge exist in both graphs.
      *
      * @param g1 - first graph
      * @param g2 - second graph
@@ -300,7 +311,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     /**
-     * This private method deletes an edge from the graph in reverse.
+     * This private method deletes an edge from the reversed graph.
      *
      * @param src - the source of the edge.
      * @param dest - the destination of the edge.
@@ -310,7 +321,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     }
 
     /**
-     * This private method deletes the
+     * This private method deletes edges from the graph.
      *
      * @param src
      * @param dest

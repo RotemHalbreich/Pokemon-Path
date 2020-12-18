@@ -8,7 +8,13 @@ import org.json.JSONObject;
 
 import static java.lang.Double.parseDouble;
 
-public class Agent{
+/**
+ *
+ * @author Shaked Aviad & Rotem Halbreich
+ */
+
+public class Agent {
+
     private Integer id;
     private double value;
     private int src;
@@ -18,9 +24,20 @@ public class Agent{
     private edge_data edge;
     private node_data node;
 
+    /**
+     *
+     * @param json
+     * @throws JSONException
+     */
     public Agent(JSONObject json) throws JSONException {
         update(json);
     }
+
+    /**
+     *
+     * @param json
+     * @throws JSONException
+     */
     public void update(JSONObject json) throws JSONException {
         id= json.getInt("id");
         src= json.getInt("src");
@@ -32,6 +49,12 @@ public class Agent{
         //edge->we need think
         //node->we need think
     }
+
+    /**
+     *
+     * @param s
+     * @return double[] - double array
+     */
     private double[] simplifyLocation(String s){
         double[] ans=new double[3];
         String[] as=s.split(",");
@@ -41,23 +64,60 @@ public class Agent{
         return ans;
     }
 
+    /**
+     *
+     * @return Integer
+     */
     public Integer getId() {return id;}
 
+    /**
+     *
+     * @return node_data
+     */
     public node_data getNode() {return node;}
 
+    /**
+     *
+     * @return double
+     */
     public double getValue() {return value;}
 
+    /**
+     *
+     * @return int
+     */
     public int getSrc() {return src;}
 
+    /**
+     *
+     * @return int
+     */
     public int getDest() {return dest;}
 
+    /**
+     *
+     * @return double
+     */
     public double getSpeed() {return speed;}
 
+    /**
+     *
+     * @return Point3D
+     */
     public Point3D getPos() {return pos;}
 
+    /**
+     *
+     * @return edge_data
+     */
     public edge_data getEdge() {return edge;}
-    public boolean isMoving(){ return dest!=-1;}
 
+  //  public boolean isMoving(){ return dest!=-1;}
+
+    /**
+     *
+     * @return String
+     */
     public String toString(){
         return "Agent:{"
                 +"id:"+getId()

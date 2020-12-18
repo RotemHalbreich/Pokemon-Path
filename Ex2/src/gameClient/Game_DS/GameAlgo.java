@@ -7,6 +7,15 @@ import org.json.JSONException;
 import java.util.*;
 
 /**
+ * Represents the game's algorithms.
+ * game - is the game server.
+ * info - the game's information.
+ * algo - graph algorithm.
+ * pokemons - the game's Pokemons.
+ * agents - the game's Agents.
+ * handlingPokemons - an ArrayList representing the Pokemons who need to be caught.
+ * targets - includes the path for of any agent to his Pokemon.
+ * timer - includes the estimated time on which every Agent gets to his targeted Pokemon.
  *
  * @author Shaked Aviad & Rotem Halbreich
  */
@@ -43,7 +52,8 @@ public class GameAlgo extends Thread {
     }
 
     /**
-     * Sends the agents to the pokemons on the graph.
+     * Sends the agents to the pokemons on the graph,
+     * updates the Pokemon list and handlingPokemons list.
      */
     public void sendAgentsToPokemons() {
         try {
@@ -67,7 +77,7 @@ public class GameAlgo extends Thread {
     }
 
     /**
-     * Moves the agents on the graph.
+     * Moves the agents on the graph ans updates the agents.
      */
     public void moveAgents()  {
         try {
@@ -91,9 +101,6 @@ public class GameAlgo extends Thread {
         return algo.getGraph();
     }
 
-    /**
-     *
-     */
     @Override
     public void run() {
         try {
@@ -105,31 +112,61 @@ public class GameAlgo extends Thread {
         }
     }
 
+    /**
+     * Starts the game.
+     */
     public void startGame() {
         game.startGame();
     }
 
+    /**
+     * Returns the game server.
+     *
+     * @return game_service
+     */
     public game_service getGame() {
         return game;
     }
 
+    /**
+     * Returns the game's Pokemons
+     *
+     * @return Pokemons
+     */
     public Pokemons getPokemons() {
         return pokemons;
     }
 
+    /**
+     * Returns the game's agents.
+     *
+     * @return Agents
+     */
     public Agents getAgents() {
         return agents;
     }
 
+    /**
+     * Returns the game's information.
+     *
+     * @return Information
+     */
     public Information getInfo() {
         return info;
     }
 
+    /**
+     * Checks if the game is currently running.
+     *
+     * @return boolean
+     */
     public synchronized boolean isRunning() {
         return game.isRunning();
     }
 
     /**
+     * Calculates the average time the game is "allowed" to sleep.
+     *
      * @return long
      */
     public long averageTime() {
@@ -156,6 +193,7 @@ public class GameAlgo extends Thread {
     ////////// Private Methods //////////
 
     /**
+     * Initializes for the first time the targets and the timer in the agents' location.
      *
      */
     private void insertTargetsAndTime() {
@@ -170,6 +208,9 @@ public class GameAlgo extends Thread {
     }
 
     /**
+     * Initializes for the first time the agents in close range to the Pokemons.
+     * If there are more agents than Pokemons, chooses a random location to the agent.
+     *
      * @throws JSONException
      */
     private void insertFirstTime() throws JSONException {
@@ -200,7 +241,7 @@ public class GameAlgo extends Thread {
     }
 
     /**
-     *
+     * Checks if the agent and the Pokemon are on the same edge.
      *
      * @param path
      * @param edge
@@ -216,6 +257,10 @@ public class GameAlgo extends Thread {
     }
 
     /**
+     * Help function: finds the most efficient agent for catching the current Pokemon based on the
+     * speed arrival to it and finds the shortest path between them.
+     * Updates the target and timer.
+     *
      * @param currPok
      */
     private void findBestAgent(Pokemon currPok) {
@@ -252,7 +297,7 @@ public class GameAlgo extends Thread {
     }
 
     /**
-     *
+     * Updates the list of handlingPokemons.
      *
      * @throws JSONException
      */
@@ -263,6 +308,8 @@ public class GameAlgo extends Thread {
     }
 
     /**
+     * Moves the agent to the next vertex and updated the timer.
+     *
      * @param a
      */
     private void moveAgent(Agent a) {
@@ -280,6 +327,8 @@ public class GameAlgo extends Thread {
     }
 
     /**
+     * Checks if there's any Pokemon on this edge.
+     * if exists, returns the distance from src to this Pokemon.
      *
      * @param e
      * @return double

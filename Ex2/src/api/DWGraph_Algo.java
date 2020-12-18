@@ -15,6 +15,10 @@ import static java.lang.Double.parseDouble;
 
 /**
  * This class represents a Directed (positive) Weighted Graph Theory Algorithms including:
+ *
+ * graph - represents the basic directed weighted graph
+ * algorithm - represents graph algorithm using only in shortestPath & shortestPathDist
+ *
  * 0. clone(); (copy)
  * 1. init(graph);
  * 2. isConnected(); // strongly (all ordered pais connected)
@@ -58,7 +62,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     * Compute a deep copy of this weighted graph.
+     * Computes a deep copy of this weighted graph.
      *
      * @return directed_weighted_graph - a clone of the graph
      */
@@ -77,8 +81,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     * Returns true if and only if (iff) there is a valid path from each node to each
-     * other node.
+     * Returns true iff there is a valid path from each vertex to each other vertex,
+     * and from every other vertex there's a path to get back to the first vertex.
      *
      * @return boolean
      */
@@ -99,11 +103,12 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     /**
      * returns the length of the shortest path between src to dest
-     * Note: if no such path --> returns -1
+     * if no such path --> returns -1
      *
      * @param src  - start node
      * @param dest - end (target) node
      * @return double
+     * @throws RuntimeException - if one or more vertices don't exist in the graph
      */
     @Override
     public double shortestPathDist(int src, int dest) {
@@ -121,12 +126,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     /**
      * Returns the the shortest path between src to dest vertices as an ordered List of nodes:
-     * (src)--> (n1)-->(n2)-->...(dest)
+     * (src)--> (n1)-->(n2)-->...-->(dest)
      * If no such path --> returns null;
      *
      * @param src  - start node
      * @param dest - end node
      * @return List<node_data>
+     * @throws  RuntimeException - if one or more vertices don't exist in the graph
      */
     @Override
     public List<node_data> shortestPath(int src, int dest) {
@@ -135,8 +141,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     * Saves this weighted (directed) graph to the given
-     * file name - in JSON format
+     * Saves this weighted directed graph to the given
+     * file name - in JSON format using GSON library
      *
      * @param file - the file name (may include a relative path).
      * @return boolean (true - iff the file was successfully saved)
@@ -157,10 +163,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     * This method load a graph to this graph algorithm.
+     * This method loads a graph to this graph algorithm.
      * if the file was successfully loaded - the underlying graph
      * of this class will be changed (to the loaded one), in case the
      * graph was not loaded the original graph should remain "as is".
+     * Reads JSON format of the basic graph and JSON format of the data package.
      *
      * @param file - file name of JSON file
      * @return true - iff the graph was successfully loaded.
@@ -206,7 +213,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     * Equals method
+     * Using equals method of the basic graph.
      *
      * @param obj
      * @return boolean
@@ -218,6 +225,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     ///////// Private Methods /////////
 
     /**
+     * Help Function: Checks if there's a path between a vertex to any other vertex in the graph.
+     *
      * @param g
      * @param n
      */
@@ -240,6 +249,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
+     * Help function: checks after isConnected if there's a valid path between all the vertices.
+     *
      * @param g
      * @return boolean
      */
@@ -255,6 +266,9 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
+     * Help function: calculate the shortest path from src to dest vertices using Dijkstra's algorithm
+     * and updates the vertices as previous nodes using algorithm graph.
+     *
      * @param src
      * @param dest
      * @param queue
@@ -283,6 +297,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
+     * Help function: after shortestPathDist checked that there's a valid path and updated the previous vertices,
+     * passes through the previous vertex dest to vertex src.
+     * Returns a sorted list of nodes from src to dest.
+     *
      * @param src
      * @param dest
      * @param path
@@ -300,6 +318,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
+     * Generates a deep copy of the basic graph to graph - algorithm.
      *
      */
     private void createGraphAlgorithm() {
@@ -319,6 +338,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
 
     //////////Private Class  //////////
+
+    /**
+     * Inner class: converts a JSON format to a graph.
+     */
     private class DWGraph_DSJsonDeserializer implements JsonDeserializer<directed_weighted_graph> {
 
         /**
@@ -426,6 +449,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
 
         /**
+         * Compares between two vertices.
+         *
          * @param o
          * @return int
          */
