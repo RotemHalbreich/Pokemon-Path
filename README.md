@@ -9,13 +9,19 @@
 ------------------------------------------------------|----------------------------------------------------
 ----------------------------------------------------------------------------------------------------------
 ### :white_check_mark: *Initialize the project:*
-Clone the project using the Command Line by typing the command: `git clone https://github.com/shakedaviad55/Ex2.git`
+Clone the project using the Command Line by typing the command:
+
+`git clone https://github.com/shakedaviad55/Ex2.git`
 
 ----------------------------------------------------------------------------------------------------------
 ### :video_game: *Let's get started!*
-> In order to start playing the game please enter your ID and select the desirable level (0-23).
->> You can also access the game from the Command Line by typing the command: `java -jar Ex2.jar 000000000 11`  
->>>`0000000000` - represents your ID  |  `11` - represents the level number
+ In order to start playing the game please enter your ID and select the desirable level (0-23).
+ 
+ 
+ You can also access the game from the Command Line by typing the command: `java -jar Ex2.jar 000000000 11`  
+ 
+ 
+`0000000000` - represents your ID  |  `11` - represents the level number
 
 ----------------------------------------------------------------------------------------------------------
 ## :camera: *Screenshots:*
