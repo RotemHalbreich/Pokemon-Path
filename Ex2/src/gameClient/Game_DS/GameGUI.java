@@ -28,6 +28,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private GameAlgo gameAlgo;
     private directed_weighted_graph graph;
     private double MinX, MinY, MaxX, MaxY;
+    private boolean CMD=true;
 
     private String id = "305496614";
 
@@ -48,7 +49,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
         setTitle("Pokemon - The Game");
         setSize(1280, 700);
-        playMusic();
+     //   playMusic();
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -153,7 +154,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     public void initGame(String from) {
         String select = null, key = null;
         boolean with = true;
-        // if(from.equals("constructor")&&Ex2.level!=null)
+        if(from.equals("constructor")&&Ex2.level!=null&&Ex2.id!=null)CMD=false;
+        if(!CMD&&from.equals("constructor"))return;
         while (with) {
             key = JOptionPane.showInputDialog("Please enter your ID:  ", "000000000");
             select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "17");
@@ -161,19 +163,13 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             try {
                 num = parseInt(select);
                 key_id = parseInt(key);
-            } catch (Exception ex) {
-                continue;
-            }
-            if (num < 23 || num > 0) {
+                with = false;
+            } catch (Exception ex) {continue;}
                 if (from.equals("constructor")) {
                     Ex2.level = num;
                     Ex2.id = key_id;
                 }
-                if (from.equals("new"))
-                    initNewGame(num, key_id);
-
-                with = false;
-            }
+                if (from.equals("new")) initNewGame(num, key_id);
         }
     }
 
@@ -442,8 +438,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private void initNewGame(int num, int key) {
         String[] newGame = new String[2];
         id = String.valueOf(key);
-        newGame[0] = "" + num;
-        newGame[1] = id;
+        newGame[1] = "" + num;
+        newGame[0] = id;
         Ex2.main(newGame);
     }
 }

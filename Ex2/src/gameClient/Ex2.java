@@ -13,7 +13,7 @@ import org.json.JSONException;
  */
 
 public class Ex2 implements Runnable {
-    private static GameGUI gui = new GameGUI();
+    private static GameGUI gui ;
     private static GameAlgo gameAlgo;
     public static Integer level;
     public  static Integer id;
@@ -22,8 +22,8 @@ public class Ex2 implements Runnable {
         Thread ex2 = new Thread(new Ex2());
 
         try{
-            level=Integer.parseInt(args[0]);
-            id=Integer.parseInt(args[1]);
+            level=Integer.parseInt(args[1]);
+            id=Integer.parseInt(args[0]);
         }catch (Exception e){}
         ex2.start();
     }
@@ -73,6 +73,7 @@ public class Ex2 implements Runnable {
      *
      */
     public static void init(){
+        gui=new GameGUI();
         game_service game = Game_Server_Ex2.getServer(level);
        // game.login(id);
         DWGraph_Algo algo = null;
