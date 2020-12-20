@@ -33,7 +33,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private JButton button;
     private double BTNSIZE;
     private Clip music;
-    private  ImageIcon iconBtn;
+    private ImageIcon iconBtn;
     private BufferedImage background;
     private BufferedImage ash;
     private BufferedImage misty;
@@ -128,7 +128,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         String select = e.getActionCommand();
         if (select.equals("New Game")) {
-           if(gameAlgo.getGame().isRunning())
+            if (gameAlgo.getGame().isRunning())
                 gameAlgo.getGame().stopGame();
             initGame("new");
         } else if (e.getSource() == button) {
@@ -147,14 +147,12 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     ///////// Private Methods //////////
     private void setButton() {
         button = new JButton();
-        iconBtn=new ImageIcon("data/media/ash.png");
+        iconBtn = new ImageIcon("data/media/mute.png");
+        button.setText("Mute");
+        button.setFont(new Font("Elephant", Font.PLAIN, 0));
         button.setIcon(iconBtn);
         button.addActionListener(this);
-        button.setText("Mute");
-        button.setFont(new Font("Comic Sans", Font.BOLD, 10));
         button.setIconTextGap(-15);
-        button.setForeground(Color.cyan);
-        button.setBackground(Color.gray);
         button.setBorder(BorderFactory.createEtchedBorder());
         this.add(button);
 
@@ -384,7 +382,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                     g.drawImage(this.raikou, x - 28, y - 24, 60, 60, null);
             } else {
                 g.setColor(new Color(79, 146, 17));
-             //   g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
+                //   g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
                 if (pokemon.getValue() <= 8)
                     g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
                 else if (pokemon.getValue() <= 11 && pokemon.getValue() >= 9)
