@@ -28,9 +28,9 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private GameAlgo gameAlgo;
     private directed_weighted_graph graph;
     private double MinX, MinY, MaxX, MaxY;
-    private boolean CMD=true;
+    private boolean CMD = true;
 
-    private String id;
+    private String id = "305496614";
 
     private File soundtrack;
 
@@ -40,6 +40,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private Clip music;
     private BufferedImage background;
     private BufferedImage ash;
+    private BufferedImage misty;
+    private BufferedImage brock;
     private BufferedImage pichu;
     private BufferedImage pikachu;
     private BufferedImage raichu;
@@ -67,7 +69,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     /**
-     *
      * @param g
      */
     public void update(GameAlgo g) {
@@ -77,7 +78,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     /**
-     *
      * @param g2
      */
     public void paint(Graphics g2) {
@@ -89,7 +89,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         Graphics2D g = bufferedImage.createGraphics();
 
         super.paintComponents(g);
-        button.setBounds((int)  BTNSIZE-60,  0,50,50);
+        button.setBounds((int) BTNSIZE - 60, 0, 50, 50);
         drawBackground(g);
         drawGraph(g);
         drawPokemos(g);
@@ -102,10 +102,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("x"+e.getX()+"\ty"+e.getY());
-        System.out.println("MAXXx"+MaxX+"\tMAXYy"+MaxY);
-        System.out.println("MINx"+MinX+"\tMINy"+MinY);
-        System.out.println("GETX"+getWidth()+"\tgety"+getHeight());
+        System.out.println("x" + e.getX() + "\ty" + e.getY());
+        System.out.println("MAXXx" + MaxX + "\tMAXYy" + MaxY);
+        System.out.println("MINx" + MinX + "\tMINy" + MinY);
+        System.out.println("GETX" + getWidth() + "\tgety" + getHeight());
     }
 
     @Override
@@ -129,7 +129,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     /**
-     *
      * @param e
      */
     @Override
@@ -138,28 +137,26 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         if (select.equals("New Game")) {
             gameAlgo.getGame().stopGame();
             initGame("new");
-        }else if(e.getSource()==button){
-            if(select.equals("Mute")){
+        } else if (e.getSource() == button) {
+            if (select.equals("Mute")) {
                 button.setText("Unmute");
                 music.stop();
-            }
-            else{
+            } else {
                 button.setText("Mute");
                 music.start();
             }
 
-        }
-        else {
+        } else {
             gameAlgo.getGame().stopGame();
         }
     }
 
     ///////// Private Methods //////////
-    private void setButton(){
-        button=new JButton();
+    private void setButton() {
+        button = new JButton();
         button.addActionListener(this);
         button.setText("Mute");
-        button.setFont(new Font("Comic Sans",Font.BOLD,10));
+        button.setFont(new Font("Comic Sans", Font.BOLD, 10));
         button.setIconTextGap(-15);
         button.setForeground(Color.cyan);
         button.setBackground(Color.gray);
@@ -168,15 +165,15 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
 
     }
+
     /**
-     *
      * @param from
      */
     public void initGame(String from) {
         String select = null, key = null;
         boolean with = true;
-        if(from.equals("constructor")&&Ex2.level!=null&&Ex2.id!=null)CMD=false;
-        if(!CMD&&from.equals("constructor"))return;
+        if (from.equals("constructor") && Ex2.level != null && Ex2.id != null) CMD = false;
+        if (!CMD && from.equals("constructor")) return;
         while (with) {
             key = JOptionPane.showInputDialog("Please enter your ID:  ", "000000000");
             select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "17");
@@ -185,9 +182,14 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                 num = parseInt(select);
                 key_id = parseInt(key);
                 with = false;
-            } catch (Exception ex) {continue;}
-                if (from.equals("constructor")) {Ex2.level = num;Ex2.id = key_id;}
-                if (from.equals("new")) initNewGame(num, key_id);
+            } catch (Exception ex) {
+                continue;
+            }
+            if (from.equals("constructor")) {
+                Ex2.level = num;
+                Ex2.id = key_id;
+            }
+            if (from.equals("new")) initNewGame(num, key_id);
         }
     }
 
@@ -198,6 +200,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         try {
             this.background = ImageIO.read(new File("data/media/background.png"));
             this.ash = ImageIO.read(new File("data/media/ash.png"));
+            this.misty = ImageIO.read(new File("data/media/misty.png"));
+            this.brock = ImageIO.read(new File("data/media/brock.png"));
             this.pichu = ImageIO.read(new File("data/media/pichu.png"));
             this.pikachu = ImageIO.read(new File("data/media/pikachu.png"));
             this.raichu = ImageIO.read(new File("data/media/raichu.png"));
@@ -210,7 +214,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     /**
-     *
      * @param g
      */
     private void drawBackground(Graphics2D g) {
@@ -245,7 +248,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         MinY = MAX_VALUE;
         MaxX = MIN_VALUE;
         MaxY = MIN_VALUE;
-        BTNSIZE=getWidth();
+        BTNSIZE = getWidth();
     }
 
     /**
@@ -266,11 +269,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             if (n.getLocation().y() > MaxY)
                 MaxY = n.getLocation().y();
         }
-        BTNSIZE=getWidth();
+        BTNSIZE = getWidth();
     }
 
     /**
-     *
      * @param y
      * @return
      */
@@ -282,19 +284,17 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     /**
-     *
      * @param x
      * @return
      */
     private int ratioX(double x) {
         if (x > MaxX || x < MinX)
             resizeFrame();
-        BTNSIZE=getWidth();
+        BTNSIZE = getWidth();
         return (int) ((x - MinX) / (MaxX - MinX) * (getWidth() - 50) + 20);
     }
 
     /**
-     *
      * @param g
      */
     private void drawGraph(Graphics2D g) {
@@ -308,7 +308,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     /**
-     *
      * @param g
      * @param n
      */
@@ -322,7 +321,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     /**
-     *
      * @param g
      * @param e
      */
@@ -343,7 +341,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     /**
-     *
      * @param g
      */
     private void drawAgents(Graphics g) {
@@ -355,13 +352,20 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             g.setColor(new Color(255, 0, 0, 255));
             int x = ratioX(agent.getPos().x()),
                     y = ratioY(agent.getPos().y());
-            g.drawImage(this.ash, x - 18, y - 30, 30, 60, null);
             g.drawString("ID:" + agent.getId() + " , Speed: " + agent.getSpeed(), x - 50, y - 40);
+            if (agent.getId() == 0) {
+                g.drawImage(this.ash, x - 18, y - 30, 30, 60, null);
+            }
+            if (agent.getId() == 1) {
+                g.drawImage(this.misty, x - 18, y - 30, 40, 70, null);
+            }
+            if (agent.getId() != 0 && agent.getId() >= 2) {
+                g.drawImage(this.brock, x - 18, y - 30, 40, 70, null);
+            }
         }
     }
 
     /**
-     *
      * @param g
      */
     private void drawPokemos(Graphics g) {
@@ -400,7 +404,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     /**
-     *
      * @param g
      */
     private void drawInfo(Graphics g) {
@@ -447,13 +450,14 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     }
 
     /**
-     *
      * @param num
      * @param key
      */
     private void initNewGame(int num, int key) {
-        Ex2.level=num;
-        Ex2.id=key;
-        Ex2.main(new String[2]);
+        String[] newGame = new String[2];
+        id = String.valueOf(key);
+        newGame[1] = "" + num;
+        newGame[0] = id;
+        Ex2.main(newGame);
     }
 }

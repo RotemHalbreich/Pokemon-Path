@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import static java.lang.Double.parseDouble;
 
 /**
+ * Represents an Agent in the game.
  *
  * @author Shaked Aviad & Rotem Halbreich
  */
@@ -25,6 +26,7 @@ public class Agent {
     private node_data node;
 
     /**
+     * Constructor:
      *
      * @param json
      * @throws JSONException
@@ -34,6 +36,7 @@ public class Agent {
     }
 
     /**
+     * Updates the game's Agent.
      *
      * @param json
      * @throws JSONException
@@ -51,9 +54,10 @@ public class Agent {
     }
 
     /**
+     * Simplifies the agent's location.
      *
      * @param s
-     * @return double[] - double array
+     * @return double[]
      */
     private double[] simplifyLocation(String s){
         double[] ans=new double[3];
@@ -65,48 +69,56 @@ public class Agent {
     }
 
     /**
+     * Gets the agent's ID.
      *
      * @return Integer
      */
     public Integer getId() {return id;}
 
     /**
+     * Gets the agent's vertex.
      *
      * @return node_data
      */
     public node_data getNode() {return node;}
 
     /**
+     * Gets the agent's value.
      *
      * @return double
      */
     public double getValue() {return value;}
 
     /**
+     * Gets the agent's source.
      *
      * @return int
      */
     public int getSrc() {return src;}
 
     /**
+     * Gets the agent's destination.
      *
      * @return int
      */
     public int getDest() {return dest;}
 
     /**
+     * Gets the agent's speed.
      *
      * @return double
      */
     public double getSpeed() {return speed;}
 
     /**
+     * Gets the agent's position.
      *
      * @return Point3D
      */
     public Point3D getPos() {return pos;}
 
     /**
+     * Gets the agent's edge.
      *
      * @return edge_data
      */
@@ -115,6 +127,7 @@ public class Agent {
   //  public boolean isMoving(){ return dest!=-1;}
 
     /**
+     * Returns the agent as a String.
      *
      * @return String
      */
