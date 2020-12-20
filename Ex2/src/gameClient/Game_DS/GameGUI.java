@@ -147,7 +147,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                 button.setText("Mute");
                 music.start();
             }
-
         } else {
             gameAlgo.getGame().stopGame();
         }

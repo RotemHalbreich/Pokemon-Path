@@ -4,7 +4,7 @@ import java.util.Objects;
 
 /**
  * This class represents the set of operations applicable on a
- * node (vertex) in a (directional) weighted graph.
+ * node (vertex) in a directed weighted graph.
  *
  * @author Shaked Aviad & Rotem Halbreich
  */
@@ -163,7 +163,7 @@ public class Node implements node_data {
     }
 
     /**
-     * Equals method
+     * Checks if two vertices are equals.
      *
      * @param obj
      * @return boolean

@@ -3,8 +3,8 @@ package api;
 import java.util.Objects;
 
 /**
- * This interface represents the set of operations applicable on a
- * directional edge(src,dest) in a (directional) weighted graph.
+ * This class represents the set of operations applicable on a
+ * directional edge in a directed weighted graph.
  *
  * @author Shaked Aviad & Rotem Halbreich
  */
@@ -145,7 +145,7 @@ public class Edge implements edge_data {
     }
 
     /**
-     * Equals method
+     * Checks if two edges are equal.
      *
      * @param obj
      * @return boolean

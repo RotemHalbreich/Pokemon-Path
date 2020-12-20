@@ -14,7 +14,7 @@ import static java.lang.Double.MAX_VALUE;
 import static java.lang.Double.parseDouble;
 
 /**
- * This class represents a Directed (positive) Weighted Graph Theory Algorithms including:
+ * This class represents a Directed Weighted Graph Theory Algorithms including:
  *
  * graph - represents the basic directed weighted graph
  * algorithm - represents graph algorithm using only in shortestPath & shortestPathDist
@@ -125,7 +125,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     * Returns the the shortest path between src to dest vertices as an ordered List of nodes:
+     * Returns the shortest path between src to dest vertices as an ordered List of nodes:
      * (src)--> (n1)-->(n2)-->...-->(dest)
      * If no such path --> returns null;
      *

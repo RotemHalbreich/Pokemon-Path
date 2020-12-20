@@ -129,7 +129,7 @@ public class DWGraph_DS implements directed_weighted_graph {
 
     /**
      * Deletes the vertex by its unique key from the graph,
-     * then removes all edges connected to this vertex.
+     * then removes all the edges connected to this vertex.
      *
      * @return node_data - the data of the removed node (null if none).
      * @param key
