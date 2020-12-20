@@ -18,10 +18,13 @@ Clone the project using the Command Line by typing the command:
  In order to start playing the game please enter your ID and select the desirable level (0-23).
  
  
- You can also access the game from the Command Line by typing the command: `java -jar Ex2.jar 000000000 11`  
+ You can also access the game from the Command Line by typing the command:
  
  
-`0000000000` - represents your ID  |  `11` - represents the level number
+ `java -jar Ex2.jar 000000000 11`  
+ 
+ 
+`0000000000` - represents your ID  |  `11` - represents the number of level
 
 ----------------------------------------------------------------------------------------------------------
 ## :camera: *Screenshots:*
