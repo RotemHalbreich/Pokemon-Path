@@ -69,7 +69,7 @@ public class Pokemons {
      *
      * @return Iterator<Pokemon>
      */
-    public Iterator<Pokemon> iterator() {
+    public synchronized Iterator<Pokemon> iterator() {
         return Arrays.stream(pokemons).iterator();
     }
 

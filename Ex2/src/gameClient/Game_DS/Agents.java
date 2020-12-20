@@ -88,7 +88,7 @@ public class Agents {
      *
      * @return Iterator<Agent>
      */
-    public Iterator<Agent> iterator() {
+    public synchronized Iterator<Agent> iterator() {
         return agents.values().iterator();
     }
 

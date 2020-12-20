@@ -50,7 +50,6 @@ public class GameAlgo {
         agents.update();
         insertTargetsAndTime();
     }
-
     /**
      * Sends the agents to the pokemons on the graph,
      * updates the Pokemon list and handlingPokemons list.
@@ -61,6 +60,7 @@ public class GameAlgo {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         Iterator<Pokemon> itr = pokemons.iterator();
         while (itr.hasNext()) {
             Pokemon currPok = itr.next();
@@ -70,7 +70,6 @@ public class GameAlgo {
             }
         }
         try {
-
             updateHandled();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -83,15 +82,13 @@ public class GameAlgo {
     public void moveAgents() {
         try {
             agents.update();
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Iterator<Agent> itr = agents.iterator();
-        while (itr.hasNext()) {
-            Agent a = itr.next();
-            if (a.getDest() == -1) moveAgent(a);
-        }
+       for(Integer id:timer.keySet()){
+           Agent a=agents.getAgent(id);
+           if (a.getDest() == -1) moveAgent(a);
+       }
     }
 
     /**
@@ -160,12 +157,11 @@ public class GameAlgo {
      *
      * @return long
      */
-    public long averageTime() {
-        Iterator<Agent> itr = agents.iterator();
+    public  long averageTime() {
         double ans = 1, w = 0, speed = 0, min = Double.MAX_VALUE;
-        while (itr.hasNext()) {
-            Agent a = itr.next();
-            ArrayList<node_data> p = targets.get(a.getId());
+        for (Integer id:timer.keySet()){
+            Agent a = agents.getAgent(id);
+            ArrayList<node_data> p = targets.get(id);
             if (p.size() > 1) {
                 edge_data edge = algo.getGraph().getEdge(p.get(0).getKey(), p.get(1).getKey());
                 double eat = eatPokemon(edge);
@@ -258,18 +254,16 @@ public class GameAlgo {
         double optimalTime = game.timeToEnd() + 1000;
         ArrayList<node_data> path = null, tempPath = null;
         int last = 0, agentId = 0;
-
-        Iterator<Agent> itr = agents.iterator();
-        while (itr.hasNext()) {
-            Agent agent = itr.next();
-            Double tempOptimalTime = timer.get(agent.getId());
-            tempPath = targets.get(agent.getId());
+        for (Integer id:timer.keySet()){
+            Agent agent = agents.getAgent(id);
+            Double tempOptimalTime = timer.get(id);
+            tempPath = targets.get(id);
             last = tempPath.get(tempPath.size() - 1).getKey();
             double minTime = agents.DPS(last, src) / agent.getSpeed();
             if (minTime + tempOptimalTime < optimalTime) {
                 optimalTime = minTime + tempOptimalTime;
                 path = tempPath;
-                agentId = agent.getId();
+                agentId = id;
             }
         }
         if (path == null) return;

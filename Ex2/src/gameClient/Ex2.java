@@ -20,10 +20,7 @@ public class Ex2 implements Runnable {
     public static Integer level;
     public static Integer id;
     private static Thread gex2;
-    private static boolean isRunning;
-
     public static void main(String[] args) {
-        isRunning=true;
         Thread ex2 = new Thread(new Ex2());
         try {
             if (level == null && id == null) {
@@ -37,12 +34,12 @@ public class Ex2 implements Runnable {
          gex2=new Thread(new Runnable() {
             @Override
             public void run() {
-                int i=0;
-                while (isRunning)
-                    if((i++)%4==0)gui.repaint();
+                while (gameAlgo.isRunning())
+                        gui.repaint();
             }
         });
         ex2.start();
+
     }
     @Override
     public void run() {
@@ -51,7 +48,8 @@ public class Ex2 implements Runnable {
         gameAlgo.startGame();
         gex2.start();
         while (gameAlgo.isRunning()) {algorithm();}
-        isRunning=false;
+
+
         System.out.println(gameAlgo.getGame().toString());
     }
 

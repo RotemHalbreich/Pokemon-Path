@@ -25,7 +25,6 @@ import static java.lang.Integer.parseInt;
 
 
 public class GameGUI extends JFrame implements MouseListener, ActionListener {
-
     private GameAlgo gameAlgo;
     private directed_weighted_graph graph;
     private double MinX, MinY, MaxX, MaxY;
@@ -382,7 +381,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                     g.drawImage(this.raikou, x - 28, y - 24, 60, 60, null);
             } else {
                 g.setColor(new Color(79, 146, 17));
-                g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
+             //   g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
                 if (pokemon.getValue() <= 8)
                     g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
                 else if (pokemon.getValue() <= 11 && pokemon.getValue() >= 9)
