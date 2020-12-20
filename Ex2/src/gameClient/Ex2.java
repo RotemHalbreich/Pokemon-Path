@@ -48,8 +48,6 @@ public class Ex2 implements Runnable {
         gameAlgo.startGame();
         gex2.start();
         while (gameAlgo.isRunning()) {algorithm();}
-
-
         System.out.println(gameAlgo.getGame().toString());
     }
 
