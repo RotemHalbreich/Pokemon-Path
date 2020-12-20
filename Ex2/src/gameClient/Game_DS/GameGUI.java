@@ -456,10 +456,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
      * @param key
      */
     private void initNewGame(int num, int key) {
-        String[] newGame = new String[2];
-        id = String.valueOf(key);
-        newGame[1] = "" + num;
-        newGame[0] = id;
-        Ex2.main(newGame);
+        Ex2.id=key;
+        Ex2.level=num;
+        Ex2.main(new String[2]);
     }
+
+
 }

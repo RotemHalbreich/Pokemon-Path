@@ -39,6 +39,7 @@ public class Ex2 implements Runnable {
         init();
         gui.update(gameAlgo);
         gameAlgo.startGame();
+
         int ind = 0;
         while (gameAlgo.isRunning()) {
             algorithm();
@@ -59,6 +60,9 @@ public class Ex2 implements Runnable {
             gameAlgo.sendAgentsToPokemons();
             gameAlgo.moveAgents();
             gameAlgo.getInfo().update();
+//            System.out.println("game:\t"+gameAlgo.getGame().toString());
+//            System.out.println("Agents:\t"+gameAlgo.getGame().getAgents());
+//            System.out.println("Pokemons:\t"+gameAlgo.getGame().getPokemons());
             Thread.sleep(gameAlgo.averageTime());
         } catch (JSONException | InterruptedException e) {e.printStackTrace();}
     }

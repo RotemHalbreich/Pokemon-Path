@@ -58,24 +58,19 @@ public class GameAlgo {
     public void sendAgentsToPokemons() {
         try {
             pokemons.update();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        } catch (JSONException e) {e.printStackTrace();}
         Iterator<Pokemon> itr = pokemons.iterator();
         while (itr.hasNext()) {
             Pokemon currPok = itr.next();
             if (!handlingPokemons.contains(currPok.getLocation())) {
-                handlingPokemons.add(0, currPok.getLocation());
                 if (!onWay(currPok)) findBestAgent(currPok);
+                handlingPokemons.add(0, currPok.getLocation());
             }
         }
         try {
             updateHandled();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        } catch (JSONException e) {e.printStackTrace();}
     }
-
     /**
      * Moves the agents on the graph ans updates the agents.
      */
@@ -271,6 +266,7 @@ public class GameAlgo {
                 agentId = agent.getId();
             }
         }
+        if(path==null)return;
         last = path.get(path.size() - 1).getKey();
         List<node_data> shortesPath = algo.shortestPath(last, src);
         shortesPath.remove(0);
