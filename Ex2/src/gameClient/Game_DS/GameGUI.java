@@ -33,7 +33,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private JButton button;
     private double BTNSIZE;
     private Clip music;
-    private ImageIcon iconBtn;
+    private ImageIcon iconBtnMute=new ImageIcon("data/media/mute.png");
+    private ImageIcon iconBtnUnmute=new ImageIcon("data/media/unmute.png");
     private BufferedImage background;
     private BufferedImage ash;
     private BufferedImage misty;
@@ -134,9 +135,11 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         } else if (e.getSource() == button) {
             if (select.equals("Mute")) {
                 button.setText("Unmute");
+                button.setIcon(iconBtnMute);
                 music.stop();
             } else {
                 button.setText("Mute");
+                button.setIcon(iconBtnUnmute);
                 music.start();
             }
         } else {
@@ -147,10 +150,9 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     ///////// Private Methods //////////
     private void setButton() {
         button = new JButton();
-        iconBtn = new ImageIcon("data/media/mute.png");
         button.setText("Mute");
         button.setFont(new Font("Elephant", Font.PLAIN, 0));
-        button.setIcon(iconBtn);
+        button.setIcon(iconBtnUnmute);
         button.addActionListener(this);
         button.setIconTextGap(-15);
         button.setBorder(BorderFactory.createEtchedBorder());
@@ -168,7 +170,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         if (from.equals("constructor") && Ex2.level != null && Ex2.id != null) CMD = false;
         if (!CMD && from.equals("constructor")) return;
         while (with) {
-            key = JOptionPane.showInputDialog("Please enter your ID:  ", "311549364");
+            key = JOptionPane.showInputDialog("Please enter your ID:  ", "000000000");
             select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "0");
             int num = -1, key_id = -1;
             try {
