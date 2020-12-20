@@ -47,6 +47,14 @@ for the most valuable Pokemon and updating the grade, the higher the grade - the
 *Directed Graph:* | *https://en.wikipedia.org/wiki/Directed_graph*
 *Dijkstra's Algorithm:* | *https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm*
 *Breadth-First Search (BFS) Algorithm:* | *https://en.wikipedia.org/wiki/Breadth-first_search*
+----------------------------------------------------------------------------------------------------------
+## :book: *Wiki:*
+*Please be sure to check out our Wiki for more information about the project!*
+
+----------------------------------------------------------------------------------------------------------
+### *Enjoy, and please share!* :smile:
+
+
 
 
 
