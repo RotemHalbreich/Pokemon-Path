@@ -60,7 +60,6 @@ public class GameAlgo {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         Iterator<Pokemon> itr = pokemons.iterator();
         while (itr.hasNext()) {
             Pokemon currPok = itr.next();
