@@ -33,6 +33,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private JButton button;
     private double BTNSIZE;
     private Clip music;
+    private  ImageIcon iconBtn;
     private BufferedImage background;
     private BufferedImage ash;
     private BufferedImage misty;
@@ -146,6 +147,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     ///////// Private Methods //////////
     private void setButton() {
         button = new JButton();
+        iconBtn=new ImageIcon("data/media/ash.png");
+        button.setIcon(iconBtn);
         button.addActionListener(this);
         button.setText("Mute");
         button.setFont(new Font("Comic Sans", Font.BOLD, 10));
