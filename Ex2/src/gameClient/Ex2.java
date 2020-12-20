@@ -7,6 +7,9 @@ import api.game_service;
 import gameClient.Game_DS.*;
 import org.json.JSONException;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * @author Shaked Aviad & Rotem Halbreich
  */
@@ -16,8 +19,11 @@ public class Ex2 implements Runnable {
     private static GameAlgo gameAlgo;
     public static Integer level;
     public static Integer id;
+    private static Thread gex2;
+    private static boolean isRunning;
 
     public static void main(String[] args) {
+        isRunning=true;
         Thread ex2 = new Thread(new Ex2());
         try {
             if (level == null && id == null) {
@@ -28,25 +34,24 @@ public class Ex2 implements Runnable {
         } catch (Exception e) {
             gui = new GameGUI();
         }
+         gex2=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int i=0;
+                while (isRunning)
+                    if((i++)%2==0)gui.repaint();
+            }
+        });
         ex2.start();
     }
-
-    /**
-     *
-     */
     @Override
     public void run() {
         init();
         gui.update(gameAlgo);
         gameAlgo.startGame();
-
-        int ind = 0;
-        while (gameAlgo.isRunning()) {
-            algorithm();
-            if (ind % 1 == 0) {gui.repaint();}
-            ind++;
-        }
-        gui.repaint();
+        gex2.start();
+        while (gameAlgo.isRunning()) {algorithm();}
+        isRunning=false;
         System.out.println(gameAlgo.getGame().toString());
     }
 
@@ -60,11 +65,8 @@ public class Ex2 implements Runnable {
             gameAlgo.sendAgentsToPokemons();
             gameAlgo.moveAgents();
             gameAlgo.getInfo().update();
-//            System.out.println("game:\t"+gameAlgo.getGame().toString());
-//            System.out.println("Agents:\t"+gameAlgo.getGame().getAgents());
-//            System.out.println("Pokemons:\t"+gameAlgo.getGame().getPokemons());
             Thread.sleep(gameAlgo.averageTime());
-        } catch (JSONException | InterruptedException e) {e.printStackTrace();}
+        } catch (InterruptedException | JSONException e) {e.printStackTrace();}
     }
 
     /**

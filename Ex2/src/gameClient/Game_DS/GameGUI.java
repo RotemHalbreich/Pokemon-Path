@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import api.*;
 import gameClient.Ex2;
+import org.json.JSONException;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -63,7 +64,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         setVisible(true);
         setFrameSize();
         setButton();
-
         menuBar();
         addMouseListener(this);
         setImages();
@@ -77,7 +77,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         this.gameAlgo = g;
         this.graph = gameAlgo.getGraph();
         resizeFrame();
+
     }
+
+
 
     /**
      * @param g2
@@ -104,10 +107,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("x" + e.getX() + "\ty" + e.getY());
-        System.out.println("MAXXx" + MaxX + "\tMAXYy" + MaxY);
-        System.out.println("MINx" + MinX + "\tMINy" + MinY);
-        System.out.println("GETX" + getWidth() + "\tgety" + getHeight());
+
     }
 
     @Override
@@ -303,6 +303,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
      */
     private void drawGraph(Graphics2D g) {
         if (graph == null) return;
+        g.setFont(new Font("Elephant", Font.PLAIN, 13));
         for (node_data n : graph.getV()) {
             drawNode(g, n);
             for (edge_data e : graph.getE(n.getKey())) {
@@ -319,7 +320,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         int x = ratioX(n.getLocation().x());
         int y = ratioY(n.getLocation().y());
         g.setColor(new Color(59, 124, 191, 255));
-        g.setFont(new Font("Elephant", Font.PLAIN, 13));
+//        g.setFont(new Font("Elephant", Font.PLAIN, 13));
         g.fill3DRect(x - 8, y - 10, 18, 18, true);
         g.drawString("" + n.getKey(), x, y + 20);
     }
@@ -331,7 +332,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private void drawEdge(Graphics2D g, edge_data e) {
         node_data src = graph.getNode(e.getSrc()),
                 dest = graph.getNode(e.getDest());
-        double w = (int) e.getWeight();
+
         int x = ratioX(src.getLocation().x()),
                 x1 = ratioX(dest.getLocation().x()),
                 y = ratioY(src.getLocation().y()),
@@ -339,7 +340,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
         g.setColor(new Color(40, 42, 45, 54));
         g.setStroke(new BasicStroke(3));
-        g.setFont(new Font("Elephant", Font.PLAIN, 12));
+//        g.setFont(new Font("Elephant", Font.PLAIN, 12));
         g.drawLine(x, y, x1, y1);
         g.drawString("  ", (x + 5 * x1) / 4, (y + 5 * y1) / 4);
     }
@@ -358,7 +359,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                     y = ratioY(agent.getPos().y());
             g.drawString("ID:" + agent.getId() + " , Speed: " + agent.getSpeed(), x - 50, y - 40);
             if (agent.getId() == 0) {
-                g.drawImage(this.ash, x - 18, y - 30, 30, 60, null);
+                 g.drawImage(this.ash, x - 18, y - 30, 30, 60, null);
             }
             else if (agent.getId() == 1) {
                 g.drawImage(this.misty, x - 18, y - 30, 40, 70, null);
@@ -368,7 +369,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             }
         }
     }
-
     /**
      * @param g
      */
@@ -392,6 +392,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                     g.drawImage(this.raikou, x - 28, y - 24, 60, 60, null);
             } else {
                 g.setColor(new Color(79, 146, 17));
+                g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
                 if (pokemon.getValue() <= 8)
                     g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
                 else if (pokemon.getValue() <= 11 && pokemon.getValue() >= 9)

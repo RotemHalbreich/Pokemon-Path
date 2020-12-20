@@ -58,7 +58,9 @@ public class GameAlgo {
     public void sendAgentsToPokemons() {
         try {
             pokemons.update();
-        } catch (JSONException e) {e.printStackTrace();}
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         Iterator<Pokemon> itr = pokemons.iterator();
         while (itr.hasNext()) {
             Pokemon currPok = itr.next();
@@ -68,15 +70,20 @@ public class GameAlgo {
             }
         }
         try {
+
             updateHandled();
-        } catch (JSONException e) {e.printStackTrace();}
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
     /**
      * Moves the agents on the graph ans updates the agents.
      */
-    public void moveAgents()  {
+    public void moveAgents() {
         try {
             agents.update();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -170,7 +177,7 @@ public class GameAlgo {
         }
         if (min == Double.MAX_VALUE) ans = 100;
         else ans = min * 100;
-        if (ans < 100) ans = (100 + min);
+        if (ans < 70) ans = (100 +min);
         return (long) ans;
     }
 
@@ -178,7 +185,6 @@ public class GameAlgo {
 
     /**
      * Initializes for the first time the targets and the timer in the agents' location.
-     *
      */
     private void insertTargetsAndTime() {
         Iterator<Agent> itr = agents.iterator();
@@ -266,7 +272,7 @@ public class GameAlgo {
                 agentId = agent.getId();
             }
         }
-        if(path==null)return;
+        if (path == null) return;
         last = path.get(path.size() - 1).getKey();
         List<node_data> shortesPath = algo.shortestPath(last, src);
         shortesPath.remove(0);
@@ -326,4 +332,7 @@ public class GameAlgo {
         if (min != Double.MAX_VALUE) ans = min;
         return ans;
     }
+
+
+
 }
