@@ -30,7 +30,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private double MinX, MinY, MaxX, MaxY;
     private boolean CMD=true;
 
-    private String id = "305496614";
+    private String id;
 
     private File soundtrack;
 
@@ -164,10 +164,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                 key_id = parseInt(key);
                 with = false;
             } catch (Exception ex) {continue;}
-                if (from.equals("constructor")) {
-                    Ex2.level = num;
-                    Ex2.id = key_id;
-                }
+                if (from.equals("constructor")) {Ex2.level = num;Ex2.id = key_id;}
                 if (from.equals("new")) initNewGame(num, key_id);
         }
     }
@@ -435,11 +432,9 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
      * @param key
      */
     private void initNewGame(int num, int key) {
-        String[] newGame = new String[2];
-        id = String.valueOf(key);
-        newGame[1] = "" + num;
-        newGame[0] = id;
-        Ex2.main(newGame);
+        Ex2.level=num;
+        Ex2.id=key;
+        Ex2.main(new String[2]);
     }
 }
 //////////////////////////////////////////////////////////////////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

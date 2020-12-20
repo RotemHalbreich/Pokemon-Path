@@ -13,7 +13,7 @@ import org.json.JSONException;
  */
 
 public class Ex2 implements Runnable {
-    private static GameGUI gui =new GameGUI();
+    private static GameGUI gui;
     private static GameAlgo gameAlgo;
     public static Integer level;
     public  static Integer id;
@@ -21,9 +21,12 @@ public class Ex2 implements Runnable {
     public static void main(String[] args) {
         Thread ex2 = new Thread(new Ex2());
         try{
-            level=Integer.parseInt(args[1]);
-            id=Integer.parseInt(args[0]);
-        }catch (Exception e){}
+            if(level==null&&id==null) {
+                level = Integer.parseInt(args[1]);
+                id = Integer.parseInt(args[0]);
+                gui = new GameGUI();
+            }
+        }catch (Exception e){gui = new GameGUI();}
         ex2.start();
     }
 
