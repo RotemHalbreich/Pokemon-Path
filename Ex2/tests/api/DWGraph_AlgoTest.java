@@ -30,7 +30,6 @@ class DWGraph_AlgoTest {
             g_massive.connect(i, i - 1, i * 10);
         }
 
-
         for (int i = 0; i < 7; i++) {
             location = new Location(i, i + 5, i * 10);
             n = new Node(i, location, (i + 5) * 10, "", 0);

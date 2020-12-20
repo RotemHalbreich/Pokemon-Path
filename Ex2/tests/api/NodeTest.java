@@ -23,23 +23,22 @@ class NodeTest {
     @Test
     void getLocation() {
         assertEquals(new Location(2, 3, 4), n1.getLocation());
-        geo_location loc=new Location(5,6,7);
-        assertEquals(loc.distance(n1.getLocation()),n2.getLocation().distance(n1.getLocation()));
+        geo_location loc = new Location(5, 6, 7);
+        assertEquals(loc.distance(n1.getLocation()), n2.getLocation().distance(n1.getLocation()));
     }
 
     @Test
     void setLocation() {
         n1.setLocation(new Location(5.0, 6.0, 7.0));
         assertEquals(n2.getLocation(), n1.getLocation());
-        assertEquals(n2.getLocation().distance(new Location(1,1,1)),n1.getLocation().distance(new Location(1,1,1)));
-
+        assertEquals(n2.getLocation().distance(new Location(1, 1, 1)), n1.getLocation().distance(new Location(1, 1, 1)));
     }
 
     @Test
     void getWeight() {
-        assertEquals(7, n2.getWeight(),EPS);
+        assertEquals(7, n2.getWeight(), EPS);
         n2.setWeight(101.23);
-        assertEquals(101.23,n2.getWeight(),EPS);
+        assertEquals(101.23, n2.getWeight(), EPS);
     }
 
     @Test
@@ -81,13 +80,11 @@ class NodeTest {
         assertAll(
                 () -> assertEquals(new Node(1, new Location(2, 3, 4), 7, "", 0), n1),
                 () -> assertNotEquals(n2, n1),
-                ()->{
-                   node_data n3=new Node( n1);
-                   n1.setLocation(new Location(1,1,1));
-                    assertNotEquals(n1,n3);
+                () -> {
+                    node_data n3 = new Node(n1);
+                    n1.setLocation(new Location(1, 1, 1));
+                    assertNotEquals(n1, n3);
                 }
         );
     }
-
-
 }

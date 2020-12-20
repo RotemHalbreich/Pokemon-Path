@@ -45,9 +45,11 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private BufferedImage pichu;
     private BufferedImage pikachu;
     private BufferedImage raichu;
+    private BufferedImage raikou;
     private BufferedImage bulbasour;
     private BufferedImage ivysaur;
     private BufferedImage venusaur;
+    private BufferedImage rayquaza;
 
     public GameGUI() {
 
@@ -205,9 +207,11 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             this.pichu = ImageIO.read(new File("data/media/pichu.png"));
             this.pikachu = ImageIO.read(new File("data/media/pikachu.png"));
             this.raichu = ImageIO.read(new File("data/media/raichu.png"));
+            this.raikou = ImageIO.read(new File("data/media/raikou.png"));
             this.bulbasour = ImageIO.read(new File("data/media/bulbasaur.png"));
             this.ivysaur = ImageIO.read(new File("data/media/ivysaur.png"));
             this.venusaur = ImageIO.read(new File("data/media/venusaur.png"));
+            this.rayquaza = ImageIO.read(new File("data/media/rayquaza.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -378,26 +382,24 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
             if (pokemon.getType() < 0) {
                 g.setColor(new Color(255, 170, 0));
-                if (pokemon.getValue() <= 8) {
+                if (pokemon.getValue() <= 8)
                     g.drawImage(this.pichu, x - 12, y - 24, 25, 35, null);
-                }
-                if (pokemon.getValue() <= 12 && pokemon.getValue() > 8) {
+                if (pokemon.getValue() <= 11 && pokemon.getValue() >= 9)
                     g.drawImage(this.pikachu, x - 20, y - 24, 38, 38, null);
-                }
-                if (pokemon.getValue() > 12) {
+                if (pokemon.getValue() >= 12 && pokemon.getValue() <= 14)
                     g.drawImage(this.raichu, x - 30, y - 33, 58, 58, null);
-                }
+                if (pokemon.getValue() >= 15)
+                    g.drawImage(this.raikou, x - 28, y - 24, 60, 60, null);
             } else {
                 g.setColor(new Color(79, 146, 17));
-                if (pokemon.getValue() <= 8) {
+                if (pokemon.getValue() <= 8)
                     g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
-                }
-                if (pokemon.getValue() <= 12 && pokemon.getValue() > 8) {
+                if (pokemon.getValue() <= 11 && pokemon.getValue() >= 9)
                     g.drawImage(this.ivysaur, x - 20, y - 32, 45, 45, null);
-                }
-                if (pokemon.getValue() > 12) {
+                if (pokemon.getValue() >= 12  && pokemon.getValue() <= 14)
                     g.drawImage(this.venusaur, x - 28, y - 24, 50, 50, null);
-                }
+                if (pokemon.getValue() >= 15)
+                    g.drawImage(this.rayquaza, x - 28, y - 24, 80, 80, null);
             }
             g.drawString("" + pokemon.getValue(), x - 13, y - 30);
         }

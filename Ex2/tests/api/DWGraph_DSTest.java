@@ -69,7 +69,6 @@ class DWGraph_DSTest {
                 () -> assertEquals(0, line.getNode(0).getKey()),
                 () -> assertNull(line.getNode(10001))
         );
-
     }
 
     @Test
@@ -104,7 +103,6 @@ class DWGraph_DSTest {
         edge_data e = new Edge(6, 5, 10);
         complex1.connect(e);
         assertEquals(e, complex1.getEdge(6, 5));
-
     }
 
     @Test
@@ -124,7 +122,6 @@ class DWGraph_DSTest {
         assertTrue(g.isEmpty());
         g = line.getE(0);
         assertEquals(1, g.size());
-
 
         Collection<edge_data> gg = complex.getE(6);
         complex.removeEdge(5, 6);
@@ -180,8 +177,6 @@ class DWGraph_DSTest {
                 () -> assertNull(complexT.getEdge(3, 4)),
                 () -> assertNull(complexT.getEdge(4, 3))
         );
-
-
     }
 
     @Test
@@ -211,7 +206,6 @@ class DWGraph_DSTest {
                 () -> assertEquals(6, complexT.nodeSize()),
                 () -> assertEquals(6, T3.reverse().nodeSize())
         );
-
     }
 
     @Test
@@ -219,7 +213,7 @@ class DWGraph_DSTest {
         assertAll("edgeSize() test on graph line: \n",
                 () -> assertEquals(8, line.edgeSize()),
                 () -> line.removeNode(3),
-                ()->assertEquals(((DWGraph_DS)line).reverse().edgeSize(),line.edgeSize()),
+                () -> assertEquals(((DWGraph_DS) line).reverse().edgeSize(), line.edgeSize()),
                 () -> assertEquals(4, line.edgeSize()),
                 () -> line.removeNode(1),
                 () -> assertEquals(0, line.edgeSize()));
@@ -237,7 +231,6 @@ class DWGraph_DSTest {
                 () -> assertEquals(5, complexT.edgeSize()),
                 () -> complexT.removeNode(1),
                 () -> assertEquals(2, complexT.edgeSize()));
-
     }
 
     @Test
@@ -272,7 +265,6 @@ class DWGraph_DSTest {
         geo_location location;
         directed_weighted_graph gg1 = new DWGraph_DS();
 
-
         //line graph:
         for (int i = 0; i < 5; i++) {
             location = new Location(i, i + 5, i * 10);
@@ -286,9 +278,9 @@ class DWGraph_DSTest {
 
         assertEquals(gg1, line);
 
-        gg1.connect(0,1,1999);
+        gg1.connect(0, 1, 1999);
 
-       assertNotEquals(gg1,line);
+        assertNotEquals(gg1, line);
         assertNotEquals(complex, line);
         gg1.removeNode(0);
         assertNotEquals(gg1, line);
