@@ -20,7 +20,7 @@ import java.util.*;
  * @author Shaked Aviad & Rotem Halbreich
  */
 
-public class GameAlgo extends Thread {
+public class GameAlgo {
     private game_service game;
     private Information info;
     private dw_graph_algorithms algo;
@@ -99,17 +99,6 @@ public class GameAlgo extends Thread {
      */
     public directed_weighted_graph getGraph() {
         return algo.getGraph();
-    }
-
-    @Override
-    public void run() {
-        try {
-            pokemons.update();
-            agents.update();
-            info.update();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -265,7 +254,6 @@ public class GameAlgo extends Thread {
      */
     private void findBestAgent(Pokemon currPok) {
         int src = currPok.getEdge().getSrc();
-        //long optimalTime = game.timeToEnd() + 1000;
         double optimalTime = game.timeToEnd() + 1000;
         ArrayList<node_data> path = null, tempPath = null;
         int last = 0, agentId = 0;
@@ -276,10 +264,7 @@ public class GameAlgo extends Thread {
             Double tempOptimalTime = timer.get(agent.getId());
             tempPath = targets.get(agent.getId());
             last = tempPath.get(tempPath.size() - 1).getKey();
-
-            //double minTime = algo.shortestPathDist(last, src) / agent.getSpeed();
-            double minTime = agents.DPS1(last, src) / agent.getSpeed();
-            //       double minTime=agents.DPS(agent.getId(),last,src)/agent.getSpeed();
+            double minTime = agents.DPS(last, src) / agent.getSpeed();
             if (minTime + tempOptimalTime < optimalTime) {
                 optimalTime = minTime + tempOptimalTime;
                 path = tempPath;
@@ -291,9 +276,7 @@ public class GameAlgo extends Thread {
         shortesPath.remove(0);
         path.addAll(shortesPath);
         path.add(algo.getGraph().getNode(currPok.getEdge().getDest()));
-
         timer.put(agentId, optimalTime);
-        //handlingPokemons.add(0, currPok.getLocation());
     }
 
     /**

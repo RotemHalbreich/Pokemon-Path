@@ -8,7 +8,6 @@ import gameClient.Game_DS.*;
 import org.json.JSONException;
 
 /**
- *
  * @author Shaked Aviad & Rotem Halbreich
  */
 
@@ -16,17 +15,19 @@ public class Ex2 implements Runnable {
     private static GameGUI gui;
     private static GameAlgo gameAlgo;
     public static Integer level;
-    public  static Integer id;
+    public static Integer id;
 
     public static void main(String[] args) {
         Thread ex2 = new Thread(new Ex2());
-        try{
-            if(level==null&&id==null) {
+        try {
+            if (level == null && id == null) {
                 level = Integer.parseInt(args[1]);
                 id = Integer.parseInt(args[0]);
                 gui = new GameGUI();
             }
-        }catch (Exception e){gui = new GameGUI();}
+        } catch (Exception e) {
+            gui = new GameGUI();
+        }
         ex2.start();
     }
 
@@ -35,49 +36,39 @@ public class Ex2 implements Runnable {
      */
     @Override
     public void run() {
-
         init();
         gui.update(gameAlgo);
         gameAlgo.startGame();
-        int ind=0;
-      // gameAlgo.start();
-        while (gameAlgo.isRunning()){
+        int ind = 0;
+        while (gameAlgo.isRunning()) {
             algorithm();
-            if(ind%1==0) {gui.repaint();}
+            if (ind % 1 == 0) {gui.repaint();}
             ind++;
         }
         gui.repaint();
         System.out.println(gameAlgo.getGame().toString());
-
     }
-//
+
+
     /**
      *
      */
     private static void algorithm() {
         try {
             gameAlgo.getGame().move();
-          //  gameAlgo.getPokemons().update();
-            //ameAlgo.getGame().move();
             gameAlgo.sendAgentsToPokemons();
-          //  gameAlgo.getAgents().update();
             gameAlgo.moveAgents();
-             gameAlgo.getInfo().update();
-          //  gameAlgo.updateHandled();
-
+            gameAlgo.getInfo().update();
             Thread.sleep(gameAlgo.averageTime());
-        } catch (JSONException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        } catch (JSONException | InterruptedException e) {e.printStackTrace();}
     }
 
     /**
      *
      */
-    public static void init(){
-
+    public static void init() {
         game_service game = Game_Server_Ex2.getServer(level);
-       // game.login(id);
+        // game.login(id);
         DWGraph_Algo algo = null;
         Information i = null;
         Agents a = null;

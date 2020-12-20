@@ -34,6 +34,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
     private File soundtrack;
 
+
+    private JButton button;
+    private double BTNSIZE;
+    private Clip music;
     private BufferedImage background;
     private BufferedImage ash;
     private BufferedImage pichu;
@@ -49,11 +53,12 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
         setTitle("Pokemon - The Game");
         setSize(1280, 700);
-     //   playMusic();
+        playMusic();
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         setFrameSize();
+        setButton();
 
         menuBar();
         addMouseListener(this);
@@ -84,7 +89,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         Graphics2D g = bufferedImage.createGraphics();
 
         super.paintComponents(g);
-
+        button.setBounds((int)  BTNSIZE-60,  0,50,50);
         drawBackground(g);
         drawGraph(g);
         drawPokemos(g);
@@ -97,7 +102,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // System.out.println("x:"+e.getX()+"\t y:"+e.getY());
+        System.out.println("x"+e.getX()+"\ty"+e.getY());
+        System.out.println("MAXXx"+MaxX+"\tMAXYy"+MaxY);
+        System.out.println("MINx"+MinX+"\tMINy"+MinY);
+        System.out.println("GETX"+getWidth()+"\tgety"+getHeight());
     }
 
     @Override
@@ -127,25 +135,39 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String select = e.getActionCommand();
-        System.out.println(select);
         if (select.equals("New Game")) {
             gameAlgo.getGame().stopGame();
             initGame("new");
-        } else {
+        }else if(e.getSource()==button){
+            if(select.equals("Mute")){
+                button.setText("Unmute");
+                music.stop();
+            }
+            else{
+                button.setText("Mute");
+                music.start();
+            }
+
+        }
+        else {
             gameAlgo.getGame().stopGame();
         }
     }
 
-//////// TODO4!!!! ///////
-
-    // we need to think about
-    // what we want to do after game
-    public void gameOver(Graphics g) {
-        ;
-    }
-
     ///////// Private Methods //////////
+    private void setButton(){
+        button=new JButton();
+        button.addActionListener(this);
+        button.setText("Mute");
+        button.setFont(new Font("Comic Sans",Font.BOLD,10));
+        button.setIconTextGap(-15);
+        button.setForeground(Color.cyan);
+        button.setBackground(Color.gray);
+        button.setBorder(BorderFactory.createEtchedBorder());
+        this.add(button);
 
+
+    }
     /**
      *
      * @param from
@@ -199,14 +221,13 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
      *
      */
     private void playMusic() {
-
         try {
             this.soundtrack = new File("data/media/soundtrack.wav");
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundtrack);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
-            clip.loop(Integer.MAX_VALUE);
+            music = AudioSystem.getClip();
+            music.open(audioStream);
+            music.start();
+            music.loop(Integer.MAX_VALUE);
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -224,9 +245,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         MinY = MAX_VALUE;
         MaxX = MIN_VALUE;
         MaxY = MIN_VALUE;
+        BTNSIZE=getWidth();
     }
-
-    // we need to fix the duplicate
 
     /**
      *
@@ -246,6 +266,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             if (n.getLocation().y() > MaxY)
                 MaxY = n.getLocation().y();
         }
+        BTNSIZE=getWidth();
     }
 
     /**
@@ -268,6 +289,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private int ratioX(double x) {
         if (x > MaxX || x < MinX)
             resizeFrame();
+        BTNSIZE=getWidth();
         return (int) ((x - MinX) / (MaxX - MinX) * (getWidth() - 50) + 20);
     }
 
@@ -424,8 +446,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         setJMenuBar(fatherMenu);
     }
 
-    //we need to fix that
-
     /**
      *
      * @param num
@@ -437,4 +457,3 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         Ex2.main(new String[2]);
     }
 }
-//////////////////////////////////////////////////////////////////////<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

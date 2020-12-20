@@ -27,8 +27,8 @@ public class Agents {
     private game_service game;
     private Information info;
     private HashMap<Integer, Agent> agents;
+
     private double[][] dps;
-    private double[][] dps1;
 
     /**
      * Constructor:
@@ -41,8 +41,8 @@ public class Agents {
         this.game = game;
         this.info=i;
         update();
+
         insertDPS();
-        insertDPS1();
 
     }
 
@@ -50,11 +50,11 @@ public class Agents {
      *
      * Inserts the DPS in the minimum distances.
      */
-    private void insertDPS1() {
+    private void insertDPS() {
         directed_weighted_graph g=new DWGraph_Algo().readFromJson(game.getGraph());
         int s=findMaxId(g);
         if(s==-1||s==0)return;
-        dps1=new double[s][s];
+        dps=new double[s][s];
         setMinPath(g);
     }
 
@@ -68,7 +68,7 @@ public class Agents {
         algo.init(g);
         for(node_data n:g.getV()){
             for (node_data n1:g.getV()){
-                dps1[n.getKey()][n1.getKey()]=algo.shortestPathDist(n.getKey(),n1.getKey());
+                dps[n.getKey()][n1.getKey()]=algo.shortestPathDist(n.getKey(),n1.getKey());
             }
         }
     }
@@ -129,9 +129,7 @@ public class Agents {
         return agents.get(key);
     }
 
-    public  double DPS(int key,int i ,int j){
-        return (dps[i][j]);
-    }
+
 
     /**
      * Returns the minimal distance between src to dest.
@@ -140,8 +138,8 @@ public class Agents {
      * @param dest
      * @return double
      */
-    public double DPS1 (int src,int dest){
-        double ans=dps1[src][dest];
+    public double DPS(int src,int dest){
+        double ans=dps[src][dest];
         return ans>=0?ans:MAX_VALUE;
     }
 
@@ -160,18 +158,6 @@ public class Agents {
 
     /////////// Private Methods //////////
 
-    /**
-     *
-     */
-    private void insertDPS() {
-        directed_weighted_graph g=new DWGraph_Algo().readFromJson(game.getGraph());
-        int s=findMaxId(g);
-        if(s==-1||s==0)return;
-        dps=new double[s][s];
-        insertDefaultValue(g,s);
-        insertActualValue(g);
-        minDPS();
-    }
 
     /**
      * Finds the maximum key in case the vertices' keys are note arranged serially.
@@ -188,33 +174,4 @@ public class Agents {
        return m+1;
     }
 
-    private void insertDefaultValue(directed_weighted_graph g,int s){
-        for(int i=0;i<s;i++){
-            for(int j=0;j<s;j++){
-                if(i==j&&g.getNode(i)!=null)
-                    dps[i][j]=0;
-                else dps[i][j]=MAX_VALUE;
-            }
-        }
-    }
-
-
-    private void insertActualValue(directed_weighted_graph g){
-        for (node_data n:g.getV()){
-            for(edge_data e:g.getE(n.getKey())){
-                dps[e.getSrc()][e.getDest()]=e.getWeight();
-            }
-        }
-    }
-
-    private void minDPS(){
-        for (int k = 0; k < dps.length; k++) {
-            for (int i = 0; i < dps.length; i++) {
-                for (int j = 0; j < dps.length; j++) {
-                    if (dps[i][j] > dps[i][k] + dps[k][j])
-                        dps[i][j] = dps[i][k] + dps[k][j];
-                }
-            }
-        }
-    }
 }
