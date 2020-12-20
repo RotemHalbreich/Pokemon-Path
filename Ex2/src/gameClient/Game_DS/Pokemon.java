@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import static java.lang.Double.parseDouble;
 
 /**
- * Represents the Pokemons in our Game.
+ * Represents the Pokemons in the Game.
  *
  * @author Shaked Aviad & Rotem Halbreich
  */
@@ -20,7 +20,7 @@ public class Pokemon implements Comparable<Pokemon> {
     private int type;
     private Point3D pos;
     private edge_data edge;
-    private final double EPS=0.0000000000001;
+    private final double EPS = 0.0000000000001;
 
     /**
      * Constructor:
@@ -29,13 +29,13 @@ public class Pokemon implements Comparable<Pokemon> {
      * @param game
      * @throws JSONException
      */
-    public Pokemon(JSONObject json,game_service game) throws JSONException {
-        this.game=game;
+    public Pokemon(JSONObject json, game_service game) throws JSONException {
+        this.game = game;
         update(json);
     }
 
     /**
-     * Updates the Pokemons in the game.
+     * Updates the game's Pokemon.
      *
      * @param json
      * @throws JSONException
@@ -47,11 +47,13 @@ public class Pokemon implements Comparable<Pokemon> {
         pos = new Point3D(c[0], c[1], c[2]);
         try {
             setEdge();
-        }catch (Exception e){;}
+        } catch (Exception e) {
+            ;
+        }
     }
 
     /**
-     * Simplifies the position of the Pokemons.
+     * Simplifies the position of the Pokemon.
      *
      * @param s
      * @return double[]
@@ -97,18 +99,18 @@ public class Pokemon implements Comparable<Pokemon> {
      */
     public void setEdge() {
         edge = null;
-        directed_weighted_graph graph=new DWGraph_Algo().readFromJson(game.getGraph());
-        for(node_data n:graph.getV()){
-            for (edge_data e:graph.getE(n.getKey())){
+        directed_weighted_graph graph = new DWGraph_Algo().readFromJson(game.getGraph());
+        for (node_data n : graph.getV()) {
+            for (edge_data e : graph.getE(n.getKey())) {
                 if (isNotValidEdge(e)) continue;
-                    Point3D src= (Point3D) graph.getNode(e.getSrc()).getLocation();
-                    Point3D dest= (Point3D) graph.getNode(e.getDest()).getLocation();
-                    double d=src.distance(dest)- src.distance(getLocation())-getLocation().distance(dest);
-                    if(Math.abs(d)<EPS)
-                        edge=e;
-                }
+                Point3D src = (Point3D) graph.getNode(e.getSrc()).getLocation();
+                Point3D dest = (Point3D) graph.getNode(e.getDest()).getLocation();
+                double d = src.distance(dest) - src.distance(getLocation()) - getLocation().distance(dest);
+                if (Math.abs(d) < EPS)
+                    edge = e;
             }
         }
+    }
 
     /**
      * Gets the edge on which the Pokemon is located on.
@@ -130,7 +132,7 @@ public class Pokemon implements Comparable<Pokemon> {
                 + "val:" + getValue()
                 + ",type:" + getType()
                 + ",pos:" + getLocation().toString()
-                + ",edge:"+getEdge().toString()
+                + ",edge:" + getEdge().toString()
                 + "}";
     }
 
@@ -153,7 +155,7 @@ public class Pokemon implements Comparable<Pokemon> {
      * @param e
      * @return boolean
      */
-    private boolean isNotValidEdge(edge_data e){
+    private boolean isNotValidEdge(edge_data e) {
         return (type > 0) != (e.getSrc() < e.getDest());
 
     }

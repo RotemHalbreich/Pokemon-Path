@@ -12,7 +12,7 @@ import static java.lang.Double.MAX_VALUE;
 
 /**
  * Represents the list of the game's Agents.
- *
+ * <p>
  * game - the game server.
  * info - the game's information.
  * agents - the game's Agents.
@@ -37,40 +37,13 @@ public class Agents {
      * @param i
      * @throws JSONException
      */
-    public Agents(game_service game,Information i) throws JSONException {
+    public Agents(game_service game, Information i) throws JSONException {
         this.game = game;
-        this.info=i;
+        this.info = i;
         update();
 
         insertDPS();
 
-    }
-
-    /**
-     *
-     * Inserts the DPS in the minimum distances.
-     */
-    private void insertDPS() {
-        directed_weighted_graph g=new DWGraph_Algo().readFromJson(game.getGraph());
-        int s=findMaxId(g);
-        if(s==-1||s==0)return;
-        dps=new double[s][s];
-        setMinPath(g);
-    }
-
-    /**
-     * Calculates the shortest path distance between a vertex to any other vertex.
-     *
-     * @param g
-     */
-    private void setMinPath(directed_weighted_graph g) {
-        DWGraph_Algo algo=new DWGraph_Algo();
-        algo.init(g);
-        for(node_data n:g.getV()){
-            for (node_data n1:g.getV()){
-                dps[n.getKey()][n1.getKey()]=algo.shortestPathDist(n.getKey(),n1.getKey());
-            }
-        }
     }
 
     /**
@@ -80,7 +53,7 @@ public class Agents {
      */
     public synchronized void update() throws JSONException {
 
-        if(game==null||info==null)return;
+        if (game == null || info == null) return;
 
         if (agents == null) agents = new HashMap<>();
 
@@ -107,7 +80,7 @@ public class Agents {
      * @throws JSONException
      */
     public int size() throws JSONException {
-       return info.getAgents();
+        return info.getAgents();
     }
 
     /**
@@ -130,7 +103,6 @@ public class Agents {
     }
 
 
-
     /**
      * Returns the minimal distance between src to dest.
      *
@@ -138,9 +110,9 @@ public class Agents {
      * @param dest
      * @return double
      */
-    public double DPS(int src,int dest){
-        double ans=dps[src][dest];
-        return ans>=0?ans:MAX_VALUE;
+    public double DPS(int src, int dest) {
+        double ans = dps[src][dest];
+        return ans >= 0 ? ans : MAX_VALUE;
     }
 
     /**
@@ -158,6 +130,31 @@ public class Agents {
 
     /////////// Private Methods //////////
 
+    /**
+     * Inserts the DPS in the minimum distances.
+     */
+    private void insertDPS() {
+        directed_weighted_graph g = new DWGraph_Algo().readFromJson(game.getGraph());
+        int s = findMaxId(g);
+        if (s == -1 || s == 0) return;
+        dps = new double[s][s];
+        setMinPath(g);
+    }
+
+    /**
+     * Calculates the shortest path distance between a vertex to any other vertex.
+     *
+     * @param g
+     */
+    private void setMinPath(directed_weighted_graph g) {
+        DWGraph_Algo algo = new DWGraph_Algo();
+        algo.init(g);
+        for (node_data n : g.getV()) {
+            for (node_data n1 : g.getV()) {
+                dps[n.getKey()][n1.getKey()] = algo.shortestPathDist(n.getKey(), n1.getKey());
+            }
+        }
+    }
 
     /**
      * Finds the maximum key in case the vertices' keys are note arranged serially.
@@ -165,13 +162,12 @@ public class Agents {
      * @param g
      * @return int
      */
-    private int findMaxId( directed_weighted_graph g){
-        int m=-1;
-       for (node_data n:g.getV()){
-           if(m<n.getKey())
-               m=n.getKey();
-       }
-       return m+1;
+    private int findMaxId(directed_weighted_graph g) {
+        int m = -1;
+        for (node_data n : g.getV()) {
+            if (m < n.getKey())
+                m = n.getKey();
+        }
+        return m + 1;
     }
-
 }

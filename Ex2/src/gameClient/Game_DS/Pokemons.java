@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * Represents the list of Pokemons in our game.
+ * Represents the list of Pokemons in the game.
  *
  * @author Shaked Aviad & Rotem Halbreich
  */
@@ -25,9 +25,9 @@ public class Pokemons {
      * @param i
      * @throws JSONException
      */
-    public Pokemons(game_service game,Information i) throws JSONException {
+    public Pokemons(game_service game, Information i) throws JSONException {
         this.game = game;
-        this.info=i;
+        this.info = i;
         update();
     }
 
@@ -37,7 +37,7 @@ public class Pokemons {
      * @throws JSONException
      */
     public synchronized void update() throws JSONException {
-        if(game==null||info==null)return;
+        if (game == null || info == null) return;
         if (pokemons == null || pokemons.length != info.getPokemons())
             pokemons = new Pokemon[info.getPokemons()];
 
@@ -47,7 +47,7 @@ public class Pokemons {
         for (int i = 0; i < size(); i++) {
             JSONObject jsonPokemon = arrayPokemons.getJSONObject(i).getJSONObject("Pokemon");
             if (pokemons[i] == null)
-                pokemons[i] = new Pokemon(jsonPokemon,game);
+                pokemons[i] = new Pokemon(jsonPokemon, game);
             else
                 pokemons[i].update(jsonPokemon);
         }

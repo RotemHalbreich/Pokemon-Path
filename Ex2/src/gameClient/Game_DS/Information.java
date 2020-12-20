@@ -50,14 +50,18 @@ public class Information {
      *
      * @param level
      */
-    public void setGameLevel(int level){this.gameLevel=level;}
+    public void setGameLevel(int level) {
+        this.gameLevel = level;
+    }
 
     /**
      * Gets the game's level.
      *
      * @return int
      */
-    public int getGameLevel(){return this.gameLevel;}
+    public int getGameLevel() {
+        return this.gameLevel;
+    }
 
     /**
      * Gets the grade.

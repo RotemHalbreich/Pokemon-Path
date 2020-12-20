@@ -78,7 +78,7 @@ public class GameAlgo {
     }
 
     /**
-     * Moves the agents on the graph ans updates the agents.
+     * Moves the agents on the graph and updates the agents.
      */
     public void moveAgents() {
         try {
@@ -120,7 +120,7 @@ public class GameAlgo {
     }
 
     /**
-     * Returns the game's Pokemons
+     * Returns the game's Pokemons.
      *
      * @return Pokemons
      */
@@ -177,7 +177,7 @@ public class GameAlgo {
         }
         if (min == Double.MAX_VALUE) ans = 100;
         else ans = min * 100;
-        if (ans < 70) ans = (100 +min);
+        if (ans < 70) ans = (100 + min);
         return (long) ans;
     }
 
@@ -332,7 +332,4 @@ public class GameAlgo {
         if (min != Double.MAX_VALUE) ans = min;
         return ans;
     }
-
-
-
 }

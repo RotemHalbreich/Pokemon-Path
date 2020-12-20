@@ -204,7 +204,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
     /**
-     * Returns this graph algorithm as a String.
+     * Returns this graph's algorithm as a String.
      *
      * @return String
      */
