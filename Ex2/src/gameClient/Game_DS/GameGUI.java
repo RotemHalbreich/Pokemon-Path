@@ -170,8 +170,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         if (from.equals("constructor") && Ex2.level != null && Ex2.id != null) CMD = false;
         if (!CMD && from.equals("constructor")) return;
         while (with) {
-            key = JOptionPane.showInputDialog("Please enter your ID:  ", "305496614");
-            select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "17");
+            key = JOptionPane.showInputDialog("Please enter your ID:  ", "311549364");
+            select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "0");
             int num = -1, key_id = -1;
             try {
                 num = parseInt(select);
