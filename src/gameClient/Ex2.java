@@ -7,14 +7,12 @@ import api.game_service;
 import gameClient.Game_DS.*;
 import org.json.JSONException;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 /**
  * This is the main class, from here we run the project's code.
  *
  * @author Shaked Aviad & Rotem Halbreich
  */
+
 
 public class Ex2 implements Runnable {
     private static GameGUI gui;
