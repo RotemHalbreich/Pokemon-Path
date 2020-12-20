@@ -360,10 +360,10 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
             if (agent.getId() == 0) {
                 g.drawImage(this.ash, x - 18, y - 30, 30, 60, null);
             }
-            if (agent.getId() == 1) {
+            else if (agent.getId() == 1) {
                 g.drawImage(this.misty, x - 18, y - 30, 40, 70, null);
             }
-            if (agent.getId() != 0 && agent.getId() >= 2) {
+            else{
                 g.drawImage(this.brock, x - 18, y - 30, 40, 70, null);
             }
         }
@@ -384,24 +384,24 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
                 g.setColor(new Color(255, 170, 0));
                 if (pokemon.getValue() <= 8)
                     g.drawImage(this.pichu, x - 12, y - 24, 25, 35, null);
-                if (pokemon.getValue() <= 11 && pokemon.getValue() >= 9)
+                else if (pokemon.getValue() <= 11 && pokemon.getValue() >= 9)
                     g.drawImage(this.pikachu, x - 20, y - 24, 38, 38, null);
-                if (pokemon.getValue() >= 12 && pokemon.getValue() <= 14)
+                else if (pokemon.getValue() >= 12 && pokemon.getValue() <= 14)
                     g.drawImage(this.raichu, x - 30, y - 33, 58, 58, null);
-                if (pokemon.getValue() >= 15)
+                else
                     g.drawImage(this.raikou, x - 28, y - 24, 60, 60, null);
             } else {
                 g.setColor(new Color(79, 146, 17));
                 if (pokemon.getValue() <= 8)
                     g.drawImage(this.bulbasour, x - 12, y - 18, 30, 30, null);
-                if (pokemon.getValue() <= 11 && pokemon.getValue() >= 9)
+                else if (pokemon.getValue() <= 11 && pokemon.getValue() >= 9)
                     g.drawImage(this.ivysaur, x - 20, y - 32, 45, 45, null);
-                if (pokemon.getValue() >= 12  && pokemon.getValue() <= 14)
+                else if (pokemon.getValue() >= 12 && pokemon.getValue() <= 14)
                     g.drawImage(this.venusaur, x - 28, y - 24, 50, 50, null);
-                if (pokemon.getValue() >= 15)
-                    g.drawImage(this.rayquaza, x - 28, y - 24, 80, 80, null);
+                else
+                    g.drawImage(this.rayquaza, x - 28, y - 35, 80, 80, null);
             }
-            g.drawString("" + pokemon.getValue(), x - 13, y - 30);
+            g.drawString("" + pokemon.getValue(), x - 13, y - 40);
         }
     }
 
@@ -460,6 +460,4 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         Ex2.level=num;
         Ex2.main(new String[2]);
     }
-
-
 }
