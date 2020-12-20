@@ -48,7 +48,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
 
     public GameGUI() {
         super();
-        setTitle("Pokemon - The Game");
+        setTitle("Pokemon's Path - The Game");
         setSize(1280, 700);
         playMusic();
         setLayout(null);
