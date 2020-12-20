@@ -30,12 +30,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private directed_weighted_graph graph;
     private double MinX, MinY, MaxX, MaxY;
     private boolean CMD = true;
-
-    private String id = "305496614";
-
     private File soundtrack;
-
-
     private JButton button;
     private double BTNSIZE;
     private Clip music;
@@ -53,9 +48,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     private BufferedImage rayquaza;
 
     public GameGUI() {
-
         super();
-
         setTitle("Pokemon - The Game");
         setSize(1280, 700);
         playMusic();
@@ -77,7 +70,6 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         this.gameAlgo = g;
         this.graph = gameAlgo.getGraph();
         resizeFrame();
-
     }
 
 
@@ -137,7 +129,8 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         String select = e.getActionCommand();
         if (select.equals("New Game")) {
-            gameAlgo.getGame().stopGame();
+           if(gameAlgo.getGame().isRunning())
+                gameAlgo.getGame().stopGame();
             initGame("new");
         } else if (e.getSource() == button) {
             if (select.equals("Mute")) {
@@ -176,7 +169,7 @@ public class GameGUI extends JFrame implements MouseListener, ActionListener {
         if (from.equals("constructor") && Ex2.level != null && Ex2.id != null) CMD = false;
         if (!CMD && from.equals("constructor")) return;
         while (with) {
-            key = JOptionPane.showInputDialog("Please enter your ID:  ", "000000000");
+            key = JOptionPane.showInputDialog("Please enter your ID:  ", "305496614");
             select = JOptionPane.showInputDialog("Please choose level number (0-23):  ", "17");
             int num = -1, key_id = -1;
             try {

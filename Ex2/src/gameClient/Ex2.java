@@ -39,7 +39,7 @@ public class Ex2 implements Runnable {
             public void run() {
                 int i=0;
                 while (isRunning)
-                    if((i++)%2==0)gui.repaint();
+                    if((i++)%4==0)gui.repaint();
             }
         });
         ex2.start();
@@ -74,7 +74,7 @@ public class Ex2 implements Runnable {
      */
     public static void init() {
         game_service game = Game_Server_Ex2.getServer(level);
-        // game.login(id);
+        game.login(id);
         DWGraph_Algo algo = null;
         Information i = null;
         Agents a = null;
