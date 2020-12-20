@@ -11,6 +11,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * This is the main class, from here we run the project's code.
+ *
  * @author Shaked Aviad & Rotem Halbreich
  */
 
@@ -51,10 +53,6 @@ public class Ex2 implements Runnable {
         System.out.println(gameAlgo.getGame().toString());
     }
 
-
-    /**
-     *
-     */
     private static void algorithm() {
         try {
             gameAlgo.getGame().move();
@@ -64,10 +62,7 @@ public class Ex2 implements Runnable {
             Thread.sleep(gameAlgo.averageTime());
         } catch (InterruptedException | JSONException e) {e.printStackTrace();}
     }
-
-    /**
-     *
-     */
+    
     public static void init() {
         game_service game = Game_Server_Ex2.getServer(level);
         game.login(id);
