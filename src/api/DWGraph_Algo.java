@@ -34,6 +34,8 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     private directed_weighted_graph graph;
     private DWGraph_DS algorithm;
 
+
+
     /**
      * Constructor:
      */
@@ -221,6 +223,79 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     public boolean equals(Object obj) {
         return graph.equals(obj);
     }
+    private List<Integer> connectedComponent(int id,DWGraph_DS straight){
+        List<Integer> path=new ArrayList<Integer>();
+        path.add(id);
+        Node first = (Node) straight.getNode(id);
+        DWGraph_DS reverse=new DWGraph_DS();
+        reverse.addNode(first);
+        LinkedList<node_data> list = new LinkedList<node_data>();
+        first.setInfo(VISITED);
+        list.addFirst(first);
+        while (!list.isEmpty()) {
+            node_data currNode = list.removeFirst();
+            Iterator<edge_data> itr = straight.getE(currNode.getKey()).iterator();
+            while (itr.hasNext()) {
+                node_data ni = straight.getNode(itr.next().getDest());
+                reverse.addNode(new Node(ni));
+                reverse.connect(ni.getKey(), currNode.getKey(), straight.getEdge(currNode.getKey(), ni.getKey()).getWeight());
+                if (ni.getInfo().equals(NOT_VISITED)) {
+                    ni.setInfo(VISITED);
+                    list.addFirst(ni);
+                    path.add(ni.getKey());
+                }
+            }
+        }
+        List<Integer> pathReverse=new ArrayList<Integer>();
+        pathReverse.add(id);
+        first = (Node) reverse.getV().iterator().next();
+        list = new LinkedList<node_data>();
+        list.addFirst(first);
+        while (!list.isEmpty()) {
+            node_data currNode = list.removeFirst();
+            Iterator<edge_data> itr = reverse.getE(currNode.getKey()).iterator();
+            while (itr.hasNext()) {
+                node_data ni = reverse.getNode(itr.next().getDest());
+                if (ni.getInfo().equals(NOT_VISITED)) {
+                    ni.setInfo(VISITED);
+                    list.addFirst(ni);
+                    pathReverse.add(ni.getKey());
+                }
+            }
+        }
+        List<Integer> union=new ArrayList<Integer>();
+        for(Integer n:path){
+            if(pathReverse.contains(n)){
+                if(!union.contains(n)){
+                    union.add(n);
+                }
+            }
+        }
+        //Collections.sort(union);
+        return union;
+    }
+    public List<Integer> connectedComponent(int id){
+       DWGraph_DS straight=(DWGraph_DS)copy();
+       //for (node_data n:straight.getV())n.setInfo(NOT_VISITED);
+       return connectedComponent(id, straight);
+
+    }
+    public List<List<Integer>> connectedComponents(){
+        List<List<Integer>> scc= new ArrayList<>();
+        List<Integer> tmp=new ArrayList<>();
+        DWGraph_DS copy=(DWGraph_DS) copy();
+        //for (node_data n:copy.getV())n.setInfo(NOT_VISITED);
+        for(node_data n:copy.getV()){
+            try{
+                tmp.get(n.getKey());
+            }catch (Exception e){
+                ArrayList<Integer> con= (ArrayList<Integer>) connectedComponent(n.getKey(), copy);
+                tmp.addAll(con);
+                scc.add(con);
+            }
+        }
+        return scc;
+    }
 
     ///////// Private Methods /////////
 
@@ -362,10 +437,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             Iterator<JsonElement> itr = Nodes.iterator();
             while (itr.hasNext()) {
                 JsonObject object = itr.next().getAsJsonObject();
-                String pos = object.getAsJsonObject().get("pos").getAsJsonPrimitive().getAsString();
-                double[] loc = simplifyLocation(pos);
-                double x = loc[0], y = loc[1], z = loc[2];
-                geo_location location = new Location(x, y, z);
+                geo_location location = new Location(Math.random()*100, Math.random()*100, 0);
+                if(object.getAsJsonObject().get("pos")!=null) {
+                    String pos = object.getAsJsonObject().get("pos").getAsJsonPrimitive().getAsString();
+                    double[] loc = simplifyLocation(pos);
+                    double x = loc[0], y = loc[1], z = loc[2];
+                    location = new Location(x, y, z);
+                }
                 int key = object.getAsJsonObject().get("id").getAsJsonPrimitive().getAsInt();
                 graph.addNode(new Node(key, location));
             }

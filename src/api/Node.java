@@ -40,7 +40,7 @@ public class Node implements node_data {
      * @param location
      */
     public Node(int key, geo_location location) {
-        this(key, location, 0.0, "", 0);
+        this(key, location, 0.0, "white", 0);
     }
 
     /**
@@ -153,13 +153,14 @@ public class Node implements node_data {
 
     @Override
     public String toString() {
-        return "Node{" +
-                "location=" + location +
-                ", key=" + key +
-                ", weight=" + weight +
-                ", info='" + info + '\'' +
-                ", tag=" + tag +
-                '}';
+//        return "Node{" +
+//                "location=" + location +
+//                ", key=" + key +
+//                ", weight=" + weight +
+//                ", info='" + info + '\'' +
+//                ", tag=" + tag +
+//                '}';
+       return ""+key;
     }
 
     /**

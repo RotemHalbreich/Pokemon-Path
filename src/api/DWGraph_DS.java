@@ -59,8 +59,8 @@ public class DWGraph_DS implements directed_weighted_graph {
      */
     @Override
     public void addNode(node_data n) {
-        if (V.containsKey(n.getKey()))
-            throw new RuntimeException("Err: Invalid insert n already exists");
+        if (V.containsKey(n.getKey()))return;
+           // throw new RuntimeException("Err: Invalid insert n already exists");
         V.put(n.getKey(), n);
         MC++;
     }
